@@ -9,7 +9,7 @@ def pdf_pages(pdf):
     for i, page in enumerate(doc, 1):
         lines = [l.strip() for l in page.get_text("text", sort=True).splitlines()]
         lines = [l for l in lines if l]
-        # page number: only first/last line of the page, never in the body
+        
         if lines and lines[-1].isdigit(): lines.pop()
         if lines and lines[0].isdigit(): lines.pop(0)
         lines = [l for l in lines if not any(n in l.lower() for n in NOISE)]
