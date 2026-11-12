@@ -11,6 +11,8 @@ INTERIM = DATA / "interim"
 PROCESSED = DATA / "processed"
 DB_PATH = ROOT / "db" / "pharmeazor.sqlite"
 
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-GEMINI_MODEL = os.getenv("GEMINI_MODEL")
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+GROQ_MODEL = "openai/gpt-oss-120b"
+GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 REQUEST_DELAY_S = 3
+REQUEST_TIMEOUT_S = 60
