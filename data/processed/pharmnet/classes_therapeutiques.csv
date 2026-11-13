@@ -1,0 +1,29 @@
+﻿code,libelle,couleur
+01,Antihistaminiques & Antiallergiques,#0E8A55
+02,Anesthésiques,#6B7C74
+03,Antalgiques & Antipyrétiques,#D21034
+04,Anti-inflammatoires & Antirhumatismaux,#E07A28
+05,Anti-infectieux,#00693E
+06,Système cardiovasculaire,
+07,Système nerveux central,
+08,Antiparkinsoniens,
+09,Antiépileptiques & Psychotropes,
+10,Appareil digestif,
+11,Antiémétiques & Antinauséeux,
+12,Appareil respiratoire,
+13,"Métabolisme, Diabète & Nutrition",
+14,Hormones & Endocrinologie,
+15,Sang & Hématologie,
+16,Anti-infectieux systémiques & Vaccins,
+17,Appareil génito-urinaire,
+18,Immunologie,
+19,Antinéoplasiques,
+20,Dermatologie,
+21,Ophtalmologie,
+22,ORL & Stomatologie,
+23,Antidotes & Toxicologie,
+24,Produits de diagnostic,
+25,Solutés & Produits de perfusion,
+26,Gaz médicaux & Divers,
+27,Produits homéopathiques & Phytothérapie,
+28,Autres produits,

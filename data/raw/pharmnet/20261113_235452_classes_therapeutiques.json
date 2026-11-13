@@ -1,0 +1,142 @@
+[
+ {
+  "code": "01",
+  "libelle": "Antihistaminiques & Antiallergiques",
+  "couleur": "#0E8A55"
+ },
+ {
+  "code": "02",
+  "libelle": "Anesthésiques",
+  "couleur": "#6B7C74"
+ },
+ {
+  "code": "03",
+  "libelle": "Antalgiques & Antipyrétiques",
+  "couleur": "#D21034"
+ },
+ {
+  "code": "04",
+  "libelle": "Anti-inflammatoires & Antirhumatismaux",
+  "couleur": "#E07A28"
+ },
+ {
+  "code": "05",
+  "libelle": "Anti-infectieux",
+  "couleur": "#00693E"
+ },
+ {
+  "code": "06",
+  "libelle": "Système cardiovasculaire",
+  "couleur": null
+ },
+ {
+  "code": "07",
+  "libelle": "Système nerveux central",
+  "couleur": null
+ },
+ {
+  "code": "08",
+  "libelle": "Antiparkinsoniens",
+  "couleur": null
+ },
+ {
+  "code": "09",
+  "libelle": "Antiépileptiques & Psychotropes",
+  "couleur": null
+ },
+ {
+  "code": "10",
+  "libelle": "Appareil digestif",
+  "couleur": null
+ },
+ {
+  "code": "11",
+  "libelle": "Antiémétiques & Antinauséeux",
+  "couleur": null
+ },
+ {
+  "code": "12",
+  "libelle": "Appareil respiratoire",
+  "couleur": null
+ },
+ {
+  "code": "13",
+  "libelle": "Métabolisme, Diabète & Nutrition",
+  "couleur": null
+ },
+ {
+  "code": "14",
+  "libelle": "Hormones & Endocrinologie",
+  "couleur": null
+ },
+ {
+  "code": "15",
+  "libelle": "Sang & Hématologie",
+  "couleur": null
+ },
+ {
+  "code": "16",
+  "libelle": "Anti-infectieux systémiques & Vaccins",
+  "couleur": null
+ },
+ {
+  "code": "17",
+  "libelle": "Appareil génito-urinaire",
+  "couleur": null
+ },
+ {
+  "code": "18",
+  "libelle": "Immunologie",
+  "couleur": null
+ },
+ {
+  "code": "19",
+  "libelle": "Antinéoplasiques",
+  "couleur": null
+ },
+ {
+  "code": "20",
+  "libelle": "Dermatologie",
+  "couleur": null
+ },
+ {
+  "code": "21",
+  "libelle": "Ophtalmologie",
+  "couleur": null
+ },
+ {
+  "code": "22",
+  "libelle": "ORL & Stomatologie",
+  "couleur": null
+ },
+ {
+  "code": "23",
+  "libelle": "Antidotes & Toxicologie",
+  "couleur": null
+ },
+ {
+  "code": "24",
+  "libelle": "Produits de diagnostic",
+  "couleur": null
+ },
+ {
+  "code": "25",
+  "libelle": "Solutés & Produits de perfusion",
+  "couleur": null
+ },
+ {
+  "code": "26",
+  "libelle": "Gaz médicaux & Divers",
+  "couleur": null
+ },
+ {
+  "code": "27",
+  "libelle": "Produits homéopathiques & Phytothérapie",
+  "couleur": null
+ },
+ {
+  "code": "28",
+  "libelle": "Autres produits",
+  "couleur": null
+ }
+]
