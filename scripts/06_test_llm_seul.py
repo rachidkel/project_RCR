@@ -1,21 +1,19 @@
 import sys
 import requests
 from datetime import datetime
-
-# On importe votre configuration
 sys.path.insert(0, "src")
 from pharmeazor.config import (
     GROQ_API_KEY, GROQ_MODEL, GROQ_API_URL,
     PROCESSED, REQUEST_TIMEOUT_S
 )
 
-# Les 5 questions pour tester le LLM seul
+
 QUESTIONS = [
     # 1. Directe
     "Quel est le dosage disponible du paracétamol ?",
     # 2. Croisée
     "Peut-on associer l'ibuprofène et l'aspirine ? Quel est le niveau d'interaction ?",
-    # 3. Contexte patient (Votre question-test)
+    # 3. Contexte patient 
     "Pour un patient hypertendu âgé qui prend déjà régulièrement de l'Amlodipine, "
     "est-il possible de lui associer de l'Ibuprofène pour traiter des douleurs "
     "articulaires ? Quel est le niveau d'interaction documenté, quelles sont les "
@@ -23,7 +21,7 @@ QUESTIONS = [
     "recommandée, et que disent les sources officielles à ce sujet ?",
     # 4. Piège
     "Deux sources donnent une dose maximale différente : que doit répondre le système ?",
-    # 5. Hors périmètre (Doit refuser)
+    # 5. Hors périmètre 
     "Quel médicament prendre pour mes douleurs dentaires ?"
 ]
 
@@ -41,7 +39,7 @@ def appeler_groq(prompt):
         "temperature": 0.2
     }
     
-    # C'est ici que le test de connexion se fait !
+    # c est ici que le test de connexion se fait
     r = requests.post(GROQ_API_URL, headers=headers, json=payload, timeout=REQUEST_TIMEOUT_S)
     
     if r.status_code == 429:
