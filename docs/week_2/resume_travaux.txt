@@ -1,0 +1,149 @@
+SUMMARY OF WORK COMPLETED — WEEK 2 (PHARMEAZOR)
+=================================================
+
+OBJECTIVE
+---------
+Build the Week 2 retrieval layer for the Pharmeazor project: chunk the
+collected documents, compute embeddings, build a vector database, and
+compare keyword search (BM25) with semantic search on the project questions.
+
+1. ENVIRONMENT
+--------------
+- Recreated .venv with Python 3.12.16 (uv) because the original 3.14.10
+  environment was incompatible with the ML stack.
+- Added and pinned in requirements.txt:
+  sentence-transformers==6.3.0, faiss-cpu==1.16.0, bm25s==0.3.16.
+- Note: PyStemmer was tried for stemming, then removed (see section 8).
+
+2. THESAURUS PARSER FIX
+-----------------------
+- Rewrote scripts/05_clean_thesaurus.py.
+- Bug: the old parser treated uppercase risk labels (e.g. "ASDEC - APEC")
+  as section headings, merging interaction blocks.
+- Fix: heading detection by font size (HEADING_MIN_SIZE = 9.5) instead of
+  uppercase; added _titre_valide, _premier_bloc, _page_lines,
+  membres capture, and level normalization.
+- Corrected corpus: 614 substances / 3,218 interactions
+  (Week 1 report said 801 / 2,561).
+
+3. CONFIGURATION
+----------------
+- src/pharmeazor/config.py: added INDEX_DIR (db/index),
+  CORPUS_PATH (data/processed/week_2/corpus.jsonl), and EMBEDDING_MODEL
+  (default intfloat/multilingual-e5-small, overridable by env var).
+
+4. CORPUS AND CHUNKING
+----------------------
+- src/pharmeazor/corpus.py: builders for thesaurus, nomenclature, EMA, DWA,
+  plus write_corpus / load_corpus.
+- scripts/07_build_corpus.py produces data/processed/week_2/corpus.jsonl.
+- Chunk schema: chunk_id, doc_id, source_id, source_name, authority_rank,
+  lang, text, metadata.
+- Chunking choices:
+  * Thesaurus: 1 chunk per interaction (substance + target + level +
+    description + management + class members).
+  * Nomenclature: aggregated to 1 chunk per DCI (was 5,425 product rows,
+    now 1,387 chunks listing brands, forms, dosages, labs). This removes
+    near-duplicate noise while keeping dosage/brand information.
+  * EMA: 1 chunk per medicine. DWA: 1 chunk per list entry.
+- Total corpus: 7,000 chunks
+  (Thesaurus 3,218; EMA 2,365; Nomenclature 1,387; DWA 30).
+- Authority ranks: thesaurus 3, ema 3, dwa 2, nomenclature 1.
+
+5. EMBEDDINGS AND INDEXES
+-------------------------
+- src/pharmeazor/embeddings.py: e5 prefix handling ("query: " / "passage: "),
+  model cache, normalized vectors.
+- src/pharmeazor/index.py: build_faiss (IndexFlatIP), build_bm25,
+  load_faiss, load_bm25.
+- scripts/08_build_index.py builds both indexes.
+- FAISS: 7,000 x 384, build time ~194 s on CPU, file db/index/faiss.index
+  (~10.8 MB). chunk_ids.json maps vectors to chunk IDs.
+- BM25: bm25s, French stopwords, no stemming, build time ~0.4 s,
+  saved under db/index/bm25/.
+
+6. RETRIEVAL
+------------
+- src/pharmeazor/retrieval.py: Retriever class with:
+  * search_dense  (FAISS top-k)
+  * search_bm25   (lexical top-k)
+  * search_hybrid (Reciprocal Rank Fusion, k=60)
+  * search(query, k, method)
+- Measured latency per query (CPU, after model load):
+  BM25 0.37 ms; dense 18.0 ms; hybrid 18.1 ms.
+  (Model load adds ~10 s per process.)
+
+7. EVALUATION
+-------------
+- src/pharmeazor/evaluation.py + scripts/09_eval_retrieval.py.
+- Queries: Q1 paracetamol dosage, Q2 ibuprofen + aspirin, Q3 the real
+  Amlodipine + Ibuprofen mission question, Q3f a short diagnostic variant,
+  Q4 source-conflict meta question, Q5 out-of-scope (dental pain).
+- Manual gold chunk sets; metrics: Recall@10, Recall@50, Hit@10, MRR@100,
+  nDCG@10, top-100 ranking.
+- Output: data/processed/week_2/retrieval_comparison.md.
+
+  Aggregate (real questions Q1, Q2, Q3):
+  Method   Recall@10  Recall@50  Hit@10  MRR@100  nDCG@10
+  BM25       0.083      0.583     0.333   0.179    0.082
+  Dense      0.333      0.667     0.333   0.103    0.144
+  Hybrid     0.250      0.583     0.333   0.078    0.120
+
+  Key per-question result:
+  - Q1 (dosage): dense finds the correct chunk at rank 4 (R@10 = 1.0);
+    BM25 fails at top-10 because the aggregated DCI chunk is very long.
+  - Q2 (ibuprofen + aspirin): all methods fail at top-10 due to the synonym
+    gap (aspirine vs ACIDE ACETYLSALICYLIQUE; ibuprofene vs AINS).
+  - Q3 (mission): hybrid is best, 3 of 4 gold chunks in top-10
+    (R@10 = 0.75, nDCG = 0.36), versus 0.25 for BM25 and 0 for dense.
+    Hybrid top-3 are the AINS + antihypertensive interaction chunks plus
+    the amlodipine nomenclature chunk.
+  - Q3f (focused): hybrid places a relevant chunk at rank 1 (MRR = 1.0).
+  - Q5 (out of scope): all methods return random but confident-looking
+    chunks; an abstention threshold is needed.
+
+8. NEGATIVE RESULT
+------------------
+- Added French stemming (PyStemmer) to BM25. It degraded performance
+  (Recall@10 0.125 -> 0.062) because "associer" and "association" collapse
+  to "associ" and flood the long query. The change was reverted and
+  PyStemmer removed from requirements.
+
+9. FILES CREATED / MODIFIED
+---------------------------
+Created:
+- src/pharmeazor/corpus.py
+- src/pharmeazor/embeddings.py
+- src/pharmeazor/index.py
+- src/pharmeazor/retrieval.py
+- src/pharmeazor/evaluation.py
+- scripts/07_build_corpus.py
+- scripts/08_build_index.py
+- scripts/09_eval_retrieval.py
+- data/processed/week_2/corpus.jsonl
+- data/processed/week_2/retrieval_comparison.md
+- db/index/ (faiss.index, chunk_ids.json, bm25/)
+- docs/week_2/rapport_vendredi.md
+
+Modified:
+- scripts/05_clean_thesaurus.py (parser rewrite)
+- src/pharmeazor/config.py (paths + embedding model)
+- requirements.txt (retrieval dependencies)
+
+10. REPRODUCIBILITY
+-------------------
+.venv\Scripts\python.exe scripts\05_clean_thesaurus.py
+.venv\Scripts\python.exe scripts\07_build_corpus.py
+.venv\Scripts\python.exe scripts\08_build_index.py
+.venv\Scripts\python.exe scripts\09_eval_retrieval.py
+
+11. NEXT STEPS
+--------------
+- Week 3: entity normalization and synonyms (brands -> DCI,
+  aspirin -> acetylsalicylic acid, ibuprofen -> NSAID), query entity
+  extraction, and a substance <-> class graph to link
+  Amlodipine -> antihypertensive -> NSAID interaction.
+- Week 4: RAG with citations, relevance/abstention threshold (Q5),
+  source-conflict handling (Q4), multi-step query decomposition.
+- Optional: cross-encoder reranker, stronger embedding model (BGE-M3),
+  BM25 b tuning, hybrid weighting.

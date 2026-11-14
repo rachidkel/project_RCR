@@ -10,6 +10,9 @@ RAW = DATA / "raw"
 INTERIM = DATA / "interim"
 PROCESSED = DATA / "processed"
 DB_PATH = ROOT / "db" / "pharmeazor.sqlite"
+INDEX_DIR = ROOT / "db" / "index"
+CORPUS_PATH = PROCESSED / "week_2" / "corpus.jsonl"
+EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "intfloat/multilingual-e5-small")
 
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 GROQ_MODEL = "openai/gpt-oss-120b"
