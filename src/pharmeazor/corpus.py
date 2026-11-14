@@ -10,6 +10,7 @@ THESAURUS_JSON = INTERIM / "thesaurus" / "interactions_medicamenteuses.json"
 NOMENCLATURE_CSV = PROCESSED / "nomenclature" / "nomenclature_active.csv"
 EMA_CSV = RAW / "ema" / "ema_medicines_clean.csv"
 DWA_CSV = RAW / "dwa dz" / "nomenclature_dz_clean.csv"
+PHARMNET_CSV = PROCESSED / "pharmnet" / "produits_enregistres.csv"
 
 
 SOURCES = {
@@ -35,6 +36,12 @@ SOURCES = {
         "source_id": "S_DWA",
         "source_name": "DWA Algérie - nomenclature enregistrée",
         "authority_rank": 2,
+        "lang": "fr",
+    },
+    "pharmnet": {
+        "source_id": "S_PHARMNET",
+        "source_name": "Pharm'Net Algérie - répertoire des médicaments enregistrés",
+        "authority_rank": 1,
         "lang": "fr",
     },
 }
@@ -214,11 +221,98 @@ def dwa_chunks():
             )
 
 
+def _prix(value):
+    text = _clean(value).replace(",", ".")
+    if not text:
+        return None
+    try:
+        return float(text)
+    except ValueError:
+        return None
+
+
+def pharmnet_chunks():
+    if not PHARMNET_CSV.exists():
+        return
+
+    groupes = {}
+    with open(PHARMNET_CSV, encoding="utf-8-sig", newline="") as f:
+        for row in csv.DictReader(f):
+            dci = _clean(row.get("dci"))
+            if not dci:
+                continue
+            key = _clean(row.get("dci_norm")) or norm(dci)
+            groupe = groupes.setdefault(
+                key,
+                {
+                    "dci": dci,
+                    "dci_code": _clean(row.get("dci_code")),
+                    "classe": _clean(row.get("classe_libelle")),
+                    "marques": set(),
+                    "formes": set(),
+                    "dosages": set(),
+                    "conditionnements": set(),
+                    "laboratoires": set(),
+                    "listes": set(),
+                    "prix": [],
+                },
+            )
+            groupe["marques"].add(_clean(row.get("nom_commercial")))
+            groupe["formes"].add(_clean(row.get("forme")))
+            groupe["dosages"].add(_clean(row.get("dosage")))
+            groupe["conditionnements"].add(_clean(row.get("conditionnement")))
+            groupe["laboratoires"].add(_clean(row.get("laboratoire")))
+            groupe["listes"].add(_clean(row.get("liste")))
+            prix = _prix(row.get("prix_ppa"))
+            if prix is not None:
+                groupe["prix"].append(prix)
+
+    for key, groupe in groupes.items():
+        marques = sorted(v for v in groupe["marques"] if v)
+        formes = sorted(v for v in groupe["formes"] if v)
+        dosages = sorted(v for v in groupe["dosages"] if v)
+        conditionnements = sorted(v for v in groupe["conditionnements"] if v)
+        laboratoires = sorted(v for v in groupe["laboratoires"] if v)
+        listes = sorted(v for v in groupe["listes"] if v)
+        prix = groupe["prix"]
+        text = (
+            f"PHARM'NET — {groupe['dci']} — classe {groupe['classe']} — "
+            f"marques : {', '.join(marques[:20])} — "
+            f"formes : {', '.join(formes[:10])} — dosages : {', '.join(dosages[:20])} — "
+            f"laboratoires : {', '.join(laboratoires[:10])}"
+        )
+        if listes:
+            text += f" — liste {', '.join(listes)}"
+        if prix:
+            text += f" — prix {min(prix):.2f} à {max(prix):.2f} DZD"
+        doc_id = f"pharmnet:{key}"
+        yield _record(
+            "pharmnet",
+            doc_id,
+            doc_id,
+            text,
+            {
+                "dci": groupe["dci"],
+                "dci_code": groupe["dci_code"],
+                "classe": groupe["classe"],
+                "marques": marques,
+                "formes": formes,
+                "dosages": dosages,
+                "conditionnements": conditionnements,
+                "laboratoires": laboratoires,
+                "listes": listes,
+                "prix_ppa_min": min(prix) if prix else None,
+                "prix_ppa_max": max(prix) if prix else None,
+            },
+        )
+
+
 BUILDERS = {
     "thesaurus": thesaurus_chunks,
     "nomenclature": nomenclature_chunks,
     "ema": ema_chunks,
     "dwa": dwa_chunks,
+    "pharmnet": pharmnet_chunks,
 }
 
 

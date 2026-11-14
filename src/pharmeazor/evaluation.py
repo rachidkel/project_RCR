@@ -139,13 +139,24 @@ def run_evaluation(retriever=None):
             for metric in ("recall@10", "recall@50", "hit@10", "mrr", "ndcg@10")
         }
 
-    return {"queries": QUERIES, "per_query": per_query, "aggregate": aggregate}
+    return {
+        "queries": QUERIES,
+        "per_query": per_query,
+        "aggregate": aggregate,
+        "corpus_size": len(retriever.records),
+        "source_counts": Counter(r["source_id"] for r in retriever.records),
+    }
 
 
 def render_markdown(results):
     lines = []
     lines.append("# Comparaison BM25 vs recherche sémantique — Semaine 2\n")
-    lines.append(f"Corpus : 7 000 chunks (ANSM Thésaurus, MIPH, EMA, DWA). Top-{MAX_K} évalué.\n")
+    total = f"{results['corpus_size']:,}".replace(",", " ")
+    sources = ", ".join(
+        f"{source_id} ({count:,})".replace(",", " ")
+        for source_id, count in results["source_counts"].most_common()
+    )
+    lines.append(f"Corpus : {total} chunks — {sources}. Top-{MAX_K} évalué.\n")
     lines.append("## Résultats agrégés (questions réelles Q1, Q2, Q3)\n")
     lines.append("| Méthode | Recall@10 | Recall@50 | Hit@10 | MRR@100 | nDCG@10 |")
     lines.append("|---|---|---|---|---|---|")
