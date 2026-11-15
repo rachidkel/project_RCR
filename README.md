@@ -13,9 +13,9 @@ Course project: **RCR, M1-AI, Université Constantine 2 - Abdelhamid Mehri (NTIC
 
 ## Sources
 
-| Sources |
-|---------|
-|         |
+| Source | Données | Collecte |
+|--------|---------|----------|
+| Pharm'Net (pharmnet-dz.com) | Référentiel algérien : produits, DCI, classes thérapeutiques, laboratoires | API publique Supabase — `python scripts/04_build_pharmnet.py` |
 
 ## Repository structure
  
