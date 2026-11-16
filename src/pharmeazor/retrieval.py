@@ -62,3 +62,34 @@ class Retriever:
                 "metadata": record["metadata"],
             })
         return results
+
+
+    def is_out_of_scope(self, query, threshold_bm25=1.5, threshold_dense=0.55):
+    
+        import pandas as pd
+        from .config import PROCESSED
+        
+        
+        drugs_path = PROCESSED / "drugs_verified.csv"
+        if drugs_path.exists():
+            df = pd.read_csv(drugs_path, encoding="utf-8-sig")
+            query_norm = norm(query)
+            found = False
+            for _, row in df.iterrows():
+                dci = norm(str(row.get("DCI", "")))
+                if dci and dci in query_norm:
+                    found = True
+                    break
+            if not found:
+                return True, "Aucun médicament de la liste détecté."
+        
+        
+        bm25_hits = self.search_bm25(query, k=1)
+        dense_hits = self.search_dense(query, k=1)
+        bm25_score = bm25_hits[0][1] if bm25_hits else 0
+        dense_score = dense_hits[0][1] if dense_hits else 0
+        
+        if bm25_score < threshold_bm25 and dense_score < threshold_dense:
+            return True, f"Scores trop faibles (BM25={bm25_score:.2f}, dense={dense_score:.2f})."
+        
+        return False, "Requête dans le périmètre."

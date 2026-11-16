@@ -321,13 +321,18 @@ def build_chunks():
         yield from builder()
 
 
-def write_corpus(path=CORPUS_PATH):
+def write_corpus(path=CORPUS_PATH, split_long=True):
     path.parent.mkdir(parents=True, exist_ok=True)
     counts = Counter()
     with open(path, "w", encoding="utf-8") as f:
         for record in build_chunks():
-            f.write(json.dumps(record, ensure_ascii=False) + "\n")
-            counts[record["source_id"]] += 1
+            if split_long:
+                for sub in split_long_chunks([record]):
+                    f.write(json.dumps(sub, ensure_ascii=False) + "\n")
+                    counts[sub["source_id"]] += 1
+            else:
+                f.write(json.dumps(record, ensure_ascii=False) + "\n")
+                counts[record["source_id"]] += 1
     return counts
 
 
@@ -339,3 +344,50 @@ def load_corpus(path=CORPUS_PATH):
             if line:
                 records.append(json.loads(line))
     return records
+
+
+
+def split_long_chunks(chunks, max_tokens=512, overlap=50):
+
+    import re
+    result = []
+    for chunk in chunks:
+        words = chunk["text"].split()
+        if len(words) <= max_tokens:
+            result.append(chunk)
+            continue
+        
+        
+        sentences = re.split(r'(?<=[.!?])\s+', chunk["text"])
+        current, current_len = [], 0
+        sub_idx = 0
+        for sent in sentences:
+            sent_len = len(sent.split())
+            if current_len + sent_len > max_tokens and current:
+                
+                new_chunk = chunk.copy()
+                new_chunk["chunk_id"] = f"{chunk['chunk_id']}#sub{sub_idx}"
+                new_chunk["text"] = " ".join(current)
+                new_chunk["metadata"] = chunk["metadata"].copy()
+                new_chunk["metadata"]["parent_chunk"] = chunk["chunk_id"]
+                new_chunk["metadata"]["sub_idx"] = sub_idx
+                result.append(new_chunk)
+                # Overlap : on garde les `overlap` derniers mots
+                current = current[-overlap:] if len(current) > overlap else current
+                current_len = len(current)
+                sub_idx += 1
+            current.append(sent)
+            current_len += sent_len
+        
+        if current:
+            new_chunk = chunk.copy()
+            new_chunk["chunk_id"] = f"{chunk['chunk_id']}#sub{sub_idx}"
+            new_chunk["text"] = " ".join(current)
+            new_chunk["metadata"] = chunk["metadata"].copy()
+            new_chunk["metadata"]["parent_chunk"] = chunk["chunk_id"]
+            new_chunk["metadata"]["sub_idx"] = sub_idx
+            result.append(new_chunk)
+    return result
+
+
+

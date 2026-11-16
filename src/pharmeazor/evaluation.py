@@ -11,15 +11,16 @@ QUERIES = [
         "question": "Quel est le dosage disponible du paracétamol ?",
         "gold": ["nomenclature:paracetamol"],
     },
-    {
-        "id": "Q2",
-        "type": "positive",
-        "question": "Peut-on associer l'ibuprofène et l'aspirine ? Quel est le niveau d'interaction ?",
-        "gold": [
-            "thesaurus:anti inflammatoires non steroidiens:56:1",
-            "thesaurus:acide acetylsalicylique:5:3",
-        ],
-    },
+{
+    "id": "Q2",
+    "type": "positive",
+    "question": "Peut-on associer l'ibuprofène et l'aspirine ? Quel est le niveau d'interaction ?",
+    "gold": [
+        "thesaurus:anti inflammatoires non steroidiens:56:1",
+        "thesaurus:acide acetylsalicylique:5:3",
+        "thesaurus:antiagregants plaquettaires:45:2",
+    ],
+},
     {
         "id": "Q3",
         "type": "positive",
@@ -61,6 +62,91 @@ QUERIES = [
         "type": "negative",
         "question": "Quel médicament prendre pour mes douleurs dentaires ?",
         "gold": [],
+    },
+
+    # --- Antalgiques / AINS ---
+    {
+        "id": "Q6",
+        "type": "positive",
+        "question": "Quelles sont les marques de paracétamol enregistrées en Algérie ?",
+        "gold": ["nomenclature:paracetamol", "pharmnet:paracetamol"],
+    },
+    {
+        "id": "Q7",
+        "type": "positive",
+        "question": "Quelle est la posologie maximale de l'ibuprofène chez l'adulte ?",
+        "gold": ["nomenclature:ibuprofene", "pharmnet:ibuprofene"],
+    },
+    {
+        "id": "Q8",
+        "type": "positive",
+        "question": "L'aspirine est-elle contre-indiquée avec les anticoagulants oraux ?",
+        "gold": [
+            "thesaurus:acide acetylsalicylique:5:2",
+            "thesaurus:anticoagulants oraux:49:1",
+        ],
+    },
+    {
+        "id": "Q9",
+        "type": "positive",
+        "question": "Quelles sont les formes disponibles du paracétamol en Algérie ?",
+        "gold": ["nomenclature:paracetamol"],
+    },
+    # --- Antibiotiques ---
+    {
+        "id": "Q10",
+        "type": "positive",
+        "question": "Quelles sont les marques d'amoxicilline enregistrées en Algérie ?",
+        "gold": ["nomenclature:amoxicilline acide clavulanique"],
+    },
+    {
+        "id": "Q11",
+        "type": "positive",
+        "question": "Quels sont les dosages disponibles de la clarithromycine ?",
+        "gold": ["nomenclature:clarithromycine", "pharmnet:clarithromycine"],
+    },
+    {
+        "id": "Q12",
+        "type": "positive",
+        "question": "Quelles interactions médicamenteuses existent avec la clarithromycine ?",
+        "gold": ["thesaurus:clarithromycine:130:0", "thesaurus:clarithromycine:130:1"],
+    },
+    {
+        "id": "Q13",
+        "type": "positive",
+        "question": "Quelle est la classe thérapeutique de la clarithromycine ?",
+        "gold": ["pharmnet:clarithromycine"],
+    },
+    # --- Antihypertenseurs ---
+    {
+        "id": "Q14",
+        "type": "positive",
+        "question": "Quelles sont les marques d'amlodipine enregistrées en Algérie ?",
+        "gold": [
+            "nomenclature:amlodipine besilate amlodipine",
+            "nomenclature:amlodipine besilate exprime en amlodipine",
+        ],
+    },
+    {
+        "id": "Q15",
+        "type": "positive",
+        "question": "Quelle est la posologie de l'amlodipine ?",
+        "gold": ["nomenclature:amlodipine besilate amlodipine"],
+    },
+    {
+        "id": "Q16",
+        "type": "positive",
+        "question": "Peut-on associer l'amlodipine avec les AINS ?",
+        "gold": [
+            "thesaurus:anti inflammatoires non steroidiens:56:2",
+            "thesaurus:anti inflammatoires non steroidiens:56:5",
+        ],
+    },
+    {
+        "id": "Q17",
+        "type": "positive",
+        "question": "Quelles sont les interactions des inhibiteurs de l'enzyme de conversion ?",
+        "gold": ["thesaurus:inhibiteurs de l enzyme de conversion:305:0"],
     },
 ]
 

@@ -1,0 +1,43 @@
+﻿saisie,type,dci_attendue
+paracétamol,dci,paracétamol
+paracetamol,sans_accent,paracétamol
+PARACETAMOL,majuscules,paracétamol
+paracetmol,faute,paracétamol
+paracétamole,faute,paracétamol
+DOLIPRANE,nom_commercial,paracétamol
+doliprane,minuscules,paracétamol
+Dolipran,faute,paracétamol
+EFFERALGAN,nom_commercial,paracétamol
+ibuprofène,dci,ibuprofène
+ibuprofene,sans_accent,ibuprofène
+IBUPROFENE,majuscules,ibuprofène
+ibuprofn,faute,ibuprofène
+ADVIL,nom_commercial,ibuprofène
+advil,minuscules,ibuprofène
+diclofénac,dci,diclofénac
+diclofenac,sans_accent,diclofénac
+BIOFENAC,nom_commercial,diclofénac
+kétoprofène,dci,kétoprofène
+ketoprofene,sans_accent,kétoprofène
+KETOFEN,nom_commercial,kétoprofène
+acide acétylsalicylique,dci,acide acétylsalicylique
+aspirine,nom_usuel,acide acétylsalicylique
+ASPIRINE CARDIO,nom_commercial,acide acétylsalicylique
+KARDEGIC,nom_commercial,acide acétylsalicylique
+amoxicilline,dci,amoxicilline
+AMOXICILLINE,sans_accent,amoxicilline
+amoxicilin,faute,amoxicilline
+AUGMENTIN,nom_commercial,amoxicilline
+augmentin,minuscules,amoxicilline
+clarithromycine,dci,clarithromycine
+CLARIDAR,nom_commercial,clarithromycine
+ciprofloxacine,dci,ciprofloxacine
+CIPRO,nom_commercial,ciprofloxacine
+amlodipine,dci,amlodipine
+AMLODIPINE,majuscules,amlodipine
+amlodipin,faute,amlodipine
+AMLOR,nom_commercial,amlodipine
+ramipril,dci,ramipril
+TRIATEC,nom_commercial,ramipril
+losartan,dci,losartan
+COZAAR,nom_commercial,losartan
