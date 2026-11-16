@@ -11,6 +11,7 @@ NOMENCLATURE_CSV = PROCESSED / "nomenclature" / "nomenclature_active.csv"
 EMA_CSV = RAW / "ema" / "ema_medicines_clean.csv"
 DWA_CSV = RAW / "dwa dz" / "nomenclature_dz_clean.csv"
 PHARMNET_CSV = PROCESSED / "pharmnet" / "produits_enregistres.csv"
+NOMENCLATURE_DZ_CSV = RAW / "nomenclature" / "algerian_drug_nomenclature.csv"
 
 
 SOURCES = {
@@ -41,6 +42,12 @@ SOURCES = {
     "pharmnet": {
         "source_id": "S_PHARMNET",
         "source_name": "Pharm'Net Algérie - répertoire des médicaments enregistrés",
+        "authority_rank": 1,
+        "lang": "fr",
+    },
+    "nomenclature_dz": {
+        "source_id": "S_DZ_NOMENCLATURE",
+        "source_name": "Nomenclature algérienne des médicaments (ANPP)",
         "authority_rank": 1,
         "lang": "fr",
     },
@@ -307,9 +314,114 @@ def pharmnet_chunks():
         )
 
 
+def _liste_norm(value):
+    tokens = norm(value).split()
+    if "stup" in " ".join(tokens):
+        return "Stupéfiants"
+    if "ii" in tokens:
+        return "Liste II"
+    if "i" in tokens:
+        return "Liste I"
+    return ""
+
+
+def nomenclature_dz_chunks():
+    if not NOMENCLATURE_DZ_CSV.exists():
+        return
+
+    groupes = {}
+    with open(NOMENCLATURE_DZ_CSV, encoding="utf-8-sig", newline="") as f:
+        for row in csv.DictReader(f):
+            inn = _clean(row.get("inn"))
+            if not inn:
+                continue
+            key = norm(inn)
+            groupe = groupes.setdefault(
+                key,
+                {
+                    "inn": inn,
+                    "codes": set(),
+                    "marques": set(),
+                    "formes": set(),
+                    "dosages": set(),
+                    "conditionnements": set(),
+                    "laboratoires": set(),
+                    "pays": set(),
+                    "listes": set(),
+                    "statuts": set(),
+                    "types": set(),
+                    "remboursables": set(),
+                    "prix": set(),
+                },
+            )
+            groupe["codes"].add(_clean(row.get("code")))
+            groupe["marques"].add(_clean(row.get("brand_name")))
+            groupe["formes"].add(_clean(row.get("form")))
+            groupe["dosages"].add(_clean(row.get("dosage")))
+            groupe["conditionnements"].add(_clean(row.get("packaging")))
+            groupe["laboratoires"].add(_clean(row.get("laboratory")))
+            groupe["pays"].add(_clean(row.get("laboratory_country")))
+            groupe["listes"].add(_liste_norm(row.get("list")))
+            groupe["statuts"].add(_clean(row.get("status")).upper())
+            groupe["types"].add(_clean(row.get("type")).upper())
+            groupe["remboursables"].add(_clean(row.get("reimbursable")).upper())
+            groupe["prix"].add(_clean(row.get("price_decision")))
+
+    for key, groupe in groupes.items():
+        codes = sorted(v for v in groupe["codes"] if v)
+        marques = sorted(v for v in groupe["marques"] if v)
+        formes = sorted(v for v in groupe["formes"] if v)
+        dosages = sorted(v for v in groupe["dosages"] if v)
+        conditionnements = sorted(v for v in groupe["conditionnements"] if v)
+        laboratoires = sorted(v for v in groupe["laboratoires"] if v)
+        pays = sorted(v for v in groupe["pays"] if v)
+        listes = sorted(v for v in groupe["listes"] if v)
+        statuts = sorted(v for v in groupe["statuts"] if v)
+        types = sorted(v for v in groupe["types"] if v)
+        remboursables = sorted(v for v in groupe["remboursables"] if v)
+        prix = sorted(v for v in groupe["prix"] if v)
+        text = (
+            f"NOMENCLATURE DZ — {groupe['inn']} — code {', '.join(codes[:3])} — "
+            f"marques : {', '.join(marques[:20])} — "
+            f"formes : {', '.join(formes[:10])} — dosages : {', '.join(dosages[:20])} — "
+            f"laboratoires : {', '.join(laboratoires[:10])}"
+        )
+        if listes:
+            text += f" — liste {', '.join(listes)}"
+        if statuts:
+            text += f" — statut {', '.join(statuts)}"
+        if remboursables:
+            text += f" — remboursable {', '.join(remboursables)}"
+        if prix:
+            text += f" — prix {', '.join(prix[:5])}"
+        doc_id = f"nomenclature_dz:{key}"
+        yield _record(
+            "nomenclature_dz",
+            doc_id,
+            doc_id,
+            text,
+            {
+                "inn": groupe["inn"],
+                "codes": codes,
+                "marques": marques,
+                "formes": formes,
+                "dosages": dosages,
+                "conditionnements": conditionnements,
+                "laboratoires": laboratoires,
+                "pays": pays,
+                "listes": listes,
+                "statuts": statuts,
+                "types": types,
+                "remboursables": remboursables,
+                "prix": prix,
+            },
+        )
+
+
 BUILDERS = {
     "thesaurus": thesaurus_chunks,
     "nomenclature": nomenclature_chunks,
+    "nomenclature_dz": nomenclature_dz_chunks,
     "ema": ema_chunks,
     "dwa": dwa_chunks,
     "pharmnet": pharmnet_chunks,

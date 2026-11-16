@@ -34,8 +34,8 @@ compare keyword search (BM25) with semantic search on the project questions.
 
 4. CORPUS AND CHUNKING
 ----------------------
-- src/pharmeazor/corpus.py: builders for thesaurus, nomenclature, EMA, DWA,
-  plus write_corpus / load_corpus.
+- src/pharmeazor/corpus.py: builders for thesaurus, nomenclature, nomenclature_dz,
+  EMA, DWA, pharmnet, plus write_corpus / load_corpus.
 - scripts/07_build_corpus.py produces data/processed/week_2/corpus.jsonl.
 - Chunk schema: chunk_id, doc_id, source_id, source_name, authority_rank,
   lang, text, metadata.
@@ -48,10 +48,15 @@ compare keyword search (BM25) with semantic search on the project questions.
   * Pharm'Net: aggregated to 1 chunk per DCI from produits_enregistres.csv
     (5,387 registered rows -> 1,247 chunks listing class, brands, forms,
     dosages, labs, schedule and PPA price range). Retired products excluded.
+  * Algerian nomenclature (ANPP): aggregated to 1 chunk per DCI from
+    algerian_drug_nomenclature.csv (4,627 product rows -> 1,299 chunks
+    listing DCI code, brands, forms, dosages, labs/countries, schedule,
+    registration status, reimbursement and price).
   * EMA: 1 chunk per medicine. DWA: 1 chunk per list entry.
-- Total corpus: 8,247 chunks
-  (Thesaurus 3,218; EMA 2,365; Nomenclature 1,387; Pharm'Net 1,247; DWA 30).
-- Authority ranks: thesaurus 3, ema 3, dwa 2, nomenclature 1, pharmnet 1.
+- Total corpus: 9,546 chunks
+  (Thesaurus 3,218; EMA 2,365; MIPH 1,387; ANPP 1,299; Pharm'Net 1,247; DWA 30).
+- Authority ranks: thesaurus 3, ema 3, dwa 2, nomenclature 1, pharmnet 1,
+  nomenclature_dz 1.
 
 5. EMBEDDINGS AND INDEXES
 -------------------------
@@ -60,8 +65,8 @@ compare keyword search (BM25) with semantic search on the project questions.
 - src/pharmeazor/index.py: build_faiss (IndexFlatIP), build_bm25,
   load_faiss, load_bm25.
 - scripts/08_build_index.py builds both indexes.
-- FAISS: 8,247 x 384, build time ~231 s on CPU, file db/index/faiss.index
-  (~12.1 MB). chunk_ids.json maps vectors to chunk IDs.
+- FAISS: 9,546 x 384, build time ~284 s on CPU, file db/index/faiss.index
+  (~14.0 MB). chunk_ids.json maps vectors to chunk IDs.
 - BM25: bm25s, French stopwords, no stemming, build time ~0.6 s,
   saved under db/index/bm25/.
 
@@ -88,23 +93,27 @@ compare keyword search (BM25) with semantic search on the project questions.
 
   Aggregate (real questions Q1, Q2, Q3):
   Method   Recall@10  Recall@50  Hit@10  MRR@100  nDCG@10
-  BM25       0.083      0.583     0.333   0.174    0.082
-  Dense      0.333      0.667     0.333   0.085    0.129
-  Hybrid     0.250      0.583     0.333   0.074    0.122
+  BM25       0.083      0.250     0.333   0.333    0.130
+  Dense      0.333      0.500     0.333   0.085    0.129
+  Hybrid     0.167      0.250     0.333   0.058    0.084
 
   Key per-question result:
-  - Q1 (dosage): dense finds the correct chunk at rank 5 (R@10 = 1.0);
-    BM25 fails at top-10 because the aggregated DCI chunk is very long.
-    Pharm'Net catalog chunks also enter the top-10.
+  - Q1 (dosage): dense finds the correct chunk at rank 5 (R@10 = 1.0).
+    After adding the ANPP catalog, BM25 no longer reaches the gold chunk in
+    the top-100 because several catalog chunks compete for "paracetamol".
   - Q2 (ibuprofen + aspirin): all methods fail at top-10 due to the synonym
-    gap (aspirine vs ACIDE ACETYLSALICYLIQUE; ibuprofene vs AINS).
-  - Q3 (mission): hybrid is best, 3 of 4 gold chunks in top-10
-    (R@10 = 0.75, nDCG = 0.366), versus 0.25 for BM25 and 0 for dense.
-    Hybrid top-3 are the AINS + antihypertensive interaction chunks plus
-    the amlodipine nomenclature chunk.
+    gap (aspirine vs ACIDE ACETYLSALICYLIQUE; ibuprofene vs AINS). The
+    dense recall@50 dropped to 0 with the extra catalog noise.
+  - Q3 (mission): BM25 now puts a gold chunk at rank 1 (MRR = 1.0,
+    nDCG = 0.390); hybrid keeps 2 of 4 gold chunks in top-10
+    (R@10 = 0.50, nDCG = 0.253) versus 0.25 for BM25 and 0 for dense.
   - Q3f (focused): hybrid places a relevant chunk at rank 1 (MRR = 1.0).
   - Q5 (out of scope): all methods return random but confident-looking
-    chunks; an abstention threshold is needed.
+    chunks (including dental anaesthetics from Pharm'Net and ANPP); an
+    abstention threshold is needed.
+  - Source effect: going from 8,247 to 9,546 chunks (ANPP) lowered aggregate
+    recall@50 but raised BM25 MRR (0.174 -> 0.333) by moving the Q3 gold
+    chunk to rank 1. Aggregate metrics are highly corpus-composition sensitive.
 
 8. NEGATIVE RESULT
 ------------------
