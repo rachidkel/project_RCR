@@ -24,7 +24,7 @@ SOURCES = {
     "nomenclature": {
         "source_id": "S_MIPH_NOMENCLATURE",
         "source_name": "Nomenclature nationale MIPH (août 2026)",
-        "authority_rank": 1,
+        "authority_rank": 2,
         "lang": "fr",
     },
     "ema": {
@@ -36,19 +36,19 @@ SOURCES = {
     "dwa": {
         "source_id": "S_DWA",
         "source_name": "DWA Algérie - nomenclature enregistrée",
-        "authority_rank": 2,
+        "authority_rank": 4,
         "lang": "fr",
     },
     "pharmnet": {
         "source_id": "S_PHARMNET",
         "source_name": "Pharm'Net Algérie - répertoire des médicaments enregistrés",
-        "authority_rank": 1,
+        "authority_rank": 4,
         "lang": "fr",
     },
     "nomenclature_dz": {
         "source_id": "S_DZ_NOMENCLATURE",
         "source_name": "Nomenclature algérienne des médicaments (ANPP)",
-        "authority_rank": 1,
+        "authority_rank": 2,
         "lang": "fr",
     },
 }
