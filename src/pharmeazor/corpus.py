@@ -9,7 +9,7 @@ from .textnorm import norm
 THESAURUS_JSON = INTERIM / "thesaurus" / "interactions_medicamenteuses.json"
 NOMENCLATURE_CSV = PROCESSED / "nomenclature" / "nomenclature_active.csv"
 EMA_CSV = RAW / "ema" / "ema_medicines_clean.csv"
-DWA_CSV = RAW / "dwa dz" / "nomenclature_dz_clean.csv"
+DWA_CSV = RAW / "dwa" / "nomenclature_dz_clean.csv"
 PHARMNET_CSV = PROCESSED / "pharmnet" / "produits_enregistres.csv"
 NOMENCLATURE_DZ_CSV = RAW / "nomenclature" / "algerian_drug_nomenclature.csv"
 
@@ -47,7 +47,7 @@ SOURCES = {
     },
     "nomenclature_dz": {
         "source_id": "S_DZ_NOMENCLATURE",
-        "source_name": "Nomenclature algérienne des médicaments (ANPP)",
+        "source_name": "Nomenclature algérienne des médicaments ",
         "authority_rank": 2,
         "lang": "fr",
     },
