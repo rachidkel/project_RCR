@@ -45,6 +45,24 @@ omeprazole 20,conception,hors_perimetre,OMEPRAZOLE,OMEPRAZOLE,dci,100,non,,oui,o
 glucophage 850,conception,hors_perimetre,METFORMINE,METFORMINE,marque,100,non,,oui,ok
 xyzabc 500,conception,inconnu,,,aucune,,non,,non,ok
 foobarine 20,conception,inconnu,,,aucune,,non,,non,ok
+naprox 500,couverture_40,marque_bruitee,NAPROXENE,NAPROXENE,marque,100,non,,oui,ok
+melox 15 mg,couverture_40,marque_bruitee,MELOXICAM,MELOXICAM,marque,100,non,,oui,ok
+piroxen 20,couverture_40,marque_bruitee,PIROXICAM,PIROXICAM,marque,100,non,,oui,ok
+arbrex 200,couverture_40,marque_bruitee,CELECOXIB,CELECOXIB,marque,100,non,,oui,ok
+antapam 20 mg,couverture_40,marque_bruitee,NEFOPAM,NEFOPAM,marque,100,non,,oui,ok
+megacef 200,couverture_40,marque_bruitee,CEFIXIME,CEFIXIME,marque,100,non,,oui,ok
+zinnat 500,couverture_40,marque_bruitee,CEFUROXIME,CEFUROXIME,marque,100,non,,oui,ok
+cetrial 1g,couverture_40,marque_bruitee,CEFTRIAXONE,CEFTRIAXONE,marque,100,non,,oui,ok
+levoflox 500,couverture_40,marque_bruitee,LEVOFLOXACINE,LEVOFLOXACINE,marque,100,non,,oui,ok
+xyline 100,couverture_40,marque_bruitee,DOXYCYCLINE,DOXYCYCLINE,marque,100,non,,oui,ok
+bactisol 480,couverture_40,marque_bruitee,SULFAMETHOXAZOLE + TRIMETHOPRIME,SULFAMETHOXAZOLE + TRIMETHOPRIME,marque,100,non,,oui,ok
+apigen 80 mg,couverture_40,marque_bruitee,GENTAMICINE,GENTAMICINE,marque,100,non,,oui,ok
+clinaram 300,couverture_40,marque_bruitee,CLINDAMYCINE,CLINDAMYCINE,marque,100,non,,oui,ok
+nifedipine lp 20,couverture_40,absent_du_corpus,,,aucune,,non,,non,ok
+coversyl 5,couverture_40,marque_bruitee,PERINDOPRIL,PERINDOPRIL,marque,100,non,,oui,ok
+enalapril 10 mg,couverture_40,dci_bruitee,ENALAPRIL,ENALAPRIL,dci,100,non,,oui,ok
+temerivol 5,couverture_40,marque_bruitee,NEBIVOLOL,NEBIVOLOL,marque,100,non,,oui,ok
+aldomet 250,couverture_40,marque_bruitee,METHYLDOPA,METHYLDOPA,marque,100,non,,oui,ok
 dolprane 500,tenu_a_ecart,faute_frappe,PARACETAMOL,PARACETAMOL,flou,94,non,,non,ok
 paracetamol codéine,tenu_a_ecart,nom_usuel,CODEINE + PARACETAMOL,PARACETAMOL + CODEINE,contient,95,non,,non,ok
 codol,tenu_a_ecart,marque_bruitee,CODEINE + PARACETAMOL,PARACETAMOL + CODEINE,marque,100,non,,oui,ok

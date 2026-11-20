@@ -71,7 +71,7 @@ ALIASES = {
 _EXPRIME_RE = re.compile(r"exprimes?\s+en|exprim[eé]e?s?\s+en", re.IGNORECASE)
 _PARENS_RE = re.compile(r"\([^)]*\)")
 _SEP_RE = re.compile(r"[/+]")
-_HYDRATE_RE = re.compile(r"^(tri|mono|di|hemi)?hydrat")
+_HYDRATE_RE = re.compile(r"^(tri|mono|di|hemi|sesqui)?hydrat")
 
 
 def _ascii_upper(text: str) -> str:

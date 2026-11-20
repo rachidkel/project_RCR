@@ -27,6 +27,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from pharmeazor.config import PROCESSED  # noqa: E402
 from pharmeazor.normalize import (  # noqa: E402
     build_dictionary,
+    canonical_key,
     clean_query,
     normalize_drug,
     scope_keys,
@@ -100,6 +101,30 @@ CASES = [
     ("foobarine 20", "inconnu", None, "aucun", None),
 ]
 
+# Couverture des 40 médicaments du projet : une saisie par DCI qui manquait,
+# dans le style d'une question de comptoir. Ajouté après coup pour répondre à
+# la critique « pourquoi seulement une partie de la liste ? ».
+COVERAGE = [
+    ("naprox 500", "marque_bruitee", "NAPROXENE", "resolu", True),
+    ("melox 15 mg", "marque_bruitee", "MELOXICAM", "resolu", True),
+    ("piroxen 20", "marque_bruitee", "PIROXICAM", "resolu", True),
+    ("arbrex 200", "marque_bruitee", "CELECOXIB", "resolu", True),
+    ("antapam 20 mg", "marque_bruitee", "NEFOPAM", "resolu", True),
+    ("megacef 200", "marque_bruitee", "CEFIXIME", "resolu", True),
+    ("zinnat 500", "marque_bruitee", "CEFUROXIME", "resolu", True),
+    ("cetrial 1g", "marque_bruitee", "CEFTRIAXONE", "resolu", True),
+    ("levoflox 500", "marque_bruitee", "LEVOFLOXACINE", "resolu", True),
+    ("xyline 100", "marque_bruitee", "DOXYCYCLINE", "resolu", True),
+    ("bactisol 480", "marque_bruitee", "SULFAMETHOXAZOLE + TRIMETHOPRIME", "resolu", True),
+    ("apigen 80 mg", "marque_bruitee", "GENTAMICINE", "resolu", True),
+    ("clinaram 300", "marque_bruitee", "CLINDAMYCINE", "resolu", True),
+    ("nifedipine lp 20", "absent_du_corpus", None, "aucun", False),
+    ("coversyl 5", "marque_bruitee", "PERINDOPRIL", "resolu", True),
+    ("enalapril 10 mg", "dci_bruitee", "ENALAPRIL", "resolu", True),
+    ("temerivol 5", "marque_bruitee", "NEBIVOLOL", "resolu", True),
+    ("aldomet 250", "marque_bruitee", "METHYLDOPA", "resolu", True),
+]
+
 # Jeu tenu à l'écart : écrit APRÈS le réglage du code, exécuté sans jamais
 # retoucher l'algorithme ensuite. C'est la seule estimation honnête de la
 # généralisation ; le score sur CASES est un score de conception.
@@ -159,7 +184,11 @@ def main():
 
     rows, verdicts = [], {}
     exact_keys = 0
-    for jeu, cases in (("conception", CASES), ("tenu_a_ecart", HOLDOUT)):
+    for jeu, cases in (
+        ("conception", CASES),
+        ("couverture_40", COVERAGE),
+        ("tenu_a_ecart", HOLDOUT),
+    ):
         for saisie, type_, attendu, statut, in_scope in cases:
             match = normalize_drug(saisie, dictionary)
             verdict = _verdict(match, attendu, statut, in_scope, scope)
@@ -187,6 +216,7 @@ def main():
     total = len(rows)
     ok = sum(1 for r in rows if r["verdict"].startswith("ok"))
     design = [r for r in rows if r["jeu"] == "conception"]
+    coverage = [r for r in rows if r["jeu"] == "couverture_40"]
     holdout = [r for r in rows if r["jeu"] == "tenu_a_ecart"]
     silencieuses = sum(1 for r in rows if r["verdict"] == "erreur_silencieuse")
     manque_amb = sum(1 for r in rows if r["verdict"] == "ambigu_manque")
@@ -194,7 +224,11 @@ def main():
     faux_amb = sum(1 for r in rows if r["verdict"] == "ok_avec_alerte")
 
     print(f"Résultat global : {ok}/{total} = {ok / total:.1%}")
-    for label, subset in (("conception", design), ("tenu à l'écart", holdout)):
+    for label, subset in (
+        ("conception", design),
+        ("couverture 40", coverage),
+        ("tenu à l'écart", holdout),
+    ):
         good = sum(1 for r in subset if r["verdict"].startswith("ok"))
         print(f"  {label:<14} {good}/{len(subset)} = {good / len(subset):.1%}")
     print(f"  erreurs silencieuses : {silencieuses}")
@@ -228,9 +262,28 @@ LABELS = {
     "perimetre_incoherent": "rattaché à un médicament du périmètre à tort",
 }
 
+# Cas particuliers de la liste des 40, vérifiés dans les données sources.
+NOTES = {
+    "HYDROCHLOROTHIAZIDE": "toujours en association dans le référentiel : testé en ambiguïté",
+    "NIFEDIPINE": "aucune fiche dans les deux sources : impossible à résoudre",
+}
+
+
+def _scope_pairs():
+    """(libellé, clé canonique) pour chacun des 40 médicaments du projet."""
+    pairs = []
+    with open(PROCESSED / "drugs_verified.csv", encoding="utf-8-sig", newline="") as f:
+        for row in csv.DictReader(f):
+            dci = row.get("DCI") or ""
+            key = canonical_key(dci)
+            if key:
+                pairs.append((dci, key))
+    return pairs
+
 
 def _write_markdown(rows, verdicts, dictionary, total, ok, silencieuses, manque_amb, non_trouve, faux_amb):
     design = [r for r in rows if r["jeu"] == "conception"]
+    coverage = [r for r in rows if r["jeu"] == "couverture_40"]
     holdout = [r for r in rows if r["jeu"] == "tenu_a_ecart"]
     exact = sum(1 for r in rows if r["saisie_est_cle_exacte"] == "oui")
 
@@ -254,6 +307,9 @@ def _write_markdown(rows, verdicts, dictionary, total, ok, silencieuses, manque_
     lines.append(f"| Conception ({len(design)} saisies) | "
                  f"{sum(1 for r in design if r['verdict'].startswith('ok'))} | "
                  f"{sum(1 for r in design if r['verdict'].startswith('ok')) / len(design):.1%} |")
+    lines.append(f"| Couverture des 40 ({len(coverage)} saisies) | "
+                 f"{sum(1 for r in coverage if r['verdict'].startswith('ok'))} | "
+                 f"{sum(1 for r in coverage if r['verdict'].startswith('ok')) / len(coverage):.1%} |")
     lines.append(f"| Tenu à l'écart ({len(holdout)} saisies) | "
                  f"{sum(1 for r in holdout if r['verdict'].startswith('ok'))} | "
                  f"{sum(1 for r in holdout if r['verdict'].startswith('ok')) / len(holdout):.1%} |")
@@ -280,7 +336,15 @@ def _write_markdown(rows, verdicts, dictionary, total, ok, silencieuses, manque_
         "flou — c'est là que se joue la vraie normalisation.\n"
     )
 
-    lines.append("## Résultat par type de saisie\n")
+    lines.append("## Couverture de la liste des 40 médicaments\n")
+    lines.append("| DCI du projet | Saisies | Remarque |")
+    lines.append("|---|---:|---|")
+    for dci, key in _scope_pairs():
+        n = sum(1 for r in rows if r["attendu"] and canonical_key(r["attendu"]) == key)
+        note = NOTES.get(key, "")
+        lines.append(f"| {dci} | {n} | {note} |")
+
+    lines.append("\n## Résultat par type de saisie\n")
     lines.append("| Type | Total | Corrects | Détail des verdicts |")
     lines.append("|---|---:|---:|---|")
     for type_, vs in verdicts.items():

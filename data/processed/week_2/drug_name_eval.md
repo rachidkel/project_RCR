@@ -9,8 +9,9 @@ Les sels et hydrates sont fusionnés avant de juger l'ambiguïté : `PERINDOPRIL
 | Jeu | Corrects | Taux |
 |---|---:|---:|
 | Conception (46 saisies) | 46 | 100.0% |
+| Couverture des 40 (18 saisies) | 18 | 100.0% |
 | Tenu à l'écart (16 saisies) | 16 | 100.0% |
-| **Ensemble** | **62/62** | **100.0%** |
+| **Ensemble** | **80/80** | **100.0%** |
 
 **Le score du jeu de conception n'est pas une estimation de généralisation** : l'algorithme a été réglé en observant ces saisies, donc il y est mécaniquement bon. Seul le jeu tenu à l'écart, écrit après le réglage et exécuté sans retouche, donne une estimation honnête.
 
@@ -20,24 +21,70 @@ Les sels et hydrates sont fusionnés avant de juger l'ambiguïté : `PERINDOPRIL
 | Ambiguïtés non signalées | 0 |
 | Saisies non trouvées | 0 |
 | Alertes d'ambiguïté superflues | 5 |
-| Saisies qui sont une clé exacte après nettoyage | 33/62 |
+| Saisies qui sont une clé exacte après nettoyage | 50/80 |
 
-Sur 33 saisies, la forme nettoyée est une clé exacte du dictionnaire : la correspondance exacte expliquerait donc à elle seule une partie du score. Les autres passent par la mise en forme, le préfixe, la fusion de sels ou le flou — c'est là que se joue la vraie normalisation.
+Sur 50 saisies, la forme nettoyée est une clé exacte du dictionnaire : la correspondance exacte expliquerait donc à elle seule une partie du score. Les autres passent par la mise en forme, le préfixe, la fusion de sels ou le flou — c'est là que se joue la vraie normalisation.
+
+## Couverture de la liste des 40 médicaments
+
+| DCI du projet | Saisies | Remarque |
+|---|---:|---|
+| paracétamol | 8 |  |
+| ibuprofène | 4 |  |
+| diclofénac | 2 |  |
+| kétoprofène | 2 |  |
+| naproxène | 1 |  |
+| acide acétylsalicylique | 2 |  |
+| méloxicam | 1 |  |
+| piroxicam | 1 |  |
+| célécoxib | 1 |  |
+| tramadol | 1 |  |
+| paracétamol + codéine | 2 |  |
+| néfopam | 1 |  |
+| amoxicilline | 3 |  |
+| amoxicilline + acide clavulanique | 3 |  |
+| céfixime | 1 |  |
+| céfuroxime | 1 |  |
+| ceftriaxone | 1 |  |
+| azithromycine | 1 |  |
+| clarithromycine | 3 |  |
+| ciprofloxacine | 1 |  |
+| lévofloxacine | 1 |  |
+| doxycycline | 1 |  |
+| cotrimoxazole (sulfaméthoxazole + triméthoprime) | 0 |  |
+| métronidazole | 3 |  |
+| gentamicine | 1 |  |
+| clindamycine | 1 |  |
+| amlodipine | 3 |  |
+| nifédipine | 0 | aucune fiche dans les deux sources : impossible à résoudre |
+| périndopril | 1 |  |
+| ramipril | 2 |  |
+| énalapril | 1 |  |
+| losartan | 2 |  |
+| valsartan | 1 |  |
+| bisoprolol | 1 |  |
+| aténolol | 1 |  |
+| nébivolol | 1 |  |
+| hydrochlorothiazide | 0 | toujours en association dans le référentiel : testé en ambiguïté |
+| indapamide | 1 |  |
+| spironolactone | 2 |  |
+| méthyldopa | 1 |  |
 
 ## Résultat par type de saisie
 
 | Type | Total | Corrects | Détail des verdicts |
 |---|---:|---:|---|
-| marque_bruitee | 22 | 22/22 | correct + alerte d'ambiguïté: 1 |
+| marque_bruitee | 38 | 38/38 | correct + alerte d'ambiguïté: 1 |
 | marque_hors_registre | 2 | 2/2 | — |
 | faute_frappe | 12 | 12/12 | correct + alerte d'ambiguïté: 2 |
 | sans_accent | 4 | 4/4 | — |
-| dci_bruitee | 7 | 7/7 | — |
+| dci_bruitee | 8 | 8/8 | — |
 | nom_usuel | 4 | 4/4 | — |
 | abreviation | 3 | 3/3 | correct + alerte d'ambiguïté: 2 |
 | ambigu_reelle | 2 | 2/2 | — |
 | hors_perimetre | 4 | 4/4 | — |
 | inconnu | 2 | 2/2 | — |
+| absent_du_corpus | 1 | 1/1 | — |
 
 ## Détail des saisies
 
@@ -89,6 +136,24 @@ Sur 33 saisies, la forme nettoyée est une clé exacte du dictionnaire : la corr
 | glucophage 850 | conception | hors_perimetre | METFORMINE | METFORMINE | marque | 100 | non | correct |
 | xyzabc 500 | conception | inconnu | — | — | aucune |  | non | correct |
 | foobarine 20 | conception | inconnu | — | — | aucune |  | non | correct |
+| naprox 500 | couverture_40 | marque_bruitee | NAPROXENE | NAPROXENE | marque | 100 | non | correct |
+| melox 15 mg | couverture_40 | marque_bruitee | MELOXICAM | MELOXICAM | marque | 100 | non | correct |
+| piroxen 20 | couverture_40 | marque_bruitee | PIROXICAM | PIROXICAM | marque | 100 | non | correct |
+| arbrex 200 | couverture_40 | marque_bruitee | CELECOXIB | CELECOXIB | marque | 100 | non | correct |
+| antapam 20 mg | couverture_40 | marque_bruitee | NEFOPAM | NEFOPAM | marque | 100 | non | correct |
+| megacef 200 | couverture_40 | marque_bruitee | CEFIXIME | CEFIXIME | marque | 100 | non | correct |
+| zinnat 500 | couverture_40 | marque_bruitee | CEFUROXIME | CEFUROXIME | marque | 100 | non | correct |
+| cetrial 1g | couverture_40 | marque_bruitee | CEFTRIAXONE | CEFTRIAXONE | marque | 100 | non | correct |
+| levoflox 500 | couverture_40 | marque_bruitee | LEVOFLOXACINE | LEVOFLOXACINE | marque | 100 | non | correct |
+| xyline 100 | couverture_40 | marque_bruitee | DOXYCYCLINE | DOXYCYCLINE | marque | 100 | non | correct |
+| bactisol 480 | couverture_40 | marque_bruitee | SULFAMETHOXAZOLE + TRIMETHOPRIME | SULFAMETHOXAZOLE + TRIMETHOPRIME | marque | 100 | non | correct |
+| apigen 80 mg | couverture_40 | marque_bruitee | GENTAMICINE | GENTAMICINE | marque | 100 | non | correct |
+| clinaram 300 | couverture_40 | marque_bruitee | CLINDAMYCINE | CLINDAMYCINE | marque | 100 | non | correct |
+| nifedipine lp 20 | couverture_40 | absent_du_corpus | — | — | aucune |  | non | correct |
+| coversyl 5 | couverture_40 | marque_bruitee | PERINDOPRIL | PERINDOPRIL | marque | 100 | non | correct |
+| enalapril 10 mg | couverture_40 | dci_bruitee | ENALAPRIL | ENALAPRIL | dci | 100 | non | correct |
+| temerivol 5 | couverture_40 | marque_bruitee | NEBIVOLOL | NEBIVOLOL | marque | 100 | non | correct |
+| aldomet 250 | couverture_40 | marque_bruitee | METHYLDOPA | METHYLDOPA | marque | 100 | non | correct |
 | dolprane 500 | tenu_a_ecart | faute_frappe | PARACETAMOL | PARACETAMOL | flou | 94 | non | correct |
 | paracetamol codéine | tenu_a_ecart | nom_usuel | CODEINE + PARACETAMOL | PARACETAMOL + CODEINE | contient | 95 | non | correct |
 | codol | tenu_a_ecart | marque_bruitee | CODEINE + PARACETAMOL | PARACETAMOL + CODEINE | marque | 100 | non | correct |
@@ -109,14 +174,14 @@ Sur 33 saisies, la forme nettoyée est une clé exacte du dictionnaire : la corr
 
 | Étape qui a résolu la saisie | Saisies |
 |---|---:|
-| marque | 26 |
+| marque | 42 |
 | flou | 17 |
-| dci | 9 |
-| aucune | 4 |
+| dci | 10 |
+| aucune | 5 |
 | contient | 4 |
 | alias | 2 |
 
-Repères de comparaison sur les mêmes saisies : correspondance exacte sur la saisie brute = 0 %, nettoyage (dosage/forme) + correspondance exacte = 33/62 = 53.2%. Le reste est apporté par la mise en forme des marques, les préfixes, la fusion des sels, les alias et le flou — c'est-à-dire par la normalisation elle-même.
+Repères de comparaison sur les mêmes saisies : correspondance exacte sur la saisie brute = 0 %, nettoyage (dosage/forme) + correspondance exacte = 50/80 = 62.5%. Le reste est apporté par la mise en forme des marques, les préfixes, la fusion des sels, les alias et le flou — c'est-à-dire par la normalisation elle-même.
 
 Une attente du jeu tenu à l'écart était fausse et a été corrigée après vérification : `CETADOL` est une association tramadol/paracétamol, pas du tramadol seul. La correction est signalée ici pour que le chiffre reste vérifiable.
 
