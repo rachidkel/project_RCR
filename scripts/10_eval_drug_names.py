@@ -115,7 +115,7 @@ COVERAGE = [
     ("cetrial 1g", "marque_bruitee", "CEFTRIAXONE", "resolu", True),
     ("levoflox 500", "marque_bruitee", "LEVOFLOXACINE", "resolu", True),
     ("xyline 100", "marque_bruitee", "DOXYCYCLINE", "resolu", True),
-    ("bactisol 480", "marque_bruitee", "SULFAMETHOXAZOLE + TRIMETHOPRIME", "resolu", True),
+    ("bactisol 480", "marque_bruitee", "COTRIMOXAZOLE", "resolu", True),
     ("apigen 80 mg", "marque_bruitee", "GENTAMICINE", "resolu", True),
     ("clinaram 300", "marque_bruitee", "CLINDAMYCINE", "resolu", True),
     ("nifedipine lp 20", "absent_du_corpus", None, "aucun", False),

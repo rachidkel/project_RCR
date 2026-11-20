@@ -73,6 +73,12 @@ _PARENS_RE = re.compile(r"\([^)]*\)")
 _SEP_RE = re.compile(r"[/+]")
 _HYDRATE_RE = re.compile(r"^(tri|mono|di|hemi|sesqui)?hydrat")
 
+# Synonymes de DCI : le même produit sous deux écritures officielles.
+# Le cotrimoxazole est l'association sulfaméthoxazole + triméthoprime.
+KEY_SYNONYMS = {
+    "SULFAMETHOXAZOLE + TRIMETHOPRIME": "COTRIMOXAZOLE",
+}
+
 
 def _ascii_upper(text: str) -> str:
     text = unicodedata.normalize("NFKD", str(text))
@@ -95,21 +101,32 @@ def _component(text: str) -> str:
     return " ".join(dict.fromkeys(tokens)).upper()  # « GLUCOSE GLUCOSE » -> « GLUCOSE »
 
 
+def _split_components(text: str) -> list[str]:
+    """Découpe une association, mais jamais à l'intérieur d'une parenthèse.
+
+    « cotrimoxazole (sulfaméthoxazole + triméthoprime) » est une seule
+    substance : on retire d'abord le contenu parenthésé, puis on découpe sur
+    « / » et « + ».
+    """
+    cleaned = _PARENS_RE.sub(" ", text)
+    return [part for part in _SEP_RE.split(cleaned) if part.strip()]
+
+
 def canonical_key(name: str) -> str:
     """Clé comparable et stable pour une DCI (ou une association)."""
     text = _ascii_upper(name).replace("*", " ")
-    components = [_component(c) for c in _SEP_RE.split(text)]
+    components = [_component(c) for c in _split_components(text)]
     components = [c for c in components if c]
     if not components:
         return ""
     # Tri des composants : « A/B » et « B/A » sont la même association.
-    return " + ".join(sorted(components))
+    return KEY_SYNONYMS.get(" + ".join(sorted(components)), " + ".join(sorted(components)))
 
 
 def canonical_label(name: str) -> str:
     """Forme lisible : ordre d'écriture d'origine, sels retirés."""
     text = _ascii_upper(name).replace("*", " ")
-    components = [_component(c) for c in _SEP_RE.split(text)]
+    components = [_component(c) for c in _split_components(text)]
     components = [c for c in components if c]
     return " + ".join(components)
 

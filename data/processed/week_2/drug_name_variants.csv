@@ -55,7 +55,7 @@ zinnat 500,couverture_40,marque_bruitee,CEFUROXIME,CEFUROXIME,marque,100,non,,ou
 cetrial 1g,couverture_40,marque_bruitee,CEFTRIAXONE,CEFTRIAXONE,marque,100,non,,oui,ok
 levoflox 500,couverture_40,marque_bruitee,LEVOFLOXACINE,LEVOFLOXACINE,marque,100,non,,oui,ok
 xyline 100,couverture_40,marque_bruitee,DOXYCYCLINE,DOXYCYCLINE,marque,100,non,,oui,ok
-bactisol 480,couverture_40,marque_bruitee,SULFAMETHOXAZOLE + TRIMETHOPRIME,SULFAMETHOXAZOLE + TRIMETHOPRIME,marque,100,non,,oui,ok
+bactisol 480,couverture_40,marque_bruitee,COTRIMOXAZOLE,SULFAMETHOXAZOLE + TRIMETHOPRIME,marque,100,non,,oui,ok
 apigen 80 mg,couverture_40,marque_bruitee,GENTAMICINE,GENTAMICINE,marque,100,non,,oui,ok
 clinaram 300,couverture_40,marque_bruitee,CLINDAMYCINE,CLINDAMYCINE,marque,100,non,,oui,ok
 nifedipine lp 20,couverture_40,absent_du_corpus,,,aucune,,non,,non,ok

@@ -51,7 +51,7 @@ Sur 50 saisies, la forme nettoyée est une clé exacte du dictionnaire : la corr
 | ciprofloxacine | 1 |  |
 | lévofloxacine | 1 |  |
 | doxycycline | 1 |  |
-| cotrimoxazole (sulfaméthoxazole + triméthoprime) | 0 |  |
+| cotrimoxazole (sulfaméthoxazole + triméthoprime) | 1 |  |
 | métronidazole | 3 |  |
 | gentamicine | 1 |  |
 | clindamycine | 1 |  |
@@ -146,7 +146,7 @@ Sur 50 saisies, la forme nettoyée est une clé exacte du dictionnaire : la corr
 | cetrial 1g | couverture_40 | marque_bruitee | CEFTRIAXONE | CEFTRIAXONE | marque | 100 | non | correct |
 | levoflox 500 | couverture_40 | marque_bruitee | LEVOFLOXACINE | LEVOFLOXACINE | marque | 100 | non | correct |
 | xyline 100 | couverture_40 | marque_bruitee | DOXYCYCLINE | DOXYCYCLINE | marque | 100 | non | correct |
-| bactisol 480 | couverture_40 | marque_bruitee | SULFAMETHOXAZOLE + TRIMETHOPRIME | SULFAMETHOXAZOLE + TRIMETHOPRIME | marque | 100 | non | correct |
+| bactisol 480 | couverture_40 | marque_bruitee | COTRIMOXAZOLE | SULFAMETHOXAZOLE + TRIMETHOPRIME | marque | 100 | non | correct |
 | apigen 80 mg | couverture_40 | marque_bruitee | GENTAMICINE | GENTAMICINE | marque | 100 | non | correct |
 | clinaram 300 | couverture_40 | marque_bruitee | CLINDAMYCINE | CLINDAMYCINE | marque | 100 | non | correct |
 | nifedipine lp 20 | couverture_40 | absent_du_corpus | — | — | aucune |  | non | correct |
