@@ -1,43 +1,81 @@
-﻿saisie,type,dci_attendue
-paracétamol,dci,paracétamol
-paracetamol,sans_accent,paracétamol
-PARACETAMOL,majuscules,paracétamol
-paracetmol,faute,paracétamol
-paracétamole,faute,paracétamol
-DOLIPRANE,nom_commercial,paracétamol
-doliprane,minuscules,paracétamol
-Dolipran,faute,paracétamol
-EFFERALGAN,nom_commercial,paracétamol
-ibuprofène,dci,ibuprofène
-ibuprofene,sans_accent,ibuprofène
-IBUPROFENE,majuscules,ibuprofène
-ibuprofn,faute,ibuprofène
-ADVIL,nom_commercial,ibuprofène
-advil,minuscules,ibuprofène
-diclofénac,dci,diclofénac
-diclofenac,sans_accent,diclofénac
-BIOFENAC,nom_commercial,diclofénac
-kétoprofène,dci,kétoprofène
-ketoprofene,sans_accent,kétoprofène
-KETOFEN,nom_commercial,kétoprofène
-acide acétylsalicylique,dci,acide acétylsalicylique
-aspirine,nom_usuel,acide acétylsalicylique
-ASPIRINE CARDIO,nom_commercial,acide acétylsalicylique
-KARDEGIC,nom_commercial,acide acétylsalicylique
-amoxicilline,dci,amoxicilline
-AMOXICILLINE,sans_accent,amoxicilline
-amoxicilin,faute,amoxicilline
-AUGMENTIN,nom_commercial,amoxicilline
-augmentin,minuscules,amoxicilline
-clarithromycine,dci,clarithromycine
-CLARIDAR,nom_commercial,clarithromycine
-ciprofloxacine,dci,ciprofloxacine
-CIPRO,nom_commercial,ciprofloxacine
-amlodipine,dci,amlodipine
-AMLODIPINE,majuscules,amlodipine
-amlodipin,faute,amlodipine
-AMLOR,nom_commercial,amlodipine
-ramipril,dci,ramipril
-TRIATEC,nom_commercial,ramipril
-losartan,dci,losartan
-COZAAR,nom_commercial,losartan
+﻿saisie,jeu,type,attendu,trouve,methode,score,ambigu,alternatives,saisie_est_cle_exacte,verdict
+doliprane 1000 mg,conception,marque_bruitee,PARACETAMOL,PARACETAMOL,marque,100,non,,oui,ok
+efferalgan 500 sirop,conception,marque_bruitee,PARACETAMOL,PARACETAMOL,marque,100,non,,oui,ok
+nurofen 400,conception,marque_hors_registre,,,aucune,,non,,non,ok
+advil 200mg,conception,marque_hors_registre,,,aucune,,non,,non,ok
+butafen 400,conception,marque_bruitee,IBUPROFENE,IBUPROFENE,marque,100,non,,oui,ok
+hysartan 50,conception,marque_bruitee,LOSARTAN,LOSARTAN,marque,100,non,,oui,ok
+augmentin 1 g,conception,marque_bruitee,ACIDE CLAVULANIQUE + AMOXICILLINE,AMOXICILLINE + ACIDE CLAVULANIQUE,marque,100,non,,oui,ok
+triatec 5,conception,marque_bruitee,RAMIPRIL,RAMIPRIL,marque,100,non,,oui,ok
+amlor 10 mg,conception,marque_bruitee,AMLODIPINE,AMLODIPINE,marque,100,non,,oui,ok
+claridar 500,conception,marque_bruitee,CLARITHROMYCINE,CLARITHROMYCINE,marque,98,non,,non,ok
+flagyl 500,conception,marque_bruitee,METRONIDAZOLE,METRONIDAZOLE,marque,100,non,,oui,ok
+zetron 250,conception,marque_bruitee,AZITHROMYCINE,AZITHROMYCINE,marque,100,non,,oui,ok
+cozaar 50,conception,marque_bruitee,LOSARTAN,LOSARTAN,marque,97,non,,non,ok
+tareg 80,conception,marque_bruitee,VALSARTAN,VALSARTAN,marque,100,non,,oui,ok
+doliprnae,conception,faute_frappe,PARACETAMOL,PARACETAMOL,flou,89,non,,non,ok
+paracetmol 500,conception,faute_frappe,PARACETAMOL,PARACETAMOL,flou,95,non,,non,ok
+eferalgan,conception,faute_frappe,PARACETAMOL,PARACETAMOL,marque,97,non,,non,ok
+ibuprofen 400,conception,faute_frappe,IBUPROFENE,IBUPROFENE,flou,96,oui,IBUPROFENE + LEVOMENTHOL | IBUPROFENE + METHOCARBAMOL | IBUPROFENE + PARACETAMOL | IBUPROFENE + PSEUDOEPHEDRINE | IBUPROFENE LYSINATE | IBUPROFENE LYSINE,non,ok_avec_alerte
+amoxicilin 1g,conception,faute_frappe,AMOXICILLINE,AMOXICILLINE,flou,91,non,,non,ok
+amlodipin,conception,faute_frappe,AMLODIPINE,AMLODIPINE,flou,96,oui,AMLODIPINE + ATROVASTATINE | VALSARTAN + AMLODIPINE + HYDROCHLOROTHIAZIDE | PERINDOPRIL + INDAPAMIDE + AMLODIPINE | AMLODIPINE + IRBESARTAN | AMLODIPINE + PERINDOPRIL | TELMISARTAN + AMLODIPINE | AMLODIPINE + VALSARTAN,non,ok_avec_alerte
+clarithromycne,conception,faute_frappe,CLARITHROMYCINE,CLARITHROMYCINE,flou,97,non,,non,ok
+ramiprli 5,conception,faute_frappe,RAMIPRIL,RAMIPRIL,flou,88,non,,non,ok
+diclofenac 50,conception,faute_frappe,DICLOFENAC,DICLOFENAC,marque,100,non,,oui,ok
+ketoprofen 100,conception,faute_frappe,KETOPROFENE,KETOPROFENE,flou,96,non,,non,ok
+paracetamol 1g,conception,sans_accent,PARACETAMOL,PARACETAMOL,dci,100,non,,oui,ok
+ibuprofene 200 mg,conception,sans_accent,IBUPROFENE,IBUPROFENE,dci,100,non,,oui,ok
+metronidazole 500,conception,sans_accent,METRONIDAZOLE,METRONIDAZOLE,dci,100,non,,oui,ok
+spironolactone 25,conception,sans_accent,SPIRONOLACTONE,SPIRONOLACTONE,dci,100,non,,oui,ok
+paracetamol sirop enfant,conception,dci_bruitee,PARACETAMOL,PARACETAMOL,dci,100,non,,oui,ok
+amlodipine comprime,conception,dci_bruitee,AMLODIPINE,AMLODIPINE,dci,100,non,,oui,ok
+amoxicilline acide clavulanique 1g,conception,dci_bruitee,ACIDE CLAVULANIQUE + AMOXICILLINE,AMOXICILLINE + ACIDE CLAVULANIQUE,contient,95,non,,non,ok
+hydrochlorothiazide 25 mg,conception,dci_bruitee,,LOSARTAN + HYDROCHLOROTHIAZIDE,flou,96,oui,AMILORIDE + HYDROCHLOROTHIAZIDE | VALSARTAN + AMLODIPINE + HYDROCHLOROTHIAZIDE | BISOPROLOL + HYDROCHLOROTHIAZIDE | CANDESARTAN CILEXETIL + HYDROCHLOROTHIAZIDE | CANDESSARTAN CILEXETIL + HYDROCHLOROTHIAZIDE | CAPTOPRIL + HYDROCHLOROTHIAZIDE | IRBESARTAN + HYDROCHLOROTHIAZIDE | QUINAPRIL + HYDROCHLOROTHIAZIDE | RAMIPRIL + HYDROCHLOROTHIAZIDE | TELMISARTAN + HYDROCHLOROTHIAZIDE | VALSARTAN + HYDROCHLOROTHIAZIDE,non,ok
+aspirine 500,conception,nom_usuel,ACIDE ACETYLSALICYLIQUE,ACIDE ACETYLSALICYLIQUE,alias,100,non,,non,ok
+aspegic 1000,conception,nom_usuel,ACIDE ACETYLSALICYLIQUE,ACIDE ACETYLSALICYLIQUE,alias,100,non,,oui,ok
+augmentin,conception,nom_usuel,ACIDE CLAVULANIQUE + AMOXICILLINE,AMOXICILLINE + ACIDE CLAVULANIQUE,marque,100,non,,oui,ok
+amox 500,conception,abreviation,AMOXICILLINE,AMOXICILLINE,flou,96,oui,AMOXICILLINE + ACIDE CLAVULANIQUE | CEFALEXINE | FAMOTIDINE | TAMOXIFENE,non,ok_avec_alerte
+ibu 400,conception,abreviation,IBUPROFENE,IBUPROFENE,flou,96,oui,IBUPROFENE + PARACETAMOL | IBUPROFENE LYSINATE | IBUPROFENE LYSINE,non,ok_avec_alerte
+clari 250,conception,abreviation,CLARITHROMYCINE,CLARITHROMYCINE,flou,96,oui,ACIDE GADOTERIQUE,non,ok
+cortyx,conception,ambigu_reelle,,BETAMETHASONE,marque,100,oui,BETAMETHASONE DIPROPIONATE | BETAMETHASONE VALERATE,oui,ok
+mmf,conception,ambigu_reelle,,BENZATHINE BENZYL PENICILLINE,marque,100,oui,MYCOPHENATE MOFETIL | MYCOPHENOLATE MOFETIL,oui,ok
+smecta 3g,conception,hors_perimetre,DIOSMECTITE,DIOSMECTITE,flou,96,non,,non,ok
+ventoline spray,conception,hors_perimetre,SALBUTAMOL,SALBUTAMOL,contient,95,non,,non,ok
+omeprazole 20,conception,hors_perimetre,OMEPRAZOLE,OMEPRAZOLE,dci,100,non,,oui,ok
+glucophage 850,conception,hors_perimetre,METFORMINE,METFORMINE,marque,100,non,,oui,ok
+xyzabc 500,conception,inconnu,,,aucune,,non,,non,ok
+foobarine 20,conception,inconnu,,,aucune,,non,,non,ok
+naprox 500,couverture_40,marque_bruitee,NAPROXENE,NAPROXENE,marque,100,non,,oui,ok
+melox 15 mg,couverture_40,marque_bruitee,MELOXICAM,MELOXICAM,marque,100,non,,oui,ok
+piroxen 20,couverture_40,marque_bruitee,PIROXICAM,PIROXICAM,marque,100,non,,oui,ok
+arbrex 200,couverture_40,marque_bruitee,CELECOXIB,CELECOXIB,marque,100,non,,oui,ok
+antapam 20 mg,couverture_40,marque_bruitee,NEFOPAM,NEFOPAM,marque,100,non,,oui,ok
+megacef 200,couverture_40,marque_bruitee,CEFIXIME,CEFIXIME,marque,100,non,,oui,ok
+zinnat 500,couverture_40,marque_bruitee,CEFUROXIME,CEFUROXIME,marque,100,non,,oui,ok
+cetrial 1g,couverture_40,marque_bruitee,CEFTRIAXONE,CEFTRIAXONE,marque,100,non,,oui,ok
+levoflox 500,couverture_40,marque_bruitee,LEVOFLOXACINE,LEVOFLOXACINE,marque,100,non,,oui,ok
+xyline 100,couverture_40,marque_bruitee,DOXYCYCLINE,DOXYCYCLINE,marque,100,non,,oui,ok
+bactisol 480,couverture_40,marque_bruitee,COTRIMOXAZOLE,SULFAMETHOXAZOLE + TRIMETHOPRIME,marque,100,non,,oui,ok
+apigen 80 mg,couverture_40,marque_bruitee,GENTAMICINE,GENTAMICINE,marque,100,non,,oui,ok
+clinaram 300,couverture_40,marque_bruitee,CLINDAMYCINE,CLINDAMYCINE,marque,100,non,,oui,ok
+nifedipine lp 20,couverture_40,absent_du_corpus,,,aucune,,non,,non,ok
+coversyl 5,couverture_40,marque_bruitee,PERINDOPRIL,PERINDOPRIL,marque,100,non,,oui,ok
+enalapril 10 mg,couverture_40,dci_bruitee,ENALAPRIL,ENALAPRIL,dci,100,non,,oui,ok
+temerivol 5,couverture_40,marque_bruitee,NEBIVOLOL,NEBIVOLOL,marque,100,non,,oui,ok
+aldomet 250,couverture_40,marque_bruitee,METHYLDOPA,METHYLDOPA,marque,100,non,,oui,ok
+dolprane 500,tenu_a_ecart,faute_frappe,PARACETAMOL,PARACETAMOL,flou,94,non,,non,ok
+paracetamol codéine,tenu_a_ecart,nom_usuel,CODEINE + PARACETAMOL,PARACETAMOL + CODEINE,contient,95,non,,non,ok
+codol,tenu_a_ecart,marque_bruitee,CODEINE + PARACETAMOL,PARACETAMOL + CODEINE,marque,100,non,,oui,ok
+tramadol lp 100,tenu_a_ecart,dci_bruitee,TRAMADOL,TRAMADOL,dci,100,non,,oui,ok
+cetadol 50,tenu_a_ecart,marque_bruitee,PARACETAMOL + TRAMADOL,PARACETAMOL + TRAMADOL,marque,100,non,,oui,ok
+ciprodar 500,tenu_a_ecart,marque_bruitee,CIPROFLOXACINE,CIPROFLOXACINE,marque,100,oui,CIPROFLOXACINE HDROCHLORIDE,oui,ok_avec_alerte
+flagyl 250 sirop,tenu_a_ecart,marque_bruitee,METRONIDAZOLE,METRONIDAZOLE,marque,100,non,,oui,ok
+aldactone 25,tenu_a_ecart,marque_bruitee,SPIRONOLACTONE,SPIRONOLACTONE,marque,100,non,,oui,ok
+fludex 1 5,tenu_a_ecart,marque_bruitee,INDAPAMIDE,INDAPAMIDE,flou,96,non,,non,ok
+cardensiel 5,tenu_a_ecart,marque_bruitee,BISOPROLOL,BISOPROLOL,marque,100,non,,oui,ok
+tenormed 50,tenu_a_ecart,marque_bruitee,ATENOLOL,ATENOLOL,marque,100,non,,oui,ok
+diclofenac gel,tenu_a_ecart,dci_bruitee,DICLOFENAC,DICLOFENAC,contient,95,non,,non,ok
+ketoflex 100,tenu_a_ecart,marque_bruitee,KETOPROFENE,KETOPROFENE,marque,100,non,,oui,ok
+omeprazol 20,tenu_a_ecart,faute_frappe,OMEPRAZOLE,OMEPRAZOLE,flou,96,non,,non,ok
+amoxicilline 1g,tenu_a_ecart,dci_bruitee,AMOXICILLINE,AMOXICILLINE,dci,100,non,,oui,ok
+smecta,tenu_a_ecart,marque_bruitee,DIOSMECTITE,DIOSMECTITE,flou,96,non,,non,ok

@@ -3,8 +3,12 @@ import pandas as pd
 from ..config import RAW, PROCESSED
 from ..textnorm import norm
 
-SHEETS = {"nomenclature": "nomenclature_active"}
-STATUS = {"nomenclature_active": "actif"}
+SHEETS = {"nomenclature": "nomenclature_active",
+          "renouvel": "non_renouveles",
+          "retrait": "retraits"}
+STATUS = {"nomenclature_active": "actif",
+          "non_renouveles": "non_renouvele",
+          "retraits": "retire"}
 
 
 def read_sheet(xlsx, sheet):
@@ -30,8 +34,11 @@ def read_sheet(xlsx, sheet):
     df = df.dropna(axis=1, how="all").dropna(axis=0, how="all")
 
     for c in df.columns:
-        df[c] = df[c].astype(str).str.strip().replace({"nan": None, "None": None})
+        df[c] = df[c].astype(str).str.strip().replace({"nan": None, "None": None, "": None})
+        if "DATE" in str(c).upper():
+            df[c] = df[c].str.replace(r"\s00:00:00$", "", regex=True)
 
+    df = df.dropna(axis=1, how="all")  # drops columns that were only whitespace
     return df.reset_index(drop=True)
 
 

@@ -9,7 +9,6 @@ distro==1.9.0
 et_xmlfile==2.0.0
 flatbuffers==25.12.19
 google-auth==2.62.2
-google-genai==3.0.0
 h11==0.16.0
 httpcore2==2.16.0
 httpx2==2.16.0
