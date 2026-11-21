@@ -1,0 +1,908 @@
+{
+ "bm25": {
+  "D01": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 0.0,
+   "mrr": 0.0,
+   "ndcg@10": 0.0,
+   "top3": [
+    "anpp:fb282288-c86f-40e0-9652-c59b6218010b:4.5",
+    "anpp:a2e62f18-ecc3-42e7-98fc-eba3c75b7a36:4.4",
+    "anpp:327c20bf-9db5-4f00-9223-d16c166a752a:4.6"
+   ]
+  },
+  "D02": {
+   "hit@10": 1.0,
+   "recall@10": 1.0,
+   "recall@50": 1.0,
+   "mrr": 1.0,
+   "ndcg@10": 0.9674679834891693,
+   "top3": [
+    "nomenclature:ramipril",
+    "pharmnet:ramipril",
+    "nomenclature:ramipril hydrochlorothiazide"
+   ]
+  },
+  "D03": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 0.0,
+   "mrr": 0.015873015873015872,
+   "ndcg@10": 0.0,
+   "top3": [
+    "thesaurus:clarithromycine:130:7",
+    "thesaurus:linezolide:342:0",
+    "thesaurus:pravastatine:466:1"
+   ]
+  },
+  "D04": {
+   "hit@10": 1.0,
+   "recall@10": 0.6666666666666666,
+   "recall@50": 1.0,
+   "mrr": 0.3333333333333333,
+   "ndcg@10": 0.41618115554873086,
+   "top3": [
+    "nomenclature:guaifenesine dci benzoate de sodium terpine eucalyptol",
+    "pharmnet:guaifenesine dci benzoate de sodium terpine eucalyptol",
+    "nomenclature:ramipril"
+   ]
+  },
+  "D05": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 1.0,
+   "mrr": 0.041666666666666664,
+   "ndcg@10": 0.0,
+   "top3": [
+    "nomenclature:guaifenesine dci benzoate de sodium terpine eucalyptol",
+    "pharmnet:guaifenesine dci benzoate de sodium terpine eucalyptol",
+    "nomenclature_dz:guaifenesine dci benzoate de sodium terpine eucalyptol"
+   ]
+  },
+  "D06": {
+   "hit@10": 1.0,
+   "recall@10": 0.6666666666666666,
+   "recall@50": 1.0,
+   "mrr": 0.3333333333333333,
+   "ndcg@10": 0.37590633587120725,
+   "top3": [
+    "nomenclature_dz:oxygene medicinal liquide",
+    "nomenclature:bisoprolol fumarate hydrochlorothiazide",
+    "nomenclature:bisoprolol fumarate"
+   ]
+  },
+  "D07": {
+   "hit@10": 1.0,
+   "recall@10": 1.0,
+   "recall@50": 1.0,
+   "mrr": 0.5,
+   "ndcg@10": 0.6309297535714575,
+   "top3": [
+    "anpp:327c20bf-9db5-4f00-9223-d16c166a752a:4.1",
+    "anpp:98ead8b0-75d7-4dff-8bf8-66eb025ab09f:4.1",
+    "anpp:a2e62f18-ecc3-42e7-98fc-eba3c75b7a36:4.1"
+   ]
+  },
+  "D08": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 1.0,
+   "mrr": 0.09090909090909091,
+   "ndcg@10": 0.0,
+   "top3": [
+    "anpp:6c140a32-236d-4610-a7d7-bbdc1dd4cd46:1.1",
+    "anpp:6c140a32-236d-4610-a7d7-bbdc1dd4cd46:1.2",
+    "anpp:6c140a32-236d-4610-a7d7-bbdc1dd4cd46:4.1"
+   ]
+  },
+  "D09": {
+   "hit@10": 1.0,
+   "recall@10": 1.0,
+   "recall@50": 1.0,
+   "mrr": 0.16666666666666666,
+   "ndcg@10": 0.3562071871080222,
+   "top3": [
+    "anpp:6c140a32-236d-4610-a7d7-bbdc1dd4cd46:1.1",
+    "anpp:6c140a32-236d-4610-a7d7-bbdc1dd4cd46:1.2",
+    "anpp:6c140a32-236d-4610-a7d7-bbdc1dd4cd46:4.9"
+   ]
+  },
+  "D10": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 0.6,
+   "mrr": 0.06666666666666667,
+   "ndcg@10": 0.0,
+   "top3": [
+    "anpp:a2e62f18-ecc3-42e7-98fc-eba3c75b7a36:4.3",
+    "anpp:7354eb84-9ffd-4040-ae66-8b70c342c5ec:1.1",
+    "anpp:7354eb84-9ffd-4040-ae66-8b70c342c5ec:4.1"
+   ]
+  },
+  "C01": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 0.0,
+   "mrr": 0.0,
+   "ndcg@10": 0.0,
+   "top3": [
+    "thesaurus:povidone iodee:465:0",
+    "thesaurus:topotecane:577:1",
+    "thesaurus:antiseptiques mercuriels:63:0"
+   ]
+  },
+  "C02": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 0.0,
+   "mrr": 0.0,
+   "ndcg@10": 0.0,
+   "top3": [
+    "thesaurus:povidone iodee:465:0",
+    "thesaurus:topotecane:577:1",
+    "thesaurus:antiseptiques mercuriels:63:0"
+   ]
+  },
+  "C03": {
+   "hit@10": 1.0,
+   "recall@10": 0.5,
+   "recall@50": 1.0,
+   "mrr": 0.125,
+   "ndcg@10": 0.19342640361727081,
+   "top3": [
+    "thesaurus:pentamidine:446:0",
+    "thesaurus:didanosine:179:2",
+    "thesaurus:inhibiteurs de l enzyme de conversion:305:14"
+   ]
+  },
+  "C04": {
+   "hit@10": 1.0,
+   "recall@10": 1.0,
+   "recall@50": 1.0,
+   "mrr": 1.0,
+   "ndcg@10": 1.0,
+   "top3": [
+    "thesaurus:ciprofloxacine:127:1",
+    "thesaurus:cafeine:108:0",
+    "thesaurus:didanosine:179:2"
+   ]
+  },
+  "C05": {
+   "hit@10": 1.0,
+   "recall@10": 1.0,
+   "recall@50": 1.0,
+   "mrr": 1.0,
+   "ndcg@10": 1.0,
+   "top3": [
+    "thesaurus:calcium:110:1",
+    "thesaurus:ciprofloxacine:127:2",
+    "thesaurus:roxadustat:504:0"
+   ]
+  },
+  "C06": {
+   "hit@10": 1.0,
+   "recall@10": 1.0,
+   "recall@50": 1.0,
+   "mrr": 1.0,
+   "ndcg@10": 1.0,
+   "top3": [
+    "thesaurus:simvastatine:516:1",
+    "thesaurus:amlodipine:32:0",
+    "thesaurus:carbamazepine:113:26"
+   ]
+  },
+  "C07": {
+   "hit@10": 1.0,
+   "recall@10": 0.43478260869565216,
+   "recall@50": 1.0,
+   "mrr": 1.0,
+   "ndcg@10": 1.0,
+   "top3": [
+    "nomenclature:amoxicilline trihydratee exprimee en amoxicilline acide clavulanique potassique exprime en acide clavulanique",
+    "nomenclature:amoxicilline trihydrate exprime en amoxicilline acide clavulanique sel de potassium exprime en acide clavulanique",
+    "nomenclature:amoxicilline sodique exprime en amoxicilline acide clavulanique potassique exprime en acide clavulanique"
+   ]
+  },
+  "C08": {
+   "hit@10": 1.0,
+   "recall@10": 1.0,
+   "recall@50": 1.0,
+   "mrr": 0.25,
+   "ndcg@10": 0.5256940434743352,
+   "top3": [
+    "thesaurus:preservatifs en latex:469:0",
+    "thesaurus:fluoroquinolones:243:2",
+    "thesaurus:huiles minerales:282:0"
+   ]
+  },
+  "C09": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 0.5,
+   "mrr": 0.04,
+   "ndcg@10": 0.0,
+   "top3": [
+    "thesaurus:delamanid:171:3",
+    "anpp:8b854e4c-78d9-4582-a553-02883e1fffd8:4.5#sub0",
+    "anpp:0225eb2d-a6cc-41e0-b551-f0ea26990ae4:4.5#sub0"
+   ]
+  },
+  "P01": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 0.75,
+   "mrr": 0.09090909090909091,
+   "ndcg@10": 0.0,
+   "top3": [
+    "thesaurus:didanosine:179:2",
+    "thesaurus:pentamidine:446:0",
+    "anpp:63bf5dd4-8987-4378-b1ea-8aa93253f011:4.9"
+   ]
+  },
+  "P02": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 0.25,
+   "mrr": 0.05263157894736842,
+   "ndcg@10": 0.0,
+   "top3": [
+    "nomenclature:ramipril hydrochlorothiazide",
+    "anpp:63bf5dd4-8987-4378-b1ea-8aa93253f011:4.4",
+    "pharmnet:ramipril hydrochlorothiazide"
+   ]
+  },
+  "P03": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 0.5,
+   "mrr": 0.022222222222222223,
+   "ndcg@10": 0.0,
+   "top3": [
+    "nomenclature:ibuprofene sous forme de lysinate d ibuprofene",
+    "pharmnet:ibuprofene sous forme de lysinate d ibuprofene",
+    "anpp:ef0174d9-8f0c-4e24-91c7-53b837c36196:4.5"
+   ]
+  },
+  "T02": {
+   "hit@10": 1.0,
+   "recall@10": 0.2857142857142857,
+   "recall@50": 0.8571428571428571,
+   "mrr": 0.14285714285714285,
+   "ndcg@10": 0.17437146561008365,
+   "top3": [
+    "nomenclature:amlodipine besilate exprime en amlodipine irbesartan",
+    "pharmnet:amlodipine besilate exprime en amlodipine irbesartan",
+    "nomenclature:irbesartan amlodipine"
+   ]
+  },
+  "T03": {
+   "hit@10": 1.0,
+   "recall@10": 1.0,
+   "recall@50": 1.0,
+   "mrr": 1.0,
+   "ndcg@10": 0.9674679834891693,
+   "top3": [
+    "nomenclature:ramipril",
+    "pharmnet:ramipril",
+    "nomenclature:ramipril hydrochlorothiazide"
+   ]
+  },
+  "T04": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 0.0,
+   "mrr": 0.0,
+   "ndcg@10": 0.0,
+   "top3": [
+    "thesaurus:atorvastatine:78:3",
+    "thesaurus:clarithromycine:130:1",
+    "thesaurus:antivitamines k:68:17"
+   ]
+  }
+ },
+ "dense": {
+  "D01": {
+   "hit@10": 1.0,
+   "recall@10": 0.3333333333333333,
+   "recall@50": 0.6666666666666666,
+   "mrr": 0.16666666666666666,
+   "ndcg@10": 0.16716045496620227,
+   "top3": [
+    "nomenclature:paracetamol cafeine",
+    "anpp:a2e62f18-ecc3-42e7-98fc-eba3c75b7a36:4.2",
+    "nomenclature:paracetamol pseudoephedrine sous forme de chlorhydrate"
+   ]
+  },
+  "D02": {
+   "hit@10": 1.0,
+   "recall@10": 1.0,
+   "recall@50": 1.0,
+   "mrr": 1.0,
+   "ndcg@10": 0.9674679834891693,
+   "top3": [
+    "nomenclature:ramipril",
+    "pharmnet:ramipril",
+    "nomenclature:ramipril hydrochlorothiazide"
+   ]
+  },
+  "D03": {
+   "hit@10": 1.0,
+   "recall@10": 1.0,
+   "recall@50": 1.0,
+   "mrr": 1.0,
+   "ndcg@10": 1.0,
+   "top3": [
+    "nomenclature_dz:clarithromycine",
+    "nomenclature:clarithromycine",
+    "pharmnet:clarithromycine"
+   ]
+  },
+  "D04": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 0.3333333333333333,
+   "mrr": 0.05555555555555555,
+   "ndcg@10": 0.0,
+   "top3": [
+    "nomenclature:cetirizine dichlorhydrate",
+    "nomenclature_dz:trimetazidine dichlorhydrate",
+    "nomenclature_dz:amoxicilline trihydrat2e acide clavulanique potassique"
+   ]
+  },
+  "D05": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 0.6666666666666666,
+   "mrr": 0.058823529411764705,
+   "ndcg@10": 0.0,
+   "top3": [
+    "anpp:98ead8b0-75d7-4dff-8bf8-66eb025ab09f:4.1",
+    "anpp:98ead8b0-75d7-4dff-8bf8-66eb025ab09f:1.1",
+    "anpp:98ead8b0-75d7-4dff-8bf8-66eb025ab09f:4.3"
+   ]
+  },
+  "D06": {
+   "hit@10": 1.0,
+   "recall@10": 1.0,
+   "recall@50": 1.0,
+   "mrr": 1.0,
+   "ndcg@10": 0.9060254355346823,
+   "top3": [
+    "nomenclature:bisoprolol fumarate",
+    "nomenclature:olanzapine",
+    "nomenclature_dz:bisoprolol fumarate"
+   ]
+  },
+  "D07": {
+   "hit@10": 1.0,
+   "recall@10": 1.0,
+   "recall@50": 1.0,
+   "mrr": 1.0,
+   "ndcg@10": 1.0,
+   "top3": [
+    "anpp:98ead8b0-75d7-4dff-8bf8-66eb025ab09f:4.1",
+    "anpp:98ead8b0-75d7-4dff-8bf8-66eb025ab09f:1.2",
+    "anpp:98ead8b0-75d7-4dff-8bf8-66eb025ab09f:4.3"
+   ]
+  },
+  "D08": {
+   "hit@10": 1.0,
+   "recall@10": 1.0,
+   "recall@50": 1.0,
+   "mrr": 1.0,
+   "ndcg@10": 1.0,
+   "top3": [
+    "anpp:6c140a32-236d-4610-a7d7-bbdc1dd4cd46:4.3",
+    "anpp:6c140a32-236d-4610-a7d7-bbdc1dd4cd46:4.1",
+    "anpp:6c140a32-236d-4610-a7d7-bbdc1dd4cd46:4.4"
+   ]
+  },
+  "D09": {
+   "hit@10": 1.0,
+   "recall@10": 1.0,
+   "recall@50": 1.0,
+   "mrr": 0.5,
+   "ndcg@10": 0.6309297535714575,
+   "top3": [
+    "anpp:6c140a32-236d-4610-a7d7-bbdc1dd4cd46:4.9",
+    "anpp:6c140a32-236d-4610-a7d7-bbdc1dd4cd46:4.8",
+    "anpp:6c140a32-236d-4610-a7d7-bbdc1dd4cd46:4.3"
+   ]
+  },
+  "D10": {
+   "hit@10": 1.0,
+   "recall@10": 0.6,
+   "recall@50": 1.0,
+   "mrr": 0.2,
+   "ndcg@10": 0.35125161163747765,
+   "top3": [
+    "anpp:e08d7867-32d9-4cde-bf9a-59ada3e59fe4:4.1",
+    "anpp:7dbc06a9-2632-404c-a052-b12a09b8a240:4.1",
+    "anpp:e08d7867-32d9-4cde-bf9a-59ada3e59fe4:1.1"
+   ]
+  },
+  "C01": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 0.0,
+   "mrr": 0.0,
+   "ndcg@10": 0.0,
+   "top3": [
+    "anpp:63bf5dd4-8987-4378-b1ea-8aa93253f011:4.5",
+    "nomenclature:ibuprofene levomenthol",
+    "pharmnet:ibuprofene lysine"
+   ]
+  },
+  "C02": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 0.0,
+   "mrr": 0.0,
+   "ndcg@10": 0.0,
+   "top3": [
+    "anpp:63bf5dd4-8987-4378-b1ea-8aa93253f011:4.5",
+    "pharmnet:paracetamol ibuprofene",
+    "pharmnet:ibuprofene lysine"
+   ]
+  },
+  "C03": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 0.0,
+   "mrr": 0.0,
+   "ndcg@10": 0.0,
+   "top3": [
+    "pharmnet:ramipril",
+    "nomenclature_dz:ramipril",
+    "nomenclature:ramipril"
+   ]
+  },
+  "C04": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 0.0,
+   "mrr": 0.0,
+   "ndcg@10": 0.0,
+   "top3": [
+    "pharmnet:ciprofloxacine chlorhydrate exprime en ciprofloxacine",
+    "nomenclature_dz:ciprofloxacine chlorhyrate monohydrate exprime en ciprofloxacine",
+    "nomenclature:ciprofloxacine chlorhydrate exprime en ciprofloxacine"
+   ]
+  },
+  "C05": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 0.0,
+   "mrr": 0.0,
+   "ndcg@10": 0.0,
+   "top3": [
+    "nomenclature_dz:ciprofloxacine chlorhydrate exprime en ciprofloxacine",
+    "pharmnet:ciprofloxacine chlorhydrate exprime en ciprofloxacine",
+    "pharmnet:calcium carbonate cholecalciferol vitamine d3"
+   ]
+  },
+  "C06": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 0.0,
+   "mrr": 0.0,
+   "ndcg@10": 0.0,
+   "top3": [
+    "anpp:f54ed6e9-5867-469e-9aa2-7527ee6cf373:4.8#sub2",
+    "anpp:f54ed6e9-5867-469e-9aa2-7527ee6cf373:4.8#sub1",
+    "anpp:ed997f91-75ea-4a7c-a7dc-0d137709bd0f:4.4#sub3"
+   ]
+  },
+  "C07": {
+   "hit@10": 1.0,
+   "recall@10": 0.43478260869565216,
+   "recall@50": 0.9130434782608695,
+   "mrr": 1.0,
+   "ndcg@10": 1.0,
+   "top3": [
+    "nomenclature:amoxicilline trihydratee exprimee en amoxicilline acide clavulanique potassique exprime en acide clavulanique",
+    "nomenclature:amoxicilline trihydratee exprime en amoxicilline acide clavulanique potassique exprime en acide clavulanique",
+    "pharmnet:amoxicilline trihydratee exprimee en amoxicilline acide clavulanique potassique exprime en acide clavulanique"
+   ]
+  },
+  "C08": {
+   "hit@10": 1.0,
+   "recall@10": 1.0,
+   "recall@50": 1.0,
+   "mrr": 1.0,
+   "ndcg@10": 0.7988614740430418,
+   "top3": [
+    "nomenclature_dz:ramipril",
+    "nomenclature_dz:alendronate monosodique trihydrate exprime en acide alendronique",
+    "nomenclature:alendronate monosodique trihydrate exprime en acide alendronique"
+   ]
+  },
+  "C09": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 0.0,
+   "mrr": 0.0,
+   "ndcg@10": 0.0,
+   "top3": [
+    "anpp:8b854e4c-78d9-4582-a553-02883e1fffd8:4.5#sub1",
+    "anpp:8b854e4c-78d9-4582-a553-02883e1fffd8:4.5#sub0",
+    "anpp:c9c9ade0-6e2b-421b-99e6-8cd6679d2e8d:4.5#sub1"
+   ]
+  },
+  "P01": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 0.0,
+   "mrr": 0.0,
+   "ndcg@10": 0.0,
+   "top3": [
+    "anpp:c9c9ade0-6e2b-421b-99e6-8cd6679d2e8d:4.5#sub1",
+    "anpp:c9c9ade0-6e2b-421b-99e6-8cd6679d2e8d:4.5#sub0",
+    "anpp:f0c77b9b-3ae5-43b1-8906-6af4217f4d86:4.5#sub1"
+   ]
+  },
+  "P02": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 0.0,
+   "mrr": 0.0,
+   "ndcg@10": 0.0,
+   "top3": [
+    "anpp:e08d7867-32d9-4cde-bf9a-59ada3e59fe4:4.5#sub2",
+    "anpp:e08d7867-32d9-4cde-bf9a-59ada3e59fe4:4.5#sub1",
+    "anpp:e08d7867-32d9-4cde-bf9a-59ada3e59fe4:4.5#sub0"
+   ]
+  },
+  "P03": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 0.0,
+   "mrr": 0.0,
+   "ndcg@10": 0.0,
+   "top3": [
+    "pharmnet:ibuprofene methocarbamol",
+    "nomenclature:ibuprofene methocarbamol",
+    "pharmnet:ibuprofene pseudoephedrine chlorhydrate"
+   ]
+  },
+  "T02": {
+   "hit@10": 1.0,
+   "recall@10": 0.42857142857142855,
+   "recall@50": 1.0,
+   "mrr": 0.5,
+   "ndcg@10": 0.4172025044756148,
+   "top3": [
+    "nomenclature_dz:amlodipine besilate exprime en amlodipine valsartan",
+    "nomenclature_dz:amlodipine besilate exprime en amlodipine",
+    "nomenclature:amlodipine besilate exprime en amlodipine"
+   ]
+  },
+  "T03": {
+   "hit@10": 1.0,
+   "recall@10": 1.0,
+   "recall@50": 1.0,
+   "mrr": 1.0,
+   "ndcg@10": 1.0,
+   "top3": [
+    "nomenclature:ramipril",
+    "pharmnet:ramipril",
+    "nomenclature_dz:ramipril"
+   ]
+  },
+  "T04": {
+   "hit@10": 1.0,
+   "recall@10": 0.3333333333333333,
+   "recall@50": 1.0,
+   "mrr": 1.0,
+   "ndcg@10": 0.46927872602275644,
+   "top3": [
+    "pharmnet:clarithromycine",
+    "pharmnet:colchicine cristalisee",
+    "pharmnet:clotrimazole"
+   ]
+  }
+ },
+ "hybrid": {
+  "D01": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 0.0,
+   "mrr": 0.018518518518518517,
+   "ndcg@10": 0.0,
+   "top3": [
+    "nomenclature:paracetamol pseudoephedrine chlorhydrate comp de jour et paracetamol diphenhydramine chlorhydrate comp de nuit",
+    "pharmnet:paracetamol pseudoephedrine chlorhydrate comp de jour et paracetamol diphenhydramine chlorhydrate comp de nuit",
+    "nomenclature:paracetamol pseudoephedrine sous forme de chlorhydrate et paracetamol chlorpheniramine sous forme de maleate"
+   ]
+  },
+  "D02": {
+   "hit@10": 1.0,
+   "recall@10": 1.0,
+   "recall@50": 1.0,
+   "mrr": 1.0,
+   "ndcg@10": 0.9674679834891693,
+   "top3": [
+    "nomenclature:ramipril",
+    "pharmnet:ramipril",
+    "nomenclature:ramipril hydrochlorothiazide"
+   ]
+  },
+  "D03": {
+   "hit@10": 1.0,
+   "recall@10": 1.0,
+   "recall@50": 1.0,
+   "mrr": 1.0,
+   "ndcg@10": 1.0,
+   "top3": [
+    "nomenclature:clarithromycine",
+    "pharmnet:clarithromycine",
+    "nomenclature_dz:clarithromycine"
+   ]
+  },
+  "D04": {
+   "hit@10": 1.0,
+   "recall@10": 0.3333333333333333,
+   "recall@50": 1.0,
+   "mrr": 0.3333333333333333,
+   "ndcg@10": 0.23463936301137822,
+   "top3": [
+    "nomenclature_dz:guaifenesine dci benzoate de sodium terpine eucalyptol",
+    "nomenclature:guaifenesine dci benzoate de sodium terpine eucalyptol",
+    "nomenclature_dz:ramipril"
+   ]
+  },
+  "D05": {
+   "hit@10": 1.0,
+   "recall@10": 0.3333333333333333,
+   "recall@50": 1.0,
+   "mrr": 0.1,
+   "ndcg@10": 0.13565197343244778,
+   "top3": [
+    "anpp:98ead8b0-75d7-4dff-8bf8-66eb025ab09f:1.1",
+    "anpp:98ead8b0-75d7-4dff-8bf8-66eb025ab09f:4.1",
+    "anpp:98ead8b0-75d7-4dff-8bf8-66eb025ab09f:1.2"
+   ]
+  },
+  "D06": {
+   "hit@10": 1.0,
+   "recall@10": 1.0,
+   "recall@50": 1.0,
+   "mrr": 1.0,
+   "ndcg@10": 1.0,
+   "top3": [
+    "nomenclature:bisoprolol fumarate",
+    "pharmnet:bisoprolol fumarate",
+    "nomenclature_dz:bisoprolol fumarate"
+   ]
+  },
+  "D07": {
+   "hit@10": 1.0,
+   "recall@10": 1.0,
+   "recall@50": 1.0,
+   "mrr": 1.0,
+   "ndcg@10": 1.0,
+   "top3": [
+    "anpp:98ead8b0-75d7-4dff-8bf8-66eb025ab09f:4.1",
+    "anpp:98ead8b0-75d7-4dff-8bf8-66eb025ab09f:4.3",
+    "anpp:98ead8b0-75d7-4dff-8bf8-66eb025ab09f:1.1"
+   ]
+  },
+  "D08": {
+   "hit@10": 1.0,
+   "recall@10": 1.0,
+   "recall@50": 1.0,
+   "mrr": 0.25,
+   "ndcg@10": 0.43067655807339306,
+   "top3": [
+    "anpp:6c140a32-236d-4610-a7d7-bbdc1dd4cd46:4.1",
+    "anpp:6c140a32-236d-4610-a7d7-bbdc1dd4cd46:1.1",
+    "anpp:6c140a32-236d-4610-a7d7-bbdc1dd4cd46:4.5"
+   ]
+  },
+  "D09": {
+   "hit@10": 1.0,
+   "recall@10": 1.0,
+   "recall@50": 1.0,
+   "mrr": 0.5,
+   "ndcg@10": 0.6309297535714575,
+   "top3": [
+    "anpp:6c140a32-236d-4610-a7d7-bbdc1dd4cd46:4.9",
+    "anpp:6c140a32-236d-4610-a7d7-bbdc1dd4cd46:4.8",
+    "anpp:6c140a32-236d-4610-a7d7-bbdc1dd4cd46:4.5"
+   ]
+  },
+  "D10": {
+   "hit@10": 1.0,
+   "recall@10": 0.2,
+   "recall@50": 1.0,
+   "mrr": 0.2,
+   "ndcg@10": 0.13120507751234178,
+   "top3": [
+    "anpp:e08d7867-32d9-4cde-bf9a-59ada3e59fe4:1.1",
+    "anpp:7dbc06a9-2632-404c-a052-b12a09b8a240:1.1",
+    "anpp:03b5f9b8-1910-4823-bcb6-3eda6283aab7:1.1"
+   ]
+  },
+  "C01": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 0.0,
+   "mrr": 0.0,
+   "ndcg@10": 0.0,
+   "top3": [
+    "anpp:63bf5dd4-8987-4378-b1ea-8aa93253f011:4.5",
+    "anpp:63bf5dd4-8987-4378-b1ea-8aa93253f011:4.9",
+    "pharmnet:paracetamol ibuprofene"
+   ]
+  },
+  "C02": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 0.0,
+   "mrr": 0.0,
+   "ndcg@10": 0.0,
+   "top3": [
+    "anpp:63bf5dd4-8987-4378-b1ea-8aa93253f011:4.5",
+    "pharmnet:paracetamol ibuprofene",
+    "anpp:63bf5dd4-8987-4378-b1ea-8aa93253f011:4.9"
+   ]
+  },
+  "C03": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 1.0,
+   "mrr": 0.038461538461538464,
+   "ndcg@10": 0.0,
+   "top3": [
+    "pharmnet:ramipril",
+    "nomenclature:ramipril",
+    "nomenclature_dz:ramipril"
+   ]
+  },
+  "C04": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 1.0,
+   "mrr": 0.05263157894736842,
+   "ndcg@10": 0.0,
+   "top3": [
+    "nomenclature:ciprofloxacine chlorhydrate exprime en ciprofloxacine",
+    "pharmnet:ciprofloxacine chlorhydrate exprime en ciprofloxacine",
+    "nomenclature:ciprofloxacine chlorhyrate monohydrate exprime en ciprofloxacine"
+   ]
+  },
+  "C05": {
+   "hit@10": 1.0,
+   "recall@10": 1.0,
+   "recall@50": 1.0,
+   "mrr": 0.3333333333333333,
+   "ndcg@10": 0.5437713091520254,
+   "top3": [
+    "nomenclature_dz:ciprofloxacine chlorhydrate exprime en ciprofloxacine",
+    "nomenclature:ciprofloxacine chlorhydrate exprime en ciprofloxacine",
+    "thesaurus:calcium:110:1"
+   ]
+  },
+  "C06": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 1.0,
+   "mrr": 0.09090909090909091,
+   "ndcg@10": 0.0,
+   "top3": [
+    "anpp:f54ed6e9-5867-469e-9aa2-7527ee6cf373:4.8#sub0",
+    "anpp:f54ed6e9-5867-469e-9aa2-7527ee6cf373:4.5#sub0",
+    "anpp:f0c77b9b-3ae5-43b1-8906-6af4217f4d86:4.5#sub0"
+   ]
+  },
+  "C07": {
+   "hit@10": 1.0,
+   "recall@10": 0.43478260869565216,
+   "recall@50": 1.0,
+   "mrr": 1.0,
+   "ndcg@10": 1.0,
+   "top3": [
+    "nomenclature:amoxicilline trihydratee exprimee en amoxicilline acide clavulanique potassique exprime en acide clavulanique",
+    "nomenclature:amoxicilline sodique exprime en amoxicilline acide clavulanique potassique exprime en acide clavulanique",
+    "nomenclature:amoxicilline trihydratee exprime en amoxicilline acide clavulanique potassique exprime en acide clavulanique"
+   ]
+  },
+  "C08": {
+   "hit@10": 1.0,
+   "recall@10": 1.0,
+   "recall@50": 1.0,
+   "mrr": 1.0,
+   "ndcg@10": 1.0,
+   "top3": [
+    "nomenclature_dz:ramipril",
+    "nomenclature:ramipril",
+    "pharmnet:ramipril"
+   ]
+  },
+  "C09": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 0.25,
+   "mrr": 0.02,
+   "ndcg@10": 0.0,
+   "top3": [
+    "anpp:8b854e4c-78d9-4582-a553-02883e1fffd8:4.5#sub0",
+    "anpp:8b854e4c-78d9-4582-a553-02883e1fffd8:4.5#sub1",
+    "anpp:0225eb2d-a6cc-41e0-b551-f0ea26990ae4:4.5#sub0"
+   ]
+  },
+  "P01": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 0.75,
+   "mrr": 0.025,
+   "ndcg@10": 0.0,
+   "top3": [
+    "anpp:c9c9ade0-6e2b-421b-99e6-8cd6679d2e8d:4.5#sub0",
+    "anpp:63bf5dd4-8987-4378-b1ea-8aa93253f011:4.5",
+    "anpp:c9c9ade0-6e2b-421b-99e6-8cd6679d2e8d:4.5#sub1"
+   ]
+  },
+  "P02": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 0.25,
+   "mrr": 0.02,
+   "ndcg@10": 0.0,
+   "top3": [
+    "anpp:63bf5dd4-8987-4378-b1ea-8aa93253f011:4.2",
+    "anpp:63bf5dd4-8987-4378-b1ea-8aa93253f011:4.4",
+    "pharmnet:paracetamol ibuprofene"
+   ]
+  },
+  "P03": {
+   "hit@10": 0.0,
+   "recall@10": 0.0,
+   "recall@50": 0.0,
+   "mrr": 0.012987012987012988,
+   "ndcg@10": 0.0,
+   "top3": [
+    "anpp:63bf5dd4-8987-4378-b1ea-8aa93253f011:4.9",
+    "anpp:ef0174d9-8f0c-4e24-91c7-53b837c36196:4.5",
+    "pharmnet:ibuprofene sous forme de lysinate d ibuprofene"
+   ]
+  },
+  "T02": {
+   "hit@10": 1.0,
+   "recall@10": 0.42857142857142855,
+   "recall@50": 1.0,
+   "mrr": 0.3333333333333333,
+   "ndcg@10": 0.31480817123988064,
+   "top3": [
+    "nomenclature:amlodipine besilate exprime en amlodipine irbesartan",
+    "pharmnet:amlodipine besilate exprime en amlodipine irbesartan",
+    "nomenclature:amlodipine besilate exprime en amlodipine"
+   ]
+  },
+  "T03": {
+   "hit@10": 1.0,
+   "recall@10": 1.0,
+   "recall@50": 1.0,
+   "mrr": 1.0,
+   "ndcg@10": 1.0,
+   "top3": [
+    "nomenclature:ramipril",
+    "pharmnet:ramipril",
+    "nomenclature_dz:ramipril"
+   ]
+  },
+  "T04": {
+   "hit@10": 1.0,
+   "recall@10": 0.3333333333333333,
+   "recall@50": 1.0,
+   "mrr": 1.0,
+   "ndcg@10": 0.46927872602275644,
+   "top3": [
+    "pharmnet:clarithromycine",
+    "thesaurus:atorvastatine:78:3",
+    "pharmnet:colchicine cristalisee"
+   ]
+  }
+ }
+}

@@ -1,26 +1,47 @@
+import re
+
 import bm25s
 
-from .config import CORPUS_PATH, INDEX_DIR
+from .config import CORPUS_PATH, INDEX_DIR, PROCESSED
 from .corpus import load_corpus
 from .embeddings import embed_query
-from .index import load_bm25, load_faiss
+from .index import load_bm25, load_bm25_ids, load_faiss
 from .textnorm import norm
+from .thesaurus import load_lookup
+
+
+# Refus systématique : demande de conseil médical personnalisé, d'ordonnance
+# ou de diagnostic. Un médicament du périmètre peut apparaître dans la phrase
+# (« mon père prend du ramipril... ») : la présence d'une DCI ne suffit donc
+# pas à déclarer la question dans le périmètre.
+MEDICAL_ADVICE_PATTERNS = [
+    r"\b(mon|ma|mes|notre|son|sa|ses)\s+"
+    r"(fils|fille|enfant|bebe|nourrisson|pere|mere|voisin|voisine|frere|soeur|"
+    r"epoux|epouse|patient|patiente|ami|amie)\b",
+    r"\b(ordonnance|prescription|prescrire|rediger une ordonnance)\b",
+    r"\b(dois[- ]je|doit[- ]il|doit[- ]elle|que doit|que faire|que dois)\b",
+    r"\b(diagnostic|est[- ]ce (une|un)|est[- ]ce grave|est[- ]ce dangereux)\b",
+    r"\b(dose|posologie|combien)\b.{0,40}\b(enfant|fils|fille|bebe|nourrisson)\b",
+    r"\b(j ai|j'ai)\b.{0,30}\b(fievre|mal|douleur|vertige)\b",
+]
 
 
 class Retriever:
     def __init__(self, corpus_path=CORPUS_PATH, index_dir=INDEX_DIR):
         self.records = load_corpus(corpus_path)
         self.by_id = {record["chunk_id"]: record for record in self.records}
-        self.faiss_index, self.chunk_ids = load_faiss(index_dir)
+        self.faiss_index, self.faiss_ids = load_faiss(index_dir)
         self.bm25 = load_bm25(index_dir)
+        self.bm25_ids = load_bm25_ids(index_dir)
+        self.thesaurus = load_lookup()
 
     def search_dense(self, query, k=10):
         vector = embed_query(query).reshape(1, -1)
         scores, indices = self.faiss_index.search(vector, k)
         hits = []
         for score, idx in zip(scores[0], indices[0]):
-            if 0 <= idx < len(self.chunk_ids):
-                hits.append((self.chunk_ids[idx], float(score)))
+            if 0 <= idx < len(self.faiss_ids):
+                hits.append((self.faiss_ids[idx], float(score)))
         return hits
 
     def search_bm25(self, query, k=10):
@@ -28,8 +49,15 @@ class Retriever:
         results, scores = self.bm25.retrieve(tokens, k=k, show_progress=False)
         hits = []
         for score, idx in zip(scores[0], results[0]):
-            if 0 <= idx < len(self.chunk_ids):
-                hits.append((self.chunk_ids[int(idx)], float(score)))
+            if 0 <= idx < len(self.bm25_ids):
+                hits.append((self.bm25_ids[int(idx)], float(score)))
+        return hits
+
+    def search_exact(self, query, k=10):
+        """Lookup exact dans le Thésaurus (substance/classe ↔ substance/classe)."""
+        hits = []
+        for rank, interaction in enumerate(self.thesaurus.lookup(query)[:k]):
+            hits.append((interaction.chunk_id, 1.0 - rank * 1e-6))
         return hits
 
     def search_hybrid(self, query, k=10, pool=50, rrf_k=60):
@@ -44,6 +72,8 @@ class Retriever:
             ranked = self.search_dense(query, k)
         elif method == "bm25":
             ranked = self.search_bm25(query, k)
+        elif method == "exact":
+            ranked = self.search_exact(query, k)
         elif method == "hybrid":
             ranked = self.search_hybrid(query, k)
         else:
@@ -63,33 +93,39 @@ class Retriever:
             })
         return results
 
-
     def is_out_of_scope(self, query, threshold_bm25=1.5, threshold_dense=0.55):
-    
-        import pandas as pd
-        from .config import PROCESSED
-        
-        
+        query_norm = norm(query)
+
+        for pattern in MEDICAL_ADVICE_PATTERNS:
+            if re.search(pattern, query_norm):
+                return True, "Demande de conseil médical personnalisé, d'ordonnance ou de diagnostic."
+
         drugs_path = PROCESSED / "drugs_verified.csv"
+        found = False
         if drugs_path.exists():
+            import pandas as pd
+
             df = pd.read_csv(drugs_path, encoding="utf-8-sig")
-            query_norm = norm(query)
-            found = False
             for _, row in df.iterrows():
                 dci = norm(str(row.get("DCI", "")))
-                if dci and dci in query_norm:
+                if dci and re.search(rf"\b{re.escape(dci)}\b", query_norm):
                     found = True
                     break
+            # Une classe ou un nom commercial du Thésaurus compte aussi comme
+            # médicament du périmètre (ex. « aspirine »).
+            if not found and self.thesaurus.find_mentions(query):
+                found = True
             if not found:
                 return True, "Aucun médicament de la liste détecté."
-        
-        
+
         bm25_hits = self.search_bm25(query, k=1)
-        dense_hits = self.search_dense(query, k=1)
         bm25_score = bm25_hits[0][1] if bm25_hits else 0
-        dense_score = dense_hits[0][1] if dense_hits else 0
-        
+        dense_score = 0.0
+        if hasattr(self, "faiss_index"):
+            dense_hits = self.search_dense(query, k=1)
+            dense_score = dense_hits[0][1] if dense_hits else 0
+
         if bm25_score < threshold_bm25 and dense_score < threshold_dense:
             return True, f"Scores trop faibles (BM25={bm25_score:.2f}, dense={dense_score:.2f})."
-        
+
         return False, "Requête dans le périmètre."

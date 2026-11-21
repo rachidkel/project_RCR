@@ -22,3 +22,25 @@ def test_in_scope_amlodipine_ibuprofen():
         "Peut-on associer l'Amlodipine et l'Ibuprofène ?"
     )
     assert is_oos is False
+
+
+def test_thesaurus_exact_lookup():
+    from pharmeazor.thesaurus import load_lookup
+    th = load_lookup()
+    hits = th.lookup("aspirine + ibuprofene")
+    assert len(hits) > 0
+    # Vérifie que l'interaction AINS + aspirine est bien retrouvée
+    assert any("anti inflammatoires non steroidiens" in h.substance.lower() or "acide acetylsalicylique" in h.target.lower() for h in hits)
+
+
+def test_medical_advice_refusal():
+    r = Retriever()
+    is_oos, reason = r.is_out_of_scope("Quelle dose d'ibuprofène dois-je donner à mon fils de 3 ans ?")
+    assert is_oos is True
+    assert "Demande de conseil médical" in reason
+
+
+def test_unregistered_drug_detection():
+    r = Retriever()
+    is_oos, reason = r.is_out_of_scope("Quelle est la capitale de l'Algérie ?")
+    assert is_oos is True

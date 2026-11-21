@@ -1,6 +1,8 @@
 import sys
 import json
 import re
+import csv
+from collections import Counter
 from pathlib import Path
 
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -219,6 +221,53 @@ def sauvegarder_json(resultats, out_path):
         json.dump(resultats, f, ensure_ascii=False, indent=2)
 
 
+def sauvegarder_trace_parasites(pdf_path, resultats_propres, out_csv_path):
+    """Génère un fichier CSV traçant les entrées parasites identifiées et filtrées (Point 3 enseignant)."""
+    doc = pymupdf.open(pdf_path)
+    text_full = ""
+    for page in doc:
+        text_full += page.get_text("text") + "\n"
+
+    raw_blocks = re.split(r"\n(?=[A-ZÀ-Ÿ][A-ZÀ-Ÿ\s\-']{2,}\n)", text_full)
+    clean_names = {b["substance_principale"] for b in resultats_propres}
+
+    rejected = []
+    for b in raw_blocks:
+        lines = b.strip().split("\n")
+        if not lines or not lines[0].strip():
+            continue
+        h = lines[0].strip()
+        if h in clean_names:
+            continue
+
+        if LEVEL_LABELS.match(h) or re.search(r"\b(CI|ASDEC|APEC|PE|CONTRE-INDICATION)\b", h, re.I):
+            reason = "Libellé de niveau de risque (pris à tort pour une substance lors du parsing naïf en Semaine 1)"
+            category = "Niveau de risque / libellé court"
+        elif NOISE_LINES.match(h) or any(s in h.lower() for s in ("thesaurus", "septembre", "interactions medicamenteuses", "page")):
+            reason = "En-tête de page / titre de document ANSM répété"
+            category = "En-tête de document"
+        elif "HEMOSTASE" in h or "ADSORBANT" in h:
+            reason = "Titre de regroupement pharmaco-thérapeutique (classe globale non appariée)"
+            category = "Regroupement transversal"
+        elif len(h) < 4:
+            reason = "Chaîne trop courte (< 4 caractères) / artefact OCR"
+            category = "Artefact textuel"
+        else:
+            reason = "Entrée hors substance (non validée par taille de police ou structure)"
+            category = "Autre artefact"
+
+        rejected.append((h, category, reason))
+
+    counts = Counter(rejected)
+    with open(out_csv_path, "w", encoding="utf-8-sig", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["entree_parasite", "categorie", "occurrences", "motif_rejet"])
+        for (h, cat, reason), count in counts.most_common():
+            writer.writerow([h, cat, count, reason])
+
+    return len(counts), sum(counts.values())
+
+
 def sauvegarder_txt_brut(pdf_path, out_path, entete):
     """Génère un fichier texte brut avec en-tête de provenance (pour le rapport)."""
     doc = pymupdf.open(pdf_path)
@@ -250,6 +299,9 @@ def main():
                 json_path = out_dir / f"{nom}.json"
                 sauvegarder_json(resultats, json_path)
 
+                csv_parasites = out_dir / "removed_entries.csv"
+                n_uniques, n_total = sauvegarder_trace_parasites(pdf_path, resultats, csv_parasites)
+
                 n_substances = len(resultats)
                 n_interactions = sum(len(b["interactions"]) for b in resultats)
                 n_avec_niveau = sum(
@@ -259,6 +311,8 @@ def main():
                 print(f"       {n_interactions} interactions extraites.")
                 print(f"       {n_avec_niveau} avec niveau de risque identifié.")
                 print(f"       → {json_path}")
+                print(f"  [ok] Point 3 enseignant : {n_uniques} motifs parasites ({n_total} occurrences) filtrés.")
+                print(f"       → Traçabilité enregistrée dans : {csv_parasites}")
             except Exception as e:
                 print(f"  [erreur] {e}")
 

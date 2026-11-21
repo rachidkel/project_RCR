@@ -7,6 +7,7 @@ from .textnorm import norm
 
 
 THESAURUS_JSON = INTERIM / "thesaurus" / "interactions_medicamenteuses.json"
+ANPP_JSON = PROCESSED / "anpp" / "rcp_sections.json"
 NOMENCLATURE_CSV = PROCESSED / "nomenclature" / "nomenclature_active.csv"
 EMA_CSV = RAW / "ema" / "ema_medicines_clean.csv"
 DWA_CSV = RAW / "dwa" / "nomenclature_dz_clean.csv"
@@ -15,6 +16,12 @@ NOMENCLATURE_DZ_CSV = RAW / "nomenclature" / "algerian_drug_nomenclature.csv"
 
 
 SOURCES = {
+    "anpp": {
+        "source_id": "S_ANPP_RCP",
+        "source_name": "ANPP — Résumés des caractéristiques du produit (RCP officiels)",
+        "authority_rank": 1,
+        "lang": "fr",
+    },
     "thesaurus": {
         "source_id": "S_ANSM_THESAURUS",
         "source_name": "ANSM Thésaurus des interactions médicamenteuses (sept. 2023)",
@@ -73,6 +80,44 @@ def _record(source, chunk_id, doc_id, text, metadata):
         "text": text.strip(),
         "metadata": metadata,
     }
+
+
+def anpp_chunks():
+    """Un chunk par rubrique de RCP (indications, posologie, contre-indications...)."""
+    if not ANPP_JSON.exists():
+        return
+    with open(ANPP_JSON, encoding="utf-8") as f:
+        documents = json.load(f)
+
+    for document in documents:
+        product = _clean(document.get("product"))
+        dci = _clean(document.get("dci"))
+        doc_id = _clean(document.get("doc_id"))
+        for key, section in document.get("sections", {}).items():
+            # La rubrique « 1 » ne fait que répéter la dénomination : on garde
+            # 1.1 et 1.2, qui portent le nom commercial et la DCI.
+            if key == "1":
+                continue
+            text = (
+                f"RCP ANPP — {product} ({dci}) — {section.get('title', key)} : "
+                f"{section.get('text', '')}"
+            )
+            yield _record(
+                "anpp",
+                f"{doc_id}:{key}",
+                doc_id,
+                text,
+                {
+                    "product": product,
+                    "dci": dci,
+                    "section": key,
+                    "section_title": section.get("title", key),
+                    "url": _clean(document.get("url")),
+                    "collected_at": _clean(document.get("collected_at")),
+                    "sha256": _clean(document.get("sha256")),
+                    "requested_dci": _clean(document.get("requested_dci")),
+                },
+            )
 
 
 def thesaurus_chunks():
@@ -419,6 +464,7 @@ def nomenclature_dz_chunks():
 
 
 BUILDERS = {
+    "anpp": anpp_chunks,
     "thesaurus": thesaurus_chunks,
     "nomenclature": nomenclature_chunks,
     "nomenclature_dz": nomenclature_dz_chunks,

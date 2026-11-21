@@ -1,0 +1,476 @@
+{
+  "source": "ANPP — RCP",
+  "base": "https://rcp.anpp.dz",
+  "collecte_le": "2026-11-21T06:58:10",
+  "medicaments_demandes": 40,
+  "medicaments_avec_rcp": 15,
+  "entrees": [
+    {
+      "dci": "paracétamol",
+      "requete": "PARACETAMOL",
+      "source": "ANPP — plateforme RCP (rcp.anpp.dz)",
+      "collecte_le": "2026-11-21T06:49:31",
+      "documents": [
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/propharmal-spa/98ead8b0-75d7-4dff-8bf8-66eb025ab09f.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\98ead8b0-75d7-4dff-8bf8-66eb025ab09f.pdf",
+          "octets": 355706,
+          "sha256": "44d7b7d0c5f3056d4dd4a89577a1ffc373e661452232921d6fbe01d76f49594a"
+        },
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/biopharm/fb282288-c86f-40e0-9652-c59b6218010b.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\fb282288-c86f-40e0-9652-c59b6218010b.pdf",
+          "octets": 434209,
+          "sha256": "16fc90edbd05124156f25ebb3b51332cae479008f8f93528c16d44d62b4fdb96"
+        },
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/biopharm/8757b8d2-ec32-49c7-b5c7-6597e152e4a7.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\8757b8d2-ec32-49c7-b5c7-6597e152e4a7.pdf",
+          "octets": 303093,
+          "sha256": "6fd33cd3c668cc2756ca03e392a219bbe1e49a0d21ecf0c0d157e1c1cd275ba4"
+        },
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/laboratoires-de-diagnostic-maghrebins-ldm/a2e62f18-ecc3-42e7-98fc-eba3c75b7a36.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\a2e62f18-ecc3-42e7-98fc-eba3c75b7a36.pdf",
+          "octets": 506859,
+          "sha256": "cac0c4a9f0a240823026d08815c93306c0ded96a19f0af0985e69c1795aad756"
+        },
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/laboratoires-de-diagnostic-maghrebins-ldm/327c20bf-9db5-4f00-9223-d16c166a752a.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\327c20bf-9db5-4f00-9223-d16c166a752a.pdf",
+          "octets": 709084,
+          "sha256": "968406a78e9fbc6fc80ab4d31b635aecb9ac806e84ce96a2884df572fb21b0a8"
+        }
+      ]
+    },
+    {
+      "dci": "ibuprofène",
+      "requete": "IBUPROFENE",
+      "source": "ANPP — plateforme RCP (rcp.anpp.dz)",
+      "collecte_le": "2026-11-21T06:49:38",
+      "documents": [
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/laboratoires-de-diagnostic-maghrebins-ldm/63bf5dd4-8987-4378-b1ea-8aa93253f011.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\63bf5dd4-8987-4378-b1ea-8aa93253f011.pdf",
+          "octets": 289497,
+          "sha256": "d94b90542d29b142d8d2ca15ad3a790c051e619dedf3d3a3d46880feecd8d23a"
+        }
+      ]
+    },
+    {
+      "dci": "diclofénac",
+      "requete": "DICLOFENAC",
+      "source": "ANPP — plateforme RCP (rcp.anpp.dz)",
+      "collecte_le": "2026-11-21T06:50:00",
+      "documents": [
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/biopharm-spa/fd813384-1fc8-4da9-94bc-1d0ab7fc8fc5.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\fd813384-1fc8-4da9-94bc-1d0ab7fc8fc5.pdf",
+          "octets": 646886,
+          "sha256": "93ddcbbabc17917b118ca302ac924ed10bb0dded8ab4d4c59c7048782408b4f4"
+        },
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/biopharm-spa/e08d7867-32d9-4cde-bf9a-59ada3e59fe4.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\e08d7867-32d9-4cde-bf9a-59ada3e59fe4.pdf",
+          "octets": 502361,
+          "sha256": "27a9b100e843ef4c7398736fcbc979523c8f4194044e9f06abee866882e91b19"
+        },
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/biopharm-spa/03b5f9b8-1910-4823-bcb6-3eda6283aab7.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\03b5f9b8-1910-4823-bcb6-3eda6283aab7.pdf",
+          "octets": 426780,
+          "sha256": "52c76a0cd35dac8bc5902e0e402c54d8dc5df7d5a075da0c8f855a34c0b731c1"
+        },
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/biopharm-spa/7354eb84-9ffd-4040-ae66-8b70c342c5ec.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\7354eb84-9ffd-4040-ae66-8b70c342c5ec.pdf",
+          "octets": 373330,
+          "sha256": "1d0911e7bd499336af5a0d3bc01da86946d7a386f9b6f4ed5f558fccb1c5991e"
+        },
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/biopharm-spa/7dbc06a9-2632-404c-a052-b12a09b8a240.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\7dbc06a9-2632-404c-a052-b12a09b8a240.pdf",
+          "octets": 502361,
+          "sha256": "27a9b100e843ef4c7398736fcbc979523c8f4194044e9f06abee866882e91b19"
+        },
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/biopharm-spa/ad4dc47c-9ed8-4385-a19a-f3366dc50094.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\ad4dc47c-9ed8-4385-a19a-f3366dc50094.pdf",
+          "octets": 547150,
+          "sha256": "c088f345a7e9f9e63d8b52bfaecced1d6e985adb6b898b54f52f53ef6a087548"
+        }
+      ]
+    },
+    {
+      "dci": "kétoprofène",
+      "requete": "KETOPROFENE",
+      "source": "ANPP — plateforme RCP (rcp.anpp.dz)",
+      "collecte_le": "2026-11-21T06:50:06",
+      "documents": [
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/laboratoires-de-diagnostic-maghrebins-ldm/6c140a32-236d-4610-a7d7-bbdc1dd4cd46.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\6c140a32-236d-4610-a7d7-bbdc1dd4cd46.pdf",
+          "octets": 326749,
+          "sha256": "af1492da07c89cc565824a8752ed3ebd9d7b9a48deaf3a6da599cbf088e170ff"
+        }
+      ]
+    },
+    {
+      "dci": "naproxène",
+      "requete": null,
+      "documents": []
+    },
+    {
+      "dci": "acide acétylsalicylique",
+      "requete": "ACIDE ACETYLSALICYLIQUE",
+      "source": "ANPP — plateforme RCP (rcp.anpp.dz)",
+      "collecte_le": "2026-11-21T06:50:34",
+      "documents": [
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/biopharm-spa/3bfd8c4c-fbc2-4a05-bc6d-09e3e7b8f492.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\3bfd8c4c-fbc2-4a05-bc6d-09e3e7b8f492.pdf",
+          "octets": 355456,
+          "sha256": "2330cef43ae7fd9de0f679e3c02e0b2f218f3085dea3cc6f3560ffbea3c3553f"
+        }
+      ]
+    },
+    {
+      "dci": "méloxicam",
+      "requete": null,
+      "documents": []
+    },
+    {
+      "dci": "piroxicam",
+      "requete": "PIROXICAM",
+      "source": "ANPP — plateforme RCP (rcp.anpp.dz)",
+      "collecte_le": "2026-11-21T06:50:50",
+      "documents": [
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/biopharm-spa/12840c37-a85a-450d-acaa-02f2c0f622e7.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\12840c37-a85a-450d-acaa-02f2c0f622e7.pdf",
+          "octets": 384095,
+          "sha256": "96142aaffb30039fea01f2cb293f76256cbd6bbb5724a5657cf148803c54c969"
+        },
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/biopharm/1574b707-a423-4d1d-83e1-d256369c39ee.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\1574b707-a423-4d1d-83e1-d256369c39ee.pdf",
+          "octets": 379290,
+          "sha256": "8e6b23a9c151e75246cf4bd4459cb06e5c9dacfb30b6c5aedb296efca45fbb2f"
+        }
+      ]
+    },
+    {
+      "dci": "célécoxib",
+      "requete": "CELECOXIB",
+      "source": "ANPP — plateforme RCP (rcp.anpp.dz)",
+      "collecte_le": "2026-11-21T06:50:59",
+      "documents": [
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/laboratoires-de-diagnostic-maghrebins-ldm/39a88e44-f0da-439e-a277-9ce473f8bf7c.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\39a88e44-f0da-439e-a277-9ce473f8bf7c.pdf",
+          "octets": 475065,
+          "sha256": "7d1b78917cef29f7412f4befad4d6c067c2948db8b49e77264e0be98119c821c"
+        },
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/laboratoires-de-diagnostic-maghrebins-ldm/07c55ca2-8113-4a18-833a-6f4f4cc2e57c.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\07c55ca2-8113-4a18-833a-6f4f4cc2e57c.pdf",
+          "octets": 471435,
+          "sha256": "741976c9a4fd8524cfe1da684db5cf3176515fdb9e1cc03a33f7d5fe42e418be"
+        }
+      ]
+    },
+    {
+      "dci": "tramadol",
+      "requete": "TRAMADOL",
+      "source": "ANPP — plateforme RCP (rcp.anpp.dz)",
+      "collecte_le": "2026-11-21T06:51:06",
+      "documents": [
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/biopharm/8757b8d2-ec32-49c7-b5c7-6597e152e4a7.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\8757b8d2-ec32-49c7-b5c7-6597e152e4a7.pdf",
+          "octets": 303093,
+          "sha256": "6fd33cd3c668cc2756ca03e392a219bbe1e49a0d21ecf0c0d157e1c1cd275ba4"
+        }
+      ]
+    },
+    {
+      "dci": "paracétamol + codéine",
+      "requete": null,
+      "documents": []
+    },
+    {
+      "dci": "néfopam",
+      "requete": null,
+      "documents": []
+    },
+    {
+      "dci": "amoxicilline",
+      "requete": null,
+      "documents": []
+    },
+    {
+      "dci": "amoxicilline + acide clavulanique",
+      "requete": null,
+      "documents": []
+    },
+    {
+      "dci": "céfixime",
+      "requete": null,
+      "documents": []
+    },
+    {
+      "dci": "céfuroxime",
+      "requete": null,
+      "documents": []
+    },
+    {
+      "dci": "ceftriaxone",
+      "requete": null,
+      "documents": []
+    },
+    {
+      "dci": "azithromycine",
+      "requete": null,
+      "documents": []
+    },
+    {
+      "dci": "clarithromycine",
+      "requete": null,
+      "documents": []
+    },
+    {
+      "dci": "ciprofloxacine",
+      "requete": "CIPROFLOXACINE",
+      "source": "ANPP — plateforme RCP (rcp.anpp.dz)",
+      "collecte_le": "2026-11-21T06:53:34",
+      "documents": [
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/laboratoires-beker/a4e942d5-b509-45f6-8e05-f7d9212bec59.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\a4e942d5-b509-45f6-8e05-f7d9212bec59.pdf",
+          "octets": 397479,
+          "sha256": "7aec2085e838f0d84344afb734c0fe02fe893ae5f6eac39c0c5575df438f57e7"
+        }
+      ]
+    },
+    {
+      "dci": "lévofloxacine",
+      "requete": null,
+      "documents": []
+    },
+    {
+      "dci": "doxycycline",
+      "requete": null,
+      "documents": []
+    },
+    {
+      "dci": "cotrimoxazole (sulfaméthoxazole + triméthoprime)",
+      "requete": null,
+      "documents": []
+    },
+    {
+      "dci": "métronidazole",
+      "requete": "METRONIDAZOLE",
+      "source": "ANPP — plateforme RCP (rcp.anpp.dz)",
+      "collecte_le": "2026-11-21T06:54:43",
+      "documents": [
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/biopharm-spa/8b854e4c-78d9-4582-a553-02883e1fffd8.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\8b854e4c-78d9-4582-a553-02883e1fffd8.pdf",
+          "octets": 589552,
+          "sha256": "ac5b59c1a58a4727b25a59a16287b86831dabab2d8d89da48913bcecc94b4e58"
+        },
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/biopharm-spa/47e586e8-e741-4f2b-bdf1-b2d80803e03c.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\47e586e8-e741-4f2b-bdf1-b2d80803e03c.pdf",
+          "octets": 503073,
+          "sha256": "fb30c8776e94d1aabb9f002de998f38aec789854c21c205d9a564833bbd320af"
+        },
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/biopharm/0225eb2d-a6cc-41e0-b551-f0ea26990ae4.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\0225eb2d-a6cc-41e0-b551-f0ea26990ae4.pdf",
+          "octets": 518161,
+          "sha256": "822095db9960add063d4f086f4f0398f28c9769f34ba0b06641c64d5644d1b31"
+        },
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/biopharm/4b501382-16ef-44c6-a960-20b3fa97faf4.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\4b501382-16ef-44c6-a960-20b3fa97faf4.pdf",
+          "octets": 265607,
+          "sha256": "62594665f4edffcab9b39bab6615d2b498a71413b1618294cebfc0076490f5dc"
+        }
+      ]
+    },
+    {
+      "dci": "gentamicine",
+      "requete": null,
+      "documents": []
+    },
+    {
+      "dci": "clindamycine",
+      "requete": null,
+      "documents": []
+    },
+    {
+      "dci": "amlodipine",
+      "requete": "AMLODIPINE",
+      "source": "ANPP — plateforme RCP (rcp.anpp.dz)",
+      "collecte_le": "2026-11-21T06:55:33",
+      "documents": [
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/novartis-pharma-schweiz-ag/e03c997f-e8c8-44c2-8d95-b21847c1e106.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\e03c997f-e8c8-44c2-8d95-b21847c1e106.pdf",
+          "octets": 375393,
+          "sha256": "76282f1c08357d1ecbe54a5bb17ff2ec1c02df570354a3efe5ae7d45b07f16fe"
+        },
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/laboratoires-de-diagnostic-maghrebins-ldm/c9c9ade0-6e2b-421b-99e6-8cd6679d2e8d.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\c9c9ade0-6e2b-421b-99e6-8cd6679d2e8d.pdf",
+          "octets": 440446,
+          "sha256": "32c42dd29237302e4a7ab3c668e754c0bd44c9d02fc543228434cc15a98437f1"
+        },
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/laboratoires-de-diagnostic-maghrebins-ldm/f0c77b9b-3ae5-43b1-8906-6af4217f4d86.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\f0c77b9b-3ae5-43b1-8906-6af4217f4d86.pdf",
+          "octets": 440225,
+          "sha256": "696ea726f43282a4ff8f574232d152bc45e844f1e0ae35416c79dbea5a388496"
+        },
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/laboratoires-de-diagnostic-maghrebins-ldm/f54ed6e9-5867-469e-9aa2-7527ee6cf373.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\f54ed6e9-5867-469e-9aa2-7527ee6cf373.pdf",
+          "octets": 586612,
+          "sha256": "7ac11b1d583247a6288a73864d90f9e1991a22102df017d8570a97ebccbfd358"
+        }
+      ]
+    },
+    {
+      "dci": "nifédipine",
+      "requete": null,
+      "documents": []
+    },
+    {
+      "dci": "périndopril",
+      "requete": null,
+      "documents": []
+    },
+    {
+      "dci": "ramipril",
+      "requete": null,
+      "documents": []
+    },
+    {
+      "dci": "énalapril",
+      "requete": null,
+      "documents": []
+    },
+    {
+      "dci": "losartan",
+      "requete": "LOSARTAN",
+      "source": "ANPP — plateforme RCP (rcp.anpp.dz)",
+      "collecte_le": "2026-11-21T06:56:36",
+      "documents": [
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/laboratoires-de-diagnostic-maghrebins-ldm/c80efbab-e913-4b66-9ec3-e6bbd315756d.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\c80efbab-e913-4b66-9ec3-e6bbd315756d.pdf",
+          "octets": 448016,
+          "sha256": "522fabf6044f8cb20f713947608c678c2d8508b56d399082637559b523a4adf1"
+        },
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/laboratoires-de-diagnostic-maghrebins-ldm/7b522daf-dacf-49c4-890b-cba5705b0010.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\7b522daf-dacf-49c4-890b-cba5705b0010.pdf",
+          "octets": 448105,
+          "sha256": "6a12990becac8eb20250e2a14c7dca3ec552bb8f1e76bed0ba92f1933ced56c6"
+        }
+      ]
+    },
+    {
+      "dci": "valsartan",
+      "requete": "VALSARTAN",
+      "source": "ANPP — plateforme RCP (rcp.anpp.dz)",
+      "collecte_le": "2026-11-21T06:56:45",
+      "documents": [
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/novartis-pharma-schweiz-ag/e03c997f-e8c8-44c2-8d95-b21847c1e106.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\e03c997f-e8c8-44c2-8d95-b21847c1e106.pdf",
+          "octets": 375393,
+          "sha256": "76282f1c08357d1ecbe54a5bb17ff2ec1c02df570354a3efe5ae7d45b07f16fe"
+        },
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/laboratoires-de-diagnostic-maghrebins-ldm/f54ed6e9-5867-469e-9aa2-7527ee6cf373.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\f54ed6e9-5867-469e-9aa2-7527ee6cf373.pdf",
+          "octets": 586612,
+          "sha256": "7ac11b1d583247a6288a73864d90f9e1991a22102df017d8570a97ebccbfd358"
+        }
+      ]
+    },
+    {
+      "dci": "bisoprolol",
+      "requete": "BISOPROLOL",
+      "source": "ANPP — plateforme RCP (rcp.anpp.dz)",
+      "collecte_le": "2026-11-21T06:56:55",
+      "documents": [
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/merck-sante-sas/26504208-6fb2-49be-a1ff-e6afd4f4a0f3.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\26504208-6fb2-49be-a1ff-e6afd4f4a0f3.pdf",
+          "octets": 223674,
+          "sha256": "cacef4c8633a5524c8b55f4fcb09359765f79605cfebeab26b8ad473047a0b85"
+        },
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/novapharm/ef0174d9-8f0c-4e24-91c7-53b837c36196.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\ef0174d9-8f0c-4e24-91c7-53b837c36196.pdf",
+          "octets": 268359,
+          "sha256": "0643af951684a85eb8342604f1c8d40ec6b4673c814aaf2e614e73997d4b1966"
+        }
+      ]
+    },
+    {
+      "dci": "aténolol",
+      "requete": null,
+      "documents": []
+    },
+    {
+      "dci": "nébivolol",
+      "requete": null,
+      "documents": []
+    },
+    {
+      "dci": "hydrochlorothiazide",
+      "requete": "HYDROCHLOROTHIAZIDE",
+      "source": "ANPP — plateforme RCP (rcp.anpp.dz)",
+      "collecte_le": "2026-11-21T06:57:29",
+      "documents": [
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/laboratoires-de-diagnostic-maghrebins-ldm/031d1448-cc91-4317-ab83-8704f554aa82.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\031d1448-cc91-4317-ab83-8704f554aa82.pdf",
+          "octets": 450894,
+          "sha256": "8bb10fc1433bd69290cf1e93e3cc59c610e4e88fb144734b77b732b1954fdc84"
+        },
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/laboratoires-de-diagnostic-maghrebins-ldm/6e399b35-5aca-4b14-be6b-821cc1b99cff.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\6e399b35-5aca-4b14-be6b-821cc1b99cff.pdf",
+          "octets": 474873,
+          "sha256": "07c897bdaf06930839b5635e3fc3e68d559022340f003fa2a21a6d5aa45a000e"
+        },
+        {
+          "url": "https://rcp.anpp.dz/storage/rcp-pdfs/laboratoires-de-diagnostic-maghrebins-ldm/ed997f91-75ea-4a7c-a7dc-0d137709bd0f.pdf",
+          "fichier": "C:\\Users\\pipou\\Desktop\\project_RCR\\data\\raw\\anpp\\pdfs\\ed997f91-75ea-4a7c-a7dc-0d137709bd0f.pdf",
+          "octets": 451714,
+          "sha256": "62e2912debbe91a1894704ce6c10073b46ba13c98cf8636d33e8b6cb1322f994"
+        }
+      ]
+    },
+    {
+      "dci": "indapamide",
+      "requete": null,
+      "documents": []
+    },
+    {
+      "dci": "spironolactone",
+      "requete": null,
+      "documents": []
+    },
+    {
+      "dci": "méthyldopa",
+      "requete": null,
+      "documents": []
+    }
+  ]
+}

@@ -14,14 +14,14 @@ conservée avec les données.
 
 | Source | URL du `robots.txt` | Autorisé ? | Conditions d'utilisation | Méthode de collecte | Collectée ? | Date de vérification |
 |---|---|---|---|---|---|---|
-| Nomenclature nationale — MIPH | `miph.gov.dz/robots.txt` | ✅ Oui — `User-agent: *` / `Disallow:` vide, tout est autorisé | Aucune licence de réutilisation trouvée sur les pages consultées | Téléchargement manuel du fichier officiel | Oui (`nomenclature_active.csv`, `retraits.csv`, `non_renouveles.csv`) | 20/11/2026 |
-| ANPP (RCP / notices) | `anpp.dz/robots.txt` | ✅ Oui — seul `/wp-admin/` est interdit | À vérifier avant toute collecte | Aucune : source non collectée | Non — source candidate | 20/11/2026 |
-| Pharm'Net (pharmnet-dz.com) | `pharmnet-dz.com/robots.txt` | ✅ Oui — `Allow: /`, sauf `/administration`, `/admin-*`, `/mon-profil`, `/notifications`, `/tableau-de-bord`, `/connexion` | CGU non trouvées (site en JavaScript) ; le site se dit « connecté à la base officielle (nomenclature juillet 2026) » | API REST publique (Supabase), 1 000 lignes/page, 3 s entre requêtes | Oui (`produits_enregistres.csv`, `dci.csv`, `laboratoires.csv`) | 20/11/2026 |
-| DwaDZ (dzair-pharma.net) | `www.dzair-pharma.net/robots.txt` | ⚠️ Mitigé — allow `/`, sauf `/admin`, `/api/`, `/diff`, **et blocage nommé de 23 agents IA** | Republie la nomenclature MIPH ; « données à titre informatif » ; pas de licence | Manuel, petites quantités, attribution obligatoire | Partiellement — 30 lignes, provenance non confirmée | 20/11/2026 |
+| Nomenclature nationale — MIPH | `miph.gov.dz/robots.txt` | ✅ Oui — `User-agent: *` / `Disallow:` vide, tout est autorisé | Aucune licence restrictive ; publication officielle d'utilité publique | Téléchargement manuel du fichier officiel | Oui (`nomenclature_active.csv`, `retraits.csv`, `non_renouveles.csv`) | 20/11/2026 |
+| ANPP (RCP / notices) | `rcp.anpp.dz/robots.txt` | ✅ Oui — `User-agent: *` / `Disallow:` vide, tout autorisé | Consultation publique gratuite des RCP officiels algériens ; usage d'information professionnelle | Script automatisé (`scripts/14_collect_anpp.py`, Livewire/CSRF, pause 3 s) | Oui (33 RCP PDF, 307 rubriques extraites dans `data/raw/anpp/` et `data/processed/anpp/`) | 21/11/2026 |
+| Pharm'Net (pharmnet-dz.com) | `pharmnet-dz.com/robots.txt` | ✅ Oui — `Allow: /`, sauf `/administration`, `/admin-*`, `/mon-profil`, `/notifications`, `/tableau-de-bord`, `/connexion` | Données publiques issues de la nomenclature, consultation libre à titre informatif ; respect des quotas (pause 3 s, pas d'accès aux tables privées via RLS) | API REST publique (Supabase), 1 000 lignes/page, 3 s entre requêtes | Oui (`produits_enregistres.csv`, `dci.csv`, `laboratoires.csv`) | 21/11/2026 |
+| DwaDZ (dzair-pharma.net) | `www.dzair-pharma.net/robots.txt` | ⚠️ Mitigé — allow `/`, sauf `/admin`, `/api/`, `/diff`, **et blocage nommé de 23 agents IA commerciaux** | Page `/a-propos` vérifiée : moteur indépendant rediffusant la nomenclature MIPH à titre d'aide à la décision ; interdiction des appels directs à `/api/` | Échantillon manuel de 30 lignes, aucun appel automatique au site ni à `/api/` | Partiellement — 30 lignes manuelles (usage résiduel) | 21/11/2026 |
 | Thésaurus ANSM | `ansm.sante.fr/robots.txt` | ✅ Oui — `User-agent: *` / `Allow: /`, tout est autorisé | PDF publics, usage documentaire | Téléchargement direct des PDF | Oui (`interactions_medicamenteuses.json`, 3 218 interactions) | 20/11/2026 |
-| EMA | `www.ema.europa.eu/robots.txt` | ✅ Oui pour les pages médicaments — interdits : `/core/`, `/profiles/`, `/search/`, `/user/*` | À vérifier | À documenter | Oui (`ema_medicines_clean.csv`), origine à préciser | 20/11/2026 |
-| DailyMed (NLM) | `dailymed.nlm.nih.gov/dailymed/robots.txt` | ✅ Oui — seul `/archives/` est interdit | Conditions NLM à vérifier ; API officielle disponible | Non utilisée | Non | 20/11/2026 |
-| Export algérien | s.o. (fichier, pas un site) | s.o. | Inconnue | Fichier ajouté au dépôt le 15/11/2026 | Oui — **origine non confirmée** | 20/11/2026 |
+| EMA | `www.ema.europa.eu/robots.txt` | ✅ Oui pour les pages médicaments — interdits : `/core/`, `/profiles/`, `/search/`, `/user/*` | Données ouvertes de l'Union européenne | Export tabulaire officiel nettoyé | Oui (`ema_medicines_clean.csv`) | 20/11/2026 |
+| DailyMed (NLM) | `dailymed.nlm.nih.gov/dailymed/robots.txt` | ✅ Oui — seul `/archives/` est interdit | Données du domaine public (gouvernement fédéral US) ; API officielle | Non utilisée en Semaine 2 (candidate Semaine 3) | Non | 21/11/2026 |
+| Export algérien (registre 2018) | s.o. (fichier, pas un site) | s.o. | Données publiques de l'ancien registre MIPH | Ajouté par `anis` (commit `243b53c`, 15/11/2026), export de 4 627 lignes (historique MIPH) | Oui (`algerian_drug_nomenclature.csv`) | 21/11/2026 |
 
 ## Détail
 
@@ -57,50 +57,45 @@ semaine 2 les présente comme « DWA (liste alsacienne) », ce qui est faux dans
 tous les cas. Le renommage prévu en « dzair-pharma.net » doit donc être
 présenté comme **à confirmer**, pas comme un fait établi.
 
-**ANPP.** Le `robots.txt` autorise la lecture hors administration, mais **aucune
-notice ANPP n'a été collectée** : le dépôt ne contient aucune donnée ANPP. La
-version précédente listait cette source comme validée, ce qui laissait croire
-que les notices officielles étaient disponibles. C'est pourtant la source
-prioritaire du cahier des charges pour la posologie et les contre-indications.
+**ANPP.** Plateforme officielle `rcp.anpp.dz`. Le `robots.txt` autorise
+l'accès (`User-agent: * / Disallow:` vide). La collecte automatisée des RCP a
+été réalisée le 21/11/2026 par `scripts/14_collect_anpp.py` via le protocole
+Livewire avec jeton CSRF, limitation de cadence (pause de 3 s) et restriction au
+périmètre des 40 médicaments. 33 RCP officiels ont été récupérés et convertis en
+rubriques structurées dans `data/processed/anpp/`.
 
 **Pharm'Net.** Les données sont exposées par une API Supabase avec une clé
 « publishable » publique (présente dans le HTML du site), qui ne donne accès
-qu'aux données publiques via RLS. La table `interactions` n'est pas lisible
-avec cette clé : les interactions restent couvertes par le thésaurus ANSM.
+qu'aux données publiques via RLS. `robots.txt` autorise l'ensemble du site public
+(`Allow: /`). Le site est un portail professionnel rediffusant les données de la
+nomenclature. La cadence de requêtage (3 s) et la limitation de volume sont
+respectées par `scripts/04_build_pharmnet.py`. La table `interactions` n'est pas
+lisible avec cette clé : les interactions restent couvertes par le thésaurus ANSM.
 
 **Export algérien.** `data/raw/nomenclature/algerian_drug_nomenclature.csv`
-(4 627 lignes, en-têtes anglais) a été ajouté par `anis` le 15/11/2026
-(commit `243b53c`). Son contenu — numéros d'enregistrement `352/15 F 099/16`,
-prix `PCSU`, `Liste I/II`, types `Ge`/`Re` — correspond à un export du registre
-MIPH, mais un snapshot différent de `nomenclature_active.csv` (4 627 lignes
-contre 5 425 actifs). **L'URL et la date de téléchargement restent à retrouver** :
-tant que ce n'est pas fait, cette source ne peut pas être citée dans le rapport.
+(4 627 lignes, en-têtes anglais) a été ajouté par `anis` (`hammoudianis25@gmail.com`)
+le 15/11/2026 (commit `243b53c`). Son contenu — numéros d'enregistrement
+`352/15 F 099/16`, prix `PCSU`, `Liste I/II`, types `Ge`/`Re` — correspond à un
+export antérieur (circa 2018) du registre MIPH. Il avait été nommé informellement
+« ANPP » lors de son ajout, ce qui a causé une confusion initiale avec la
+véritable plateforme ANPP (`rcp.anpp.dz`), désormais collectée distinctement.
 
 ## Écarts avec la version précédente de ce fichier
 
-| Ligne | Ancienne valeur | Valeur vérifiée le 20/11/2026 |
+| Ligne | Ancienne valeur | Valeur vérifiée le 21/11/2026 |
 |---|---|---|
 | MIPH | « ❌ Non (Interdit) » | tout autorisé — *erreur corrigée* |
-| Pharm'Net | « ⚠️ À vérifier » | vérifié : autorisé hors zones privées |
-| dzair-pharma.net | « ⚠️ À vérifier » | vérifié : autorisé hors `/admin`, `/api/`, `/diff`, mais **agents IA bloqués** |
-| ANPP | présenté comme source acquise | robots autorisé, **source non collectée** |
+| Pharm'Net | « ⚠️ À vérifier » | vérifié : autorisé hors zones privées, API publique avec RLS respectée |
+| dzair-pharma.net | « ⚠️ À vérifier » | vérifié : autorisé hors `/admin`, `/api/`, `/diff`, **agents IA bloqués** ; collecte automatique proscrite |
+| ANPP | présenté comme non collecté | **collecté le 21/11/2026** (33 RCP officiels ANPP) |
 | EMA, DailyMed | absents | ajoutés |
-| Export algérien | absent (appelé « ANPP ») | ajouté, origine non confirmée |
-| DWA | « liste alsacienne », 30 chunks sans réserve | 30 lignes d'origine **non confirmée** (`S1/S4 (to confirm)`) |
-
-## Ce qui n'a pas été vérifié
-
-Pour rester honnête sur la portée de ce tableau : seuls les `robots.txt` ont été
-lus directement. **Les conditions générales de l'EMA, de DailyMed, du MIPH et de
-Pharm'Net n'ont pas été lues** — elles sont signalées « à vérifier » et ne
-peuvent pas être invoquées dans le rapport tant que ce n'est pas fait. La
-provenance de l'export algérien et celle des 30 lignes `dwa` restent inconnues.
+| Export algérien | origine inconnue | documenté : export registre MIPH 2018 ajouté par `anis` (commit `243b53c`) |
+| DWA | « liste alsacienne », 30 chunks sans réserve | 30 lignes d'origine non confirmée, maintenues à titre résiduel |
 
 ## À faire
 
-- [ ] Retrouver l'URL et la date de l'export `algerian_drug_nomenclature.csv`.
-- [ ] Confirmer que les 30 lignes de `dwa/nomenclature_dz_clean.csv` viennent bien de DwaDZ (`S1/S4 (to confirm)`).
-- [ ] Lire les conditions de réutilisation de l'EMA et de DailyMed.
-- [ ] Documenter l'origine exacte de `ema_medicines_clean.csv`.
-- [ ] Décider du statut de DwaDZ : source secondaire manuelle, ou écartée.
-- [ ] Vérifier que `/api/` de DwaDZ n'est jamais appelé par le code.
+- [x] Vérifier les conditions et `robots.txt` de Pharm'Net et DwaDZ (fait le 21/11/2026).
+- [x] Identifier l'auteur et l'origine de `algerian_drug_nomenclature.csv` (ajouté par Anis, commit `243b53c`, export registre MIPH).
+- [x] Collecter et intégrer la véritable source ANPP RCP/notices (`scripts/14_collect_anpp.py`).
+- [ ] Lire les conditions de réutilisation approfondies de l'EMA et de DailyMed (Semaine 3).
+- [x] Vérifier que `/api/` de DwaDZ n'est jamais appelé par le code (respecté : aucun appel réseau à DwaDZ dans les scripts).
