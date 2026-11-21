@@ -1,0 +1,46 @@
+﻿saisie,categorie,description,attendu,trouve,methode,score,ambigu,alternatives,est_cle_exacte,verdict
+dolipran 1g,faute_frappe,Omission du 'e' final,PARACETAMOL,PARACETAMOL,flou,96.0,non,,non,ok
+dolipranne,faute_frappe,Redoublement erroné de consonne,PARACETAMOL,PARACETAMOL,marque,97.0,non,,non,ok
+paracetamole 500,faute_frappe,Ajout d'un 'e' final muet,PARACETAMOL,PARACETAMOL,flou,95.7,non,,non,ok
+paracetmol comprime,faute_frappe,Omission de la voyelle 'a',PARACETAMOL,PARACETAMOL,flou,95.2,non,,non,ok
+eferalgan 500,faute_frappe,Consonne simple 'f',PARACETAMOL,PARACETAMOL,marque,97.0,non,,non,ok
+augmantin 1g,faute_frappe,Phonétique 'an' au lieu de 'en',ACIDE CLAVULANIQUE + AMOXICILLINE,AMOXICILLINE + ACIDE CLAVULANIQUE,flou,88.9,non,,non,ok
+clamoxyl 1g,faute_frappe,Variante commerciale Clamoxyl,AMOXICILLINE,AMOXICILLINE,marque,100.0,non,,oui,ok
+profeind 100,faute_frappe,Inversion de lettres 'in',KETOPROFENE,IBUPROFENE,flou,90.0,oui,KETOPROFENE,non,ambigu_mauvais_candidat
+voltaren 50,faute_frappe,Forme sans 'e' final,DICLOFENAC,DICLOFENAC,flou,96.0,non,,non,ok
+amlor 5mg,faute_frappe,Marque usuelle d'amlodipine,AMLODIPINE,AMLODIPINE,marque,100.0,non,,oui,ok
+triateck 5,faute_frappe,Ajout d'un 'k' final,RAMIPRIL,RAMIPRIL,flou,93.3,non,,non,ok
+flagyle 500,faute_frappe,Ajout d'un 'e' final,METRONIDAZOLE,METRONIDAZOLE,flou,92.3,non,,non,ok
+claridare 500,faute_frappe,Graphie phonétique 'are',CLARITHROMYCINE,AUCUN,aucune,0.0,non,,non,non_trouve
+ciprodare 500,faute_frappe,Graphie phonétique 'are',CIPROFLOXACINE,CIPROFLOXACINE HDROCHLORIDE,flou,94.1,oui,CIPROFLOXACINE,non,ambigu_mauvais_candidat
+cardenciel 2.5,faute_frappe,Orthographe erronée avec 'c',BISOPROLOL,BISOPROLOL,flou,90.0,non,,non,ok
+aldomette 250,faute_frappe,Terminaison féminisée 'ette',METHYLDOPA,METHYLDOPA,flou,87.5,non,,non,ok
+lasilixe 40,faute_frappe,Furosémide (hors 40 mais résolu),FUROSEMIDE,AUCUN,aucune,0.0,non,,non,non_trouve
+doliprane sirop bebe,langage_naturel,Termes usagers 'sirop bebe',PARACETAMOL,PARACETAMOL,marque,100.0,non,,oui,ok
+efferalgan effervescent 1g,langage_naturel,Qualificatif 'effervescent',PARACETAMOL,PARACETAMOL,marque,100.0,non,,oui,ok
+cachet amoxicilline 500,langage_naturel,Terme populaire 'cachet',AMOXICILLINE,AMOXICILLINE,dci,100.0,non,,oui,ok
+amoxicilline acide clavulanique sachet,langage_naturel,Association avec forme,ACIDE CLAVULANIQUE + AMOXICILLINE,AMOXICILLINE + ACIDE CLAVULANIQUE,contient,95.0,non,,non,ok
+aspirine protect 100,langage_naturel,Spécialité cardiologique,ACIDE ACETYLSALICYLIQUE,ACIDE ACETYLSALICYLIQUE + ACIDE ASCORBIQUE,flou,85.5,non,,non,erreur_silencieuse
+aspegic nourrisson,langage_naturel,Nom usuel pédiatrique,ACIDE ACETYLSALICYLIQUE,ACIDE ACETYLSALICYLIQUE,alias,100.0,non,,oui,ok
+pommade voltarene,langage_naturel,Mention topique 'pommade',DICLOFENAC,DICLOFENAC,marque,100.0,non,,oui,ok
+comprime amlodipine 10mg,langage_naturel,DCI avec forme et dosage,AMLODIPINE,AMLODIPINE,dci,100.0,non,,oui,ok
+gelule clarithromycine 500,langage_naturel,DCI avec forme,CLARITHROMYCINE,CLARITHROMYCINE,dci,100.0,non,,oui,ok
+panadol extra,langage_naturel,Spécialité algérienne associant caféine,PARACETAMOL + CAFEINE,PARACETAMOL + CAFEINE,marque,100.0,non,,oui,ok
+spasfon lyoc,langage_naturel,Phloroglucinol (hors 40 mais résolu),PHLOROGLUCINOL,PHLOROGLUCINOL,flou,92.3,non,,non,ok
+amlo 10 mg,abreviation,Abréviation usuelle d'amlodipine,AMLODIPINE,AMLODIPINE,flou,96.0,oui,AMLODIPINE + IRBESARTAN | AMLODIPINE + VALSARTAN,non,ok_avec_alerte
+amox,ambigu_abreviation,Amox seul vs Amox+Clav : ambiguïté,AMOXICILLINE,AMOXICILLINE,flou,96.0,oui,AMOXICILLINE + ACIDE CLAVULANIQUE | CEFALEXINE | FAMOTIDINE | TAMOXIFENE,non,ok
+clari 250,ambigu_abreviation,Clarithromycine vs autres,CLARITHROMYCINE,CLARITHROMYCINE,flou,96.0,oui,ACIDE GADOTERIQUE,non,ok
+cortyx,ambigu_catalogue,Marque multi-molécules dans le catalogue,AUCUN (rejet),BETAMETHASONE,marque,100.0,oui,BETAMETHASONE DIPROPIONATE | BETAMETHASONE VALERATE,oui,ok
+nurofen 400,hors_catalogue,Marque d'ibuprofène non enregistrée au MIPH,AUCUN (rejet),AUCUN,aucune,0.0,non,,non,ok
+advil 200mg,hors_catalogue,Marque d'ibuprofène non enregistrée au MIPH,AUCUN (rejet),AUCUN,aucune,0.0,non,,non,ok
+teldane 60,hors_catalogue,Ancien antihistaminique retiré du marché,AUCUN (rejet),AUCUN,aucune,0.0,non,,non,ok
+ventoline spray,hors_perimetre,Salbutamol hors des 40,SALBUTAMOL,SALBUTAMOL,contient,95.0,non,,non,ok
+metformine 850,hors_perimetre,Antidiabétique hors des 40,METFORMINE,METFORMINE,dci,100.0,non,,oui,ok
+omeprazole 20mg,hors_perimetre,IPP hors des 40,OMEPRAZOLE,OMEPRAZOLE,dci,100.0,non,,oui,ok
+atorvastatine 20,hors_perimetre,Statine hors des 40,ATORVASTATINE,ATORVASTATINE,dci,100.0,non,,oui,ok
+mal de tete intense,symptome,"Plainte symptomatique, pas un médicament",AUCUN (rejet),CHLORURE BENZALKONIUM + LIDOCAINE,flou,85.5,non,,non,faux_positif
+fievre et courbatures,symptome,Plainte symptomatique,AUCUN (rejet),AUCUN,aucune,0.0,non,,non,ok
+shampoing antipelliculaire,non_medical,Produit cosmétique,AUCUN (rejet),AUCUN,aucune,0.0,non,,non,ok
+pansement sterile,non_medical,Dispositif médical,AUCUN (rejet),AUCUN,aucune,0.0,non,,non,ok
+xyzabc 123,bruit_pur,Chaîne aléatoire,AUCUN (rejet),AUCUN,aucune,0.0,non,,non,ok
+azertyuiop,bruit_pur,Frappe clavier aléatoire,AUCUN (rejet),AUCUN,aucune,0.0,non,,non,ok

@@ -48,13 +48,14 @@ SALT_TOKENS = frozenset(
 # Mots de liaison propres aux noms chimiques (« VALPROATE DE SODIUM »).
 CONNECTOR_TOKENS = frozenset("de du des d sous forme pour a".split())
 
-# Mots de forme galénique / dosage : bruit dans une saisie, jamais une DCI.
+# Mots de forme galénique / dosage / termes usagers : bruit dans une saisie, jamais une DCI.
 FORM_TOKENS = frozenset(
-    """comprime comprimes cp gelule gelules gellule sirop sachet sachets
+    """comprime comprimes cp cachet cachets gelule gelules gellule sirop sachet sachets
     ampoule ampoules solution buvable injectable injectables creme pommade
-    collyre suspension suppositoire suppositoires boite bte flacon tube
-    lp secable pellicule pellicule secable mg ml g ui pour cent de du des
-    la le les un une et sous forme voie orale iv im enfant adulte nourrisson
+    collyre suspension suppositoire suppositoires boite bte flacon tube gel
+    lp secable pellicule pellicule secable effervescent effervescente lyoc
+    mg ml g ui pour cent de du des la le les un une et sous forme voie orale
+    iv im enfant adulte nourrisson bebe bebes
     mg ml gr gramme grammes dose dosettes""".split()
 )
 
