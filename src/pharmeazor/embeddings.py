@@ -41,3 +41,13 @@ def embed_query(text):
         convert_to_numpy=True,
     )
     return np.asarray(vector, dtype="float32")[0]
+
+
+def embed_queries(texts):
+    """Encode plusieurs requêtes en un seul appel (latence de la recherche enrichie)."""
+    model = get_model()
+    texts = list(texts)
+    if _is_e5(EMBEDDING_MODEL):
+        texts = ["query: " + t for t in texts]
+    vectors = model.encode(texts, normalize_embeddings=True, convert_to_numpy=True)
+    return np.asarray(vectors, dtype="float32")

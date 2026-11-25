@@ -1,10 +1,11 @@
 import re
+from pathlib import Path
 
 import bm25s
 
 from .config import CORPUS_PATH, INDEX_DIR, PROCESSED
 from .corpus import load_corpus
-from .embeddings import embed_query
+from .embeddings import embed_queries, embed_query
 from .index import load_bm25, load_bm25_ids, load_faiss
 from .textnorm import norm
 from .thesaurus import load_lookup
@@ -27,17 +28,25 @@ MEDICAL_ADVICE_PATTERNS = [
 
 
 class Retriever:
-    def __init__(self, corpus_path=CORPUS_PATH, index_dir=INDEX_DIR):
+    def __init__(self, corpus_path=CORPUS_PATH, index_dir=INDEX_DIR, load_dense=True):
         self.records = load_corpus(corpus_path)
         self.by_id = {record["chunk_id"]: record for record in self.records}
-        self.faiss_index, self.faiss_ids = load_faiss(index_dir)
+        # load_dense=False : BM25 seul, sans FAISS ni modèle (tests, machines lentes).
+        self.faiss_index, self.faiss_ids = (
+            load_faiss(index_dir) if load_dense else (None, [])
+        )
+        self._expander = None
+        self._expander_graph = None
         self.bm25 = load_bm25(index_dir)
         self.bm25_ids = load_bm25_ids(index_dir)
         self.thesaurus = load_lookup()
 
-    def search_dense(self, query, k=10):
-        vector = embed_query(query).reshape(1, -1)
-        scores, indices = self.faiss_index.search(vector, k)
+    def search_dense(self, query, k=10, vector=None):
+        if self.faiss_index is None:
+            raise RuntimeError("Index dense non chargé (Retriever(load_dense=False)).")
+        if vector is None:
+            vector = embed_query(query)
+        scores, indices = self.faiss_index.search(vector.reshape(1, -1), k)
         hits = []
         for score, idx in zip(scores[0], indices[0]):
             if 0 <= idx < len(self.faiss_ids):
@@ -121,7 +130,7 @@ class Retriever:
         bm25_hits = self.search_bm25(query, k=1)
         bm25_score = bm25_hits[0][1] if bm25_hits else 0
         dense_score = 0.0
-        if hasattr(self, "faiss_index"):
+        if self.faiss_index is not None:
             dense_hits = self.search_dense(query, k=1)
             dense_score = dense_hits[0][1] if dense_hits else 0
 
