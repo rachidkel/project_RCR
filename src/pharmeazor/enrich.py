@@ -57,6 +57,11 @@ BOOST = {
 # Poids RRF des variantes : la question brute reste la référence.
 VARIANT_WEIGHT = {"raw": 1.0, "canonical": 0.6, "classes": 0.4}
 
+# Variantes encodées par le modèle dense. Encoder chaque variante triple la latence
+# (~30 ms par texte sur CPU) : seule la question brute est encodée, les variantes
+# DCI et classes sont cherchées en BM25 (des listes de termes, pas des phrases).
+DENSE_VARIANTS = ("raw",)
+
 # Les fiches des registres répondent aux questions d'identité (marques, formes,
 # dosages), pas aux questions d'interaction.
 NO_REGISTRY_INTENTS = {"interaction", "contraindication"}
@@ -205,8 +210,9 @@ def metadata_boost(record: dict, analysis) -> tuple[float, list[str]]:
         dci = norm(meta.get("dci") or meta.get("requested_dci") or "")
         product = norm(meta.get("product") or "")
         wanted = wanted_sections(norm(analysis.raw), analysis.intent)
-        same_drug = any((e["dci"] and e["dci"] in dci) for e in entities) or any(
-            norm(ent.term) and norm(ent.term) in product for ent in analysis.entities)
+        # Même médicament = RCP de la DCI seule. Un RCP d'association (amlodipine +
+        # valsartan) décrit aussi les interactions de l'autre substance : pas de boost.
+        same_drug = any(e["dci"] and registry_match(dci, e["dci"]) == "exact" for e in entities)
         if same_drug and meta.get("section") in wanted:
             boost += BOOST["anpp_section"]; why.append("anpp_section")
         # Marque citée dans la question = ce produit précis (pas un autre RCP de la DCI).

@@ -185,7 +185,8 @@ class Retriever:
         return self._expander
 
     def _search_enriched(self, query, k, method, normalize, expand, graph, pool=50, rrf_k=60):
-        from .enrich import BOOST, VARIANT_WEIGHT, build_variants, metadata_boost, registry_candidates
+        from .enrich import (BOOST, DENSE_VARIANTS, VARIANT_WEIGHT, build_variants,
+                             metadata_boost, registry_candidates)
         from .query import analyze_query
 
         analysis = analyze_query(query or "")
@@ -202,14 +203,16 @@ class Retriever:
         variants = build_variants(query, analysis) if normalize else [("raw", query)]
         trace["variants"] = variants
 
-        vectors = [None] * len(variants)
-        if method in ("dense", "hybrid"):
-            vectors = list(embed_queries([text for _, text in variants]))
+        # Un seul appel au modèle : les variantes non denses passent par BM25.
+        dense_names = [n for n, _ in variants if n in DENSE_VARIANTS] if method in ("dense", "hybrid") else []
+        vectors = (dict(zip(dense_names, embed_queries([t for n, t in variants if n in dense_names])))
+                   if dense_names else {})
 
         fused, signals = {}, {}
-        for (name, text), vec in zip(variants, vectors):
+        for name, text in variants:
             weight = VARIANT_WEIGHT.get(name, 1.0)
-            for rank, (cid, _) in enumerate(self._ranked(text, method, pool, vec)):
+            variant_method = method if name in vectors or method not in ("dense", "hybrid") else "bm25"
+            for rank, (cid, _) in enumerate(self._ranked(text, variant_method, pool, vectors.get(name))):
                 fused[cid] = fused.get(cid, 0.0) + weight / (rrf_k + rank + 1)
                 signals.setdefault(cid, []).append(f"{name}@{rank + 1}")
 
