@@ -172,6 +172,18 @@ class Retriever:
             return sorted(fused.items(), key=lambda item: -item[1])
         raise ValueError(f"Méthode inconnue : {method}")
 
+    def _graph_expander(self, graph):
+        from .enrich import GraphExpander, load_default_graph
+
+        if graph is None:
+            graph = load_default_graph()
+        elif isinstance(graph, (str, Path)):
+            graph = load_default_graph(str(graph))
+        if self._expander is None or self._expander_graph is not graph:
+            self._expander = GraphExpander(graph, self.records)
+            self._expander_graph = graph
+        return self._expander
+
     def _search_enriched(self, query, k, method, normalize, expand, graph, pool=50, rrf_k=60):
         from .enrich import BOOST, VARIANT_WEIGHT, build_variants, metadata_boost, registry_candidates
         from .query import analyze_query
@@ -208,7 +220,16 @@ class Retriever:
                 fused[cid] = fused.get(cid, 0.0) + 0.5 / (rrf_k + rank + 1)
                 signals.setdefault(cid, []).append(f"entity@{rank + 1}")
 
-        # [L4-GRAPH] expansion par le graphe : ajoutée à l'étape suivante
+        if expand:
+            expander = self._graph_expander(graph)
+            graph_ids, gtrace = expander.expand(analysis)
+            trace["graph"] = {key: val for key, val in gtrace.items() if key != "scopes"}
+            for rank, cid in enumerate(graph_ids):
+                if cid not in self.by_id:
+                    continue
+                scope = gtrace["scopes"][cid]
+                fused[cid] = fused.get(cid, 0.0) + 1.0 / (rrf_k + rank + 1) + BOOST[f"graph_{scope}"]
+                signals.setdefault(cid, []).append(f"graph:{scope}@{rank + 1}")
 
         if normalize:
             for cid in list(fused):

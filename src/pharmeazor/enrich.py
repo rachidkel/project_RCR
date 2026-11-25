@@ -217,3 +217,127 @@ def metadata_boost(record: dict, analysis) -> tuple[float, list[str]]:
 
     return boost, why
 
+
+# ---------------------------------------------------------------- graphe
+class GraphExpander:
+    """Index du graphe L3 orienté recherche : interaction -> chunk_id du corpus."""
+
+    def __init__(self, graph, corpus_records):
+        g = graph.graph if hasattr(graph, "graph") else graph
+        self.g = g
+        # Correspondance libellé du graphe -> chunk du Thésaurus.
+        key2chunks = defaultdict(list)
+        for r in corpus_records:
+            if r["source_id"] == "S_ANSM_THESAURUS":
+                m = r["metadata"]
+                key2chunks[norm(f"{m.get('substance', '')} {m.get('cible', '')}")].append(r["chunk_id"])
+        self.chunks_of: dict[str, list[str]] = {}
+        self.involved: dict[str, set[str]] = defaultdict(set)
+        self.by_node: dict[str, set[str]] = defaultdict(set)
+        self.classes_of: dict[str, set[str]] = defaultdict(set)
+        self.members_of: dict[str, set[str]] = defaultdict(set)
+        self.level: dict[str, str] = {}
+        unmapped = 0
+        for n, d in g.nodes(data=True):
+            if d.get("type") == "interaction":
+                ids = key2chunks.get(norm(d.get("label", "")), [])
+                self.chunks_of[n] = ids
+                self.level[n] = d.get("level", "")
+                unmapped += not ids
+        for s, t, d in g.edges(data=True):
+            rel = d.get("relation")
+            if rel == "involves":
+                self.involved[s].add(t)
+                self.by_node[t].add(s)
+            elif rel == "member_of":
+                self.classes_of[s].add(t)
+                if g.nodes[s].get("type") == "dci":
+                    self.members_of[t].add(s)
+        self.unmapped = unmapped
+
+    def _side(self, ent) -> set[str]:
+        nodes = set()
+        if ent.dci and ent.dci in self.g:
+            nodes.add(ent.dci)
+            nodes |= self.classes_of.get(ent.dci, set())
+        nodes |= {c for c in ent.classes if c in self.g}
+        return nodes - GENERIC_CLASSES
+
+    def _specificity(self, node: str) -> float:
+        size = max(1, len(self.members_of.get(node, ())))
+        return 1.0 / (1.0 + math.log(size))
+
+    def _related(self, cls: str, side: set[str]) -> str | None:
+        """Classe voisine : >= 50 % de ses membres appartiennent à une classe du côté."""
+        members = self.members_of.get(cls)
+        if not members or cls in side:
+            return None
+        for parent in sorted(side):
+            pm = self.members_of.get(parent)
+            if pm and parent not in GENERIC_CLASSES and len(members & pm) / len(members) >= 0.5:
+                return parent
+        return None
+
+    def expand(self, analysis, limit: int = 30) -> tuple[list[str], dict]:
+        """Chunk_ids classés + trace. Paires d'entités d'abord, puis classes voisines."""
+        trace = {"pairs": [], "absence": [], "related": [], "single": []}
+        ents = [e for e in (analysis.entities if analysis else []) if self._side(e)]
+        scored: dict[str, tuple] = {}
+
+        def add(inter, scope, score):
+            for cid in self.chunks_of.get(inter, []):
+                key = (score, -_level_rank(self.level.get(inter, "")))
+                if cid not in scored or key > scored[cid][0]:
+                    scored[cid] = (key, scope)
+
+        if len(ents) >= 2:
+            for i in range(len(ents)):
+                for j in range(i + 1, len(ents)):
+                    a, b = self._side(ents[i]), self._side(ents[j])
+                    found = 0
+                    for inter in sorted(set().union(*(self.by_node[n] for n in a))):
+                        inv = self.involved[inter]
+                        la, lb = inv & a, inv & b
+                        # Il faut deux nœuds distincts : un côté A, un côté B.
+                        if not any(x != y for x in la for y in lb):
+                            continue
+                        spec = max(self._specificity(x) for x in la) + max(self._specificity(y) for y in lb)
+                        direct = ents[i].dci in la and ents[j].dci in lb
+                        add(inter, "direct" if direct else "class", 2 + spec)
+                        found += 1
+                    label = f"{ents[i].term} + {ents[j].term}"
+                    trace["pairs"].append({"pair": label, "interactions": found})
+                    if found:
+                        continue
+                    # Absence : aucune entrée pour la paire -> preuve par classes voisines.
+                    trace["absence"].append(label)
+                    for side_x, side_y in ((a, b), (b, a)):
+                        for inter in sorted(set().union(*(self.by_node[n] for n in side_x))):
+                            for other in sorted(self.involved[inter] - side_x):
+                                parent = self._related(other, side_y)
+                                if parent:
+                                    add(inter, "related_class", 1 + self._specificity(other))
+                                    trace["related"].append({"via": parent, "class": other})
+        elif len(ents) == 1 and analysis.intent == "interaction":
+            ent = ents[0]
+            for node in sorted(self._side(ent)):
+                for inter in sorted(self.by_node[node]):
+                    add(inter, "direct" if node == ent.dci else "class", self._specificity(node))
+            trace["single"].append(ent.term)
+
+        # Tri déterministe : score, puis chunk_id (les ensembles Python changent d'ordre
+        # d'un processus à l'autre).
+        ranked = sorted(scored.items(), key=lambda kv: (-kv[1][0][0], -kv[1][0][1], kv[0]))[:limit]
+        scopes = {cid: scope for cid, (_, scope) in ranked}
+        return [cid for cid, _ in ranked], {**trace, "scopes": scopes}
+
+
+@lru_cache(maxsize=1)
+def load_default_graph(path: str = str(GRAPH_JSON)):
+    from .graph import KnowledgeGraph
+    return KnowledgeGraph.load(Path(path))
+
+
+def corpus_from_disk(path=CORPUS_PATH):
+    with open(path, encoding="utf-8") as f:
+        return [json.loads(line) for line in f]
