@@ -76,7 +76,24 @@ class Retriever:
                 fused[chunk_id] = fused.get(chunk_id, 0.0) + 1.0 / (rrf_k + rank + 1)
         return sorted(fused.items(), key=lambda item: -item[1])[:k]
 
-    def search(self, query, k=10, method="hybrid"):
+    def search(self, query, k=10, method="hybrid", normalize=False, expand=False,
+               graph=None, return_trace=False):
+        """Recherche brute (semaine 2) ou enrichie (semaine 3, L4).
+
+        normalize : variantes de requête (brute + DCI + classes) fusionnées par RRF,
+                    plus un boost par métadonnées (entités de la question).
+        expand    : injecte les interactions du graphe L3 reliant les entités.
+        graph     : KnowledgeGraph (ou chemin JSON) ; chargé par défaut si expand.
+        Sans normalize ni expand, le comportement est strictement celui de la
+        semaine 2 (mêmes classements, mêmes scores).
+        """
+        if normalize or expand:
+            results, trace = self._search_enriched(query, k, method, normalize, expand, graph)
+            return (results, trace) if return_trace else results
+        results = self._search_raw(query, k, method)
+        return (results, {"mode": "raw"}) if return_trace else results
+
+    def _search_raw(self, query, k, method):
         if method == "dense":
             ranked = self.search_dense(query, k)
         elif method == "bm25":
@@ -138,3 +155,80 @@ class Retriever:
             return True, f"Scores trop faibles (BM25={bm25_score:.2f}, dense={dense_score:.2f})."
 
         return False, "Requête dans le périmètre."
+
+    # ------------------------------------------------------------ L4 : enrichi
+    def _ranked(self, text, method, pool, vector=None):
+        if method == "bm25":
+            return self.search_bm25(text, pool)
+        if method == "dense":
+            return self.search_dense(text, pool, vector=vector)
+        if method == "exact":
+            return self.search_exact(text, pool)
+        if method == "hybrid":
+            fused = {}
+            for ranked in (self.search_dense(text, pool, vector=vector), self.search_bm25(text, pool)):
+                for rank, (cid, _) in enumerate(ranked):
+                    fused[cid] = fused.get(cid, 0.0) + 1.0 / (60 + rank + 1)
+            return sorted(fused.items(), key=lambda item: -item[1])
+        raise ValueError(f"Méthode inconnue : {method}")
+
+    def _search_enriched(self, query, k, method, normalize, expand, graph, pool=50, rrf_k=60):
+        from .enrich import BOOST, VARIANT_WEIGHT, build_variants, metadata_boost, registry_candidates
+        from .query import analyze_query
+
+        analysis = analyze_query(query or "")
+        trace = {
+            "mode": "+".join(m for m, on in (("normalize", normalize), ("expand", expand)) if on),
+            "intent": analysis.intent,
+            "out_of_scope": analysis.out_of_scope,
+            "entities": [(e.term, e.dci, list(e.classes)) for e in analysis.entities],
+        }
+        if not (query or "").strip():
+            trace["variants"] = []
+            return [], trace
+
+        variants = build_variants(query, analysis) if normalize else [("raw", query)]
+        trace["variants"] = variants
+
+        vectors = [None] * len(variants)
+        if method in ("dense", "hybrid"):
+            vectors = list(embed_queries([text for _, text in variants]))
+
+        fused, signals = {}, {}
+        for (name, text), vec in zip(variants, vectors):
+            weight = VARIANT_WEIGHT.get(name, 1.0)
+            for rank, (cid, _) in enumerate(self._ranked(text, method, pool, vec)):
+                fused[cid] = fused.get(cid, 0.0) + weight / (rrf_k + rank + 1)
+                signals.setdefault(cid, []).append(f"{name}@{rank + 1}")
+
+        if normalize:
+            # Les fiches de la DCI entrent dans le pool même si la formulation
+            # de la question ne les a pas fait remonter (ex. « marques de... »).
+            for rank, cid in enumerate(registry_candidates(self.records, analysis)):
+                fused[cid] = fused.get(cid, 0.0) + 0.5 / (rrf_k + rank + 1)
+                signals.setdefault(cid, []).append(f"entity@{rank + 1}")
+
+        # [L4-GRAPH] expansion par le graphe : ajoutée à l'étape suivante
+
+        if normalize:
+            for cid in list(fused):
+                bonus, why = metadata_boost(self.by_id[cid], analysis) if cid in self.by_id else (0.0, [])
+                if bonus:
+                    fused[cid] += bonus
+                    signals[cid].extend(f"boost:{w}" for w in why)
+
+        ranked = sorted(fused.items(), key=lambda item: (-item[1], item[0]))[:k]
+        results = []
+        for cid, score in ranked:
+            record = self.by_id.get(cid)
+            if record is None:
+                continue
+            results.append({
+                "chunk_id": cid,
+                "score": score,
+                "source_id": record["source_id"],
+                "text": record["text"],
+                "metadata": record["metadata"],
+                "signals": signals.get(cid, []),
+            })
+        return results, trace
