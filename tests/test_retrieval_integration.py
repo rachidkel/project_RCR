@@ -15,8 +15,8 @@ from pharmeazor.corpus import split_long_chunks
 from pharmeazor.enrich import build_variants, registry_match
 from pharmeazor.query import analyze_query
 
-HAS_BM25 = (INDEX_DIR / "bm25").exists()
-HAS_FAISS = (INDEX_DIR / "faiss.index").exists()
+HAS_BM25 = (INDEX_DIR / "bm25").exists() and (INDEX_DIR / "bm25_chunk_ids.json").exists()
+HAS_FAISS = (INDEX_DIR / "faiss.index").exists() and (INDEX_DIR / "faiss_chunk_ids.json").exists()
 needs_bm25 = pytest.mark.skipif(not HAS_BM25, reason="index BM25 absent (scripts/08_build_index.py)")
 needs_faiss = pytest.mark.skipif(not HAS_FAISS, reason="index FAISS absent (scripts/08_build_index.py)")
 
