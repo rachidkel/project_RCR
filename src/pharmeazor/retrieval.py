@@ -1,10 +1,11 @@
 import re
+from pathlib import Path
 
 import bm25s
 
 from .config import CORPUS_PATH, INDEX_DIR, PROCESSED
 from .corpus import load_corpus
-from .embeddings import embed_query
+from .embeddings import embed_queries, embed_query
 from .index import load_bm25, load_bm25_ids, load_faiss
 from .textnorm import norm
 from .thesaurus import load_lookup
@@ -27,17 +28,25 @@ MEDICAL_ADVICE_PATTERNS = [
 
 
 class Retriever:
-    def __init__(self, corpus_path=CORPUS_PATH, index_dir=INDEX_DIR):
+    def __init__(self, corpus_path=CORPUS_PATH, index_dir=INDEX_DIR, load_dense=True):
         self.records = load_corpus(corpus_path)
         self.by_id = {record["chunk_id"]: record for record in self.records}
-        self.faiss_index, self.faiss_ids = load_faiss(index_dir)
+        # load_dense=False : BM25 seul, sans FAISS ni modèle (tests, machines lentes).
+        self.faiss_index, self.faiss_ids = (
+            load_faiss(index_dir) if load_dense else (None, [])
+        )
+        self._expander = None
+        self._expander_graph = None
         self.bm25 = load_bm25(index_dir)
         self.bm25_ids = load_bm25_ids(index_dir)
         self.thesaurus = load_lookup()
 
-    def search_dense(self, query, k=10):
-        vector = embed_query(query).reshape(1, -1)
-        scores, indices = self.faiss_index.search(vector, k)
+    def search_dense(self, query, k=10, vector=None):
+        if self.faiss_index is None:
+            raise RuntimeError("Index dense non chargé (Retriever(load_dense=False)).")
+        if vector is None:
+            vector = embed_query(query)
+        scores, indices = self.faiss_index.search(vector.reshape(1, -1), k)
         hits = []
         for score, idx in zip(scores[0], indices[0]):
             if 0 <= idx < len(self.faiss_ids):
@@ -67,7 +76,24 @@ class Retriever:
                 fused[chunk_id] = fused.get(chunk_id, 0.0) + 1.0 / (rrf_k + rank + 1)
         return sorted(fused.items(), key=lambda item: -item[1])[:k]
 
-    def search(self, query, k=10, method="hybrid"):
+    def search(self, query, k=10, method="hybrid", normalize=False, expand=False,
+               graph=None, return_trace=False):
+        """Recherche brute (semaine 2) ou enrichie (semaine 3, L4).
+
+        normalize : variantes de requête (brute + DCI + classes) fusionnées par RRF,
+                    plus un boost par métadonnées (entités de la question).
+        expand    : injecte les interactions du graphe L3 reliant les entités.
+        graph     : KnowledgeGraph (ou chemin JSON) ; chargé par défaut si expand.
+        Sans normalize ni expand, le comportement est strictement celui de la
+        semaine 2 (mêmes classements, mêmes scores).
+        """
+        if normalize or expand:
+            results, trace = self._search_enriched(query, k, method, normalize, expand, graph)
+            return (results, trace) if return_trace else results
+        results = self._search_raw(query, k, method)
+        return (results, {"mode": "raw"}) if return_trace else results
+
+    def _search_raw(self, query, k, method):
         if method == "dense":
             ranked = self.search_dense(query, k)
         elif method == "bm25":
@@ -121,7 +147,7 @@ class Retriever:
         bm25_hits = self.search_bm25(query, k=1)
         bm25_score = bm25_hits[0][1] if bm25_hits else 0
         dense_score = 0.0
-        if hasattr(self, "faiss_index"):
+        if self.faiss_index is not None:
             dense_hits = self.search_dense(query, k=1)
             dense_score = dense_hits[0][1] if dense_hits else 0
 
@@ -129,3 +155,104 @@ class Retriever:
             return True, f"Scores trop faibles (BM25={bm25_score:.2f}, dense={dense_score:.2f})."
 
         return False, "Requête dans le périmètre."
+
+    # ------------------------------------------------------------ L4 : enrichi
+    def _ranked(self, text, method, pool, vector=None):
+        if method == "bm25":
+            return self.search_bm25(text, pool)
+        if method == "dense":
+            return self.search_dense(text, pool, vector=vector)
+        if method == "exact":
+            return self.search_exact(text, pool)
+        if method == "hybrid":
+            fused = {}
+            for ranked in (self.search_dense(text, pool, vector=vector), self.search_bm25(text, pool)):
+                for rank, (cid, _) in enumerate(ranked):
+                    fused[cid] = fused.get(cid, 0.0) + 1.0 / (60 + rank + 1)
+            return sorted(fused.items(), key=lambda item: -item[1])
+        raise ValueError(f"Méthode inconnue : {method}")
+
+    def _graph_expander(self, graph):
+        from .enrich import GraphExpander, load_default_graph
+
+        if graph is None:
+            graph = load_default_graph()
+        elif isinstance(graph, (str, Path)):
+            graph = load_default_graph(str(graph))
+        if self._expander is None or self._expander_graph is not graph:
+            self._expander = GraphExpander(graph, self.records)
+            self._expander_graph = graph
+        return self._expander
+
+    def _search_enriched(self, query, k, method, normalize, expand, graph, pool=50, rrf_k=60):
+        from .enrich import (BOOST, DENSE_VARIANTS, VARIANT_WEIGHT, build_variants,
+                             metadata_boost, registry_candidates)
+        from .query import analyze_query
+
+        analysis = analyze_query(query or "")
+        trace = {
+            "mode": "+".join(m for m, on in (("normalize", normalize), ("expand", expand)) if on),
+            "intent": analysis.intent,
+            "out_of_scope": analysis.out_of_scope,
+            "entities": [(e.term, e.dci, list(e.classes)) for e in analysis.entities],
+        }
+        if not (query or "").strip():
+            trace["variants"] = []
+            return [], trace
+
+        variants = build_variants(query, analysis) if normalize else [("raw", query)]
+        trace["variants"] = variants
+
+        # Un seul appel au modèle : les variantes non denses passent par BM25.
+        dense_names = [n for n, _ in variants if n in DENSE_VARIANTS] if method in ("dense", "hybrid") else []
+        vectors = (dict(zip(dense_names, embed_queries([t for n, t in variants if n in dense_names])))
+                   if dense_names else {})
+
+        fused, signals = {}, {}
+        for name, text in variants:
+            weight = VARIANT_WEIGHT.get(name, 1.0)
+            variant_method = method if name in vectors or method not in ("dense", "hybrid") else "bm25"
+            for rank, (cid, _) in enumerate(self._ranked(text, variant_method, pool, vectors.get(name))):
+                fused[cid] = fused.get(cid, 0.0) + weight / (rrf_k + rank + 1)
+                signals.setdefault(cid, []).append(f"{name}@{rank + 1}")
+
+        if normalize:
+            # Les fiches de la DCI entrent dans le pool même si la formulation
+            # de la question ne les a pas fait remonter (ex. « marques de... »).
+            for rank, cid in enumerate(registry_candidates(self.records, analysis)):
+                fused[cid] = fused.get(cid, 0.0) + 0.5 / (rrf_k + rank + 1)
+                signals.setdefault(cid, []).append(f"entity@{rank + 1}")
+
+        if expand:
+            expander = self._graph_expander(graph)
+            graph_ids, gtrace = expander.expand(analysis)
+            trace["graph"] = {key: val for key, val in gtrace.items() if key != "scopes"}
+            for rank, cid in enumerate(graph_ids):
+                if cid not in self.by_id:
+                    continue
+                scope = gtrace["scopes"][cid]
+                fused[cid] = fused.get(cid, 0.0) + 1.0 / (rrf_k + rank + 1) + BOOST[f"graph_{scope}"]
+                signals.setdefault(cid, []).append(f"graph:{scope}@{rank + 1}")
+
+        if normalize:
+            for cid in list(fused):
+                bonus, why = metadata_boost(self.by_id[cid], analysis) if cid in self.by_id else (0.0, [])
+                if bonus:
+                    fused[cid] += bonus
+                    signals[cid].extend(f"boost:{w}" for w in why)
+
+        ranked = sorted(fused.items(), key=lambda item: (-item[1], item[0]))[:k]
+        results = []
+        for cid, score in ranked:
+            record = self.by_id.get(cid)
+            if record is None:
+                continue
+            results.append({
+                "chunk_id": cid,
+                "score": score,
+                "source_id": record["source_id"],
+                "text": record["text"],
+                "metadata": record["metadata"],
+                "signals": signals.get(cid, []),
+            })
+        return results, trace
