@@ -11,7 +11,7 @@
 Le module d'analyse de requête (`src/pharmeazor/query.py`) constitue la passerelle entre le langage naturel saisi par l'utilisateur et les moteurs de recherche enrichis (retrieval hybride L4, graphe de connaissances L3).
 
 Ses responsabilités opérationnelles sont :
-1. **Extraction d'entités pharmaceutiques par plus long match (`longest-match`)** : identification glissante sur le lexique unifié L1 (`lexicon.json`, 60 561 alias) avec gestion native des élisions françaises (`l'Amlodipine` $\rightarrow$ `Amlodipine`).
+1. **Extraction d'entités pharmaceutiques par plus long match (`longest-match`)** : identification glissante sur le lexique unifié L1 (`lexicon.json`, 7 069 alias et 171 classes) avec gestion native des élisions françaises (`l'Amlodipine` $\rightarrow$ `Amlodipine`).
 2. **Repli flou maîtrisé (`fuzzy fallback`)** : rattrapage des coquilles usagers par `rapidfuzz` (seuil de similarité $\ge 85\,\%$) avec protection stricte contre les faux positifs sur les mots du langage courant.
 3. **Classification d'intention clinique** : orientation déterministe parmi 6 intentions (`dosage`, `interaction`, `contraindication`, `price`, `out_of_scope`, `unknown`).
 4. **Filtrage des garde-fous déontologiques (`out_of_scope`)** : détection immédiate des demandes de diagnostic, d'ordonnance, d'avis pédiatriques personnalisés ou de questions non médicales.

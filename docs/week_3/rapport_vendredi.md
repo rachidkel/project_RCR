@@ -21,7 +21,7 @@ Les corrections demandées par l'enseignant à l'issue de la Semaine 2 ont été
 **Auteur** : Anis Fares Hammoudi (`fares`) | **Relecteur** : Rachid Anis Kellil (`review_l1_rachid.md`)  
 **Livrables** : `src/pharmeazor/lexicon.py`, `data/processed/week_3/lexicon.json`, `data/processed/week_3/lexicon_coverage.md`, `tests/test_lexicon.py`
 
-- **Volume** : 60 561 entrées indexant les spécialités/marques algériennes (`nomenclature_active.csv`, `produits_enregistres.csv`, `algerian_drug_nomenclature.csv`), les DCI canoniques, les variantes de sels/formes et les classes du Thésaurus (`metadata.membres`).
+- **Volume** : **7 069 alias** et **171 classes** Thésaurus (avec 161 conflits journalisés) indexant les spécialités/marques algériennes (`nomenclature_active.csv`, `produits_enregistres.csv`, `algerian_drug_nomenclature.csv`), les DCI canoniques, les variantes de sels/formes et les classes du Thésaurus (`metadata.membres`).
 - **Normalisation** : résolution exacte des synonymes manuels (`Doliprane` $\rightarrow$ `PARACETAMOL`, `aspirine` $\rightarrow$ `ACIDE ACETYLSALICYLIQUE`, `ibuprofène` $\rightarrow$ `AINS`), gestion explicite des ambiguïtés via un journal de conflits (aucun écrasement silencieux).
 - **Couverture** : **40/40 (100,0 %)** des molécules du périmètre projet résolues ; 21 tests unitaires passants (`tests/test_lexicon.py`).
 
