@@ -118,7 +118,7 @@ def build_markdown(report, methods, modes, missing, heldout=None, gap=None):
         "questions : les gains sont optimistes. Le but ici est la comparaison "
         "avant/après et la couverture des métriques, pas une estimation non biaisée.\n",
         "## Questions ajoutées pour L5\n",
-        "| ID | Type | Question | Attendu |",
+        "| ID | Type | Question | Entités à reconnaître (analyse L2) |",
         "|---|---|---|---|",
     ]
     for query in new_questions:

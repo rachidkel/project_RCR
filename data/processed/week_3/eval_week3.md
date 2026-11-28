@@ -12,7 +12,7 @@
 
 ## Questions ajoutées pour L5
 
-| ID | Type | Question | Attendu |
+| ID | Type | Question | Entités à reconnaître (analyse L2) |
 |---|---|---|---|
 | Q18 | positive | Le DOLIPRANE est-il disponible en plusieurs dosages en Algérie ? | PARACETAMOL |
 | Q19 | positive | Peut-on associer un AINS avec un IEC ? | ANTI-INFLAMMATOIRES NON STEROIDIENS, INHIBITEURS DE L ENZYME DE CONVERSION |
@@ -28,18 +28,18 @@ Tous les identifiants gold (40) existent dans le corpus, et toutes les questions
 
 | Méthode | Mode | MRR@100 | Hit@10 | Recall@10 | nDCG@10 | Latence médiane (ms) | Latence p95 (ms) |
 |---|---|---:|---:|---:|---:|---:|---:|
-| bm25 | raw | 0.100 | 0.211 | 0.145 | 0.086 | 0.7 | 0.9 |
-| bm25 | normalized | 0.518 | 0.789 | 0.763 | 0.574 | 6.9 | 9.4 |
-| bm25 | graph | 0.305 | 0.474 | 0.421 | 0.309 | 1.0 | 1.5 |
-| bm25 | normalized+graph | 0.628 | 0.895 | 0.868 | 0.671 | 7.2 | 9.7 |
-| dense | raw | 0.165 | 0.316 | 0.263 | 0.161 | 32.3 | 40.6 |
-| dense | normalized | 0.576 | 0.737 | 0.737 | 0.614 | 38.9 | 55.7 |
-| dense | graph | 0.384 | 0.632 | 0.579 | 0.408 | 31.1 | 34.0 |
-| dense | normalized+graph | 0.670 | 0.895 | 0.855 | 0.700 | 38.7 | 43.3 |
-| hybrid | raw | 0.242 | 0.316 | 0.316 | 0.255 | 31.1 | 33.5 |
-| hybrid | normalized | 0.571 | 0.789 | 0.763 | 0.614 | 39.0 | 44.0 |
-| hybrid | graph | 0.461 | 0.632 | 0.579 | 0.475 | 31.7 | 37.5 |
-| hybrid | normalized+graph | 0.679 | 0.895 | 0.868 | 0.704 | 39.6 | 44.2 |
+| bm25 | raw | 0.100 | 0.211 | 0.145 | 0.086 | 0.6 | 0.9 |
+| bm25 | normalized | 0.518 | 0.789 | 0.763 | 0.574 | 7.0 | 9.4 |
+| bm25 | graph | 0.305 | 0.474 | 0.421 | 0.309 | 1.0 | 1.4 |
+| bm25 | normalized+graph | 0.628 | 0.895 | 0.868 | 0.671 | 7.2 | 9.6 |
+| dense | raw | 0.165 | 0.316 | 0.263 | 0.161 | 30.3 | 33.0 |
+| dense | normalized | 0.576 | 0.737 | 0.737 | 0.614 | 38.6 | 43.3 |
+| dense | graph | 0.384 | 0.632 | 0.579 | 0.408 | 30.9 | 38.2 |
+| dense | normalized+graph | 0.670 | 0.895 | 0.855 | 0.700 | 38.9 | 50.0 |
+| hybrid | raw | 0.242 | 0.316 | 0.316 | 0.255 | 31.1 | 36.5 |
+| hybrid | normalized | 0.571 | 0.789 | 0.763 | 0.614 | 39.2 | 44.1 |
+| hybrid | graph | 0.461 | 0.632 | 0.579 | 0.475 | 31.8 | 35.5 |
+| hybrid | normalized+graph | 0.679 | 0.895 | 0.868 | 0.704 | 40.0 | 44.5 |
 
 ## Analyse des requêtes (L2)
 
