@@ -121,7 +121,7 @@ def test_run_evaluation_legacy_shape_is_preserved():
     assert "sources@10" in results["per_query"]["Q1"]["bm25"]
 
 
-@pytest.mark.parametrize("mode", ["raw", "normalized", "graph"])
+@pytest.mark.parametrize("mode", ["raw", "normalized", "graph", "normalized+graph"])
 def test_run_evaluation_single_mode(mode):
     results = run_evaluation(
         retriever=FakeRetriever(), mode=mode, method="bm25", queries=QUERIES[:1]

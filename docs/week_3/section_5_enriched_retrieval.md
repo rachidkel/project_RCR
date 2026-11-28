@@ -38,54 +38,59 @@ Un détail technique a compté : les interactions du graphe ne pointent vers auc
 
 ## Résultats
 
-Mesurés sur les 40 questions qui ont un passage de référence (celles de `evaluation.py` et celles du jeu de test de la semaine 2) :
+Une seule évaluation fait foi : `python scripts/14_eval_week3.py`, qui écrit `data/processed/week_3/eval_week3.md`. Elle compare quatre modes (brut, normalisé, graphe, normalisé + graphe) sur trois méthodes, question par question.
 
-| Recherche | MRR avant | Hit@10 avant | MRR après | Hit@10 après | Temps médian après |
-|---|---:|---:|---:|---:|---:|
-| BM25 | 0,23 | 0,40 | 0,77 | 0,93 | 8 ms |
-| Dense | 0,31 | 0,45 | 0,79 | 0,90 | 40 ms |
-| **Hybride** | 0,35 | 0,53 | **0,82** | **0,93** | 41 ms |
+**Sur des questions qui n'ont pas servi au réglage.** Les poids de ce lot ont été ajustés en regardant des questions de test. Pour mesurer le gain sans ce biais, dix questions nouvelles (H01 à H10) ont été écrites et enregistrées avant leur première évaluation, sur des médicaments et des paires absents de toutes les questions existantes : losartan, COVERSYL, BIODAZOLE, CEBREX, doxycycline + fer, tramadol + fluoxétine, diclofénac + losartan, méthotrexate + kétoprofène, amiloride + potassium, nébivolol + amiodarone. Les poids n'ont pas été modifiés depuis ; une empreinte de `enrich.py` enregistrée avec les questions le garantit.
 
-« Avant » est la recherche de la semaine 2 ; « après » est le mode normalisé + graphe. En hybride, une bonne réponse figure dans les dix premiers résultats pour 37 questions sur 40, contre 21 avant.
-
-Les deux mécanismes se complètent. La normalisation seule règle surtout les questions de marques et de dosages ; le graphe seul règle surtout les interactions. Le détail par mode est dans `data/processed/week_3/l4_enriched_retrieval.md`.
-
-Les questions que le plan désignait (MRR en hybride) :
-
-| Question | Avant | Après |
+| Hybride, 10 questions tenues à l'écart | Brut (semaine 2) | Normalisé + graphe |
 |---|---:|---:|
-| Q1 — dosages du paracétamol | 0,04 | 0,33 |
-| Q2 — ibuprofène et aspirine | 0,00 | 1,00 |
-| Q3 — patient sous amlodipine, ibuprofène | 0,06 | 1,00 |
-| Q16 — amlodipine et AINS | 0,00 | 0,50 |
+| MRR | 0,230 | 0,848 |
+| Hit@10 | 0,50 | 1,00 |
 
-Sur les 40 questions et les trois méthodes, une seule recule par rapport à la semaine 2 : Q10 en BM25, qui passe du rang 25 au rang 33.
+Une bonne réponse figure dans les dix premiers résultats pour les dix questions, contre cinq avant. Dix questions donnent un ordre de grandeur, pas une preuve.
 
-Le temps médian respecte l'objectif de 50 ms. Les 5 % de requêtes les plus lentes prennent 54 ms, juste au-dessus, presque entièrement à cause de l'encodage de la question (environ 31 ms sur CPU).
+**Pourquoi deux chiffres circulaient (0,820 et 0,571).** La semaine 3 a publié MRR 0,820 dans cette section et 0,571 dans la section 6. Les deux étaient justes et ne mesuraient pas la même chose. L'évaluation les recalcule désormais dans la même exécution :
+
+| Hybride, MRR | Normalisé | Normalisé + graphe |
+|---|---:|---:|
+| 40 questions ayant servi au réglage (ancien chiffre de cette section) | 0,719 | **0,820** |
+| 19 questions de la section 6 | **0,571** | 0,679 |
+| 10 questions tenues à l'écart | 0,764 | 0,848 |
+
+Sur les mêmes questions, passer du mode normalisé au mode normalisé + graphe vaut environ 0,11 (0,571 → 0,679) ; à mode égal, les questions de la section 6 sont plus difficiles d'environ 0,14 (0,679 contre 0,820). Le 0,571 mesurait la moitié du mécanisme, le 0,820 le mécanisme complet sur des questions qui avaient servi à le régler.
+
+Les questions que le plan désignait (hybride, MRR, brut → normalisé + graphe) : Q1 0,02 → 0,33 ; Q2 0,00 → 1,00 ; Q3 0,04 → 1,00 ; Q16 0,00 → 0,50.
+
+**Temps de réponse.** En hybride normalisé + graphe : médiane 40 ms, 95e percentile 44 ms, sous l'objectif de 50 ms. L'essentiel vient de l'encodage de la question par le modèle (environ 31 ms sur CPU).
 
 ## Ce que ces chiffres ne disent pas
 
-**Ils sont optimistes.** Les bonus et les poids ont été ajustés en regardant ces 40 questions. Il faut mesurer le gain sur des questions qui n'ont pas servi au réglage avant de le présenter comme une performance générale.
+**Une question se dégrade, et ce n'est pas une affaire de poids.** H09 (« sels de potassium chez un patient sous amiloride ») : BM25 brut trouve la bonne réponse au premier rang, le mode normalisé la fait tomber au septième. Le lexique résout « amiloride » vers l'association « amiloride + hydrochlorothiazide » et ne reconnaît pas « potassium » comme un médicament : les réécritures cherchent donc le mauvais produit. La correction relève du lexique ; les poids de la recherche n'ont pas été touchés, sans quoi le jeu ne serait plus tenu à l'écart.
 
-**Une partie des « erreurs » n'en sont pas.** Le Thésaurus décrit chaque paire dans les deux sens, « AINS + IEC » et « IEC + AINS », en deux passages. Les listes de référence n'en contiennent souvent qu'un : quand la recherche renvoie l'autre, la mesure compte une erreur.
+**Une réponse de référence était fausse, et la recherche avait raison.** La première version de H06 (tramadol + fluoxétine) n'attendait que l'entrée de classe, ISRS + tramadol, niveau « à prendre en compte ». Le Thésaurus contient aussi une entrée directe, fluoxétine + tramadol, niveau « association déconseillée » : plus grave. La recherche plaçait ces passages en tête ; c'est la référence qui sous-estimait le risque. Elle a été corrigée après la première exécution, et la correction est notée dans le fichier des questions. C'est exactement l'erreur que le système ne doit jamais commettre : présenter un niveau d'interaction adouci.
 
-**Une vraie erreur a été trouvée en route.** La première version donnait un bonus au RCP de MIBRAVAL pour une question sur l'amlodipine, parce que sa DCI contient « amlodipine ». Mais MIBRAVAL associe amlodipine et valsartan, et son avertissement sur les AINS concerne le valsartan. Le système aurait répondu à une question sur un médicament avec l'interaction d'un autre. Le bonus est désormais réservé aux RCP du médicament seul. Ce cas montre ce que le contrôle des citations de la semaine 5 devra aussi intercepter.
+**Un passage de H07 n'est pas neuf.** La paire diclofénac + losartan est nouvelle, mais le passage attendu (AINS + ARA II) était déjà une réponse de référence de Q3. La question est tenue à l'écart, ce passage ne l'est pas.
 
-**La recherche dense seule reste fragile** sur la question du patient sous amlodipine (MRR 0,17) : le modèle préfère d'autres passages sur l'amlodipine à la preuve par classe. L'hybride n'a pas ce défaut ; c'est le mode à utiliser.
+**Les références des questions plus anciennes restent incomplètes.** Le Thésaurus décrit chaque paire dans les deux sens (« AINS + IEC » et « IEC + AINS »), et les références des questions de la section 6 n'en contiennent souvent qu'un : quand la recherche renvoie l'autre, la mesure compte une erreur. Les références de H01 à H10 contiennent les deux sens.
+
+**Une erreur évitée pendant le développement.** La première version donnait un bonus au RCP de MIBRAVAL pour une question sur l'amlodipine, parce que sa DCI contient « amlodipine ». MIBRAVAL associe amlodipine et valsartan, et son avertissement sur les AINS concerne le valsartan. Le bonus est réservé aux RCP du médicament seul. Le contrôle des citations de la semaine 5 devra intercepter ce type d'attribution.
+
+**La recherche dense seule reste fragile** sur Q3 (patient sous amlodipine) : 0,17 contre 1,00 en hybride. L'hybride est le mode à utiliser.
 
 ## Vérification
 
-`tests/test_retrieval_integration.py` contient 15 tests ; la suite complète passe (65 tests). Ils vérifient que le mode par défaut reproduit la semaine 2, qu'une question vide ne plante pas, que la paire ibuprofène + aspirine, ratée en brut, est trouvée en enrichi, que l'absence amlodipine + AINS est signalée avec des preuves toutes marquées indirectes, que chaque résultat enrichi s'explique, que le temps reste sous 50 ms, et que le découpage des passages longs du corpus fonctionne toujours.
+`tests/test_retrieval_integration.py` contient 15 tests. Ils vérifient que le mode par défaut reproduit la semaine 2, qu'une question vide ne plante pas, que la paire ibuprofène + aspirine, ratée en brut, est trouvée en enrichi, que l'absence amlodipine + AINS est signalée avec des preuves toutes marquées indirectes, que chaque résultat enrichi s'explique, que le temps reste sous 50 ms, et que le découpage des passages longs du corpus fonctionne toujours. Le mode normalisé + graphe est aussi testé dans `tests/test_evaluation.py`.
 
-Deux ajouts servent toute l'équipe : `tests/conftest.py` permet de lancer `pytest tests` sans réglage particulier, sous Ubuntu comme sous Windows, et `pytest` figure désormais dans `requirements.txt`. `Retriever(load_dense=False)` charge BM25 sans le modèle, ce qui rend les tests rapides.
+`tests/conftest.py` permet de lancer `pytest tests` sans réglage particulier, sous Ubuntu comme sous Windows. `Retriever(load_dense=False)` charge BM25 sans le modèle, ce qui rend les tests rapides.
 
 Pour reproduire :
 
 ```bash
 python scripts/05_clean_thesaurus.py
 python scripts/08_build_index.py
+python scripts/21_build_heldout.py      # recrée les 10 questions (empreinte attendue : 929badcfdcda)
 python -m pytest tests -q
-python scripts/20_eval_enriched_retrieval.py
+python scripts/14_eval_week3.py
 ```
 
-Fichiers : `src/pharmeazor/enrich.py`, `src/pharmeazor/retrieval.py`, `src/pharmeazor/embeddings.py`, `tests/test_retrieval_integration.py`, `tests/conftest.py`, `scripts/20_eval_enriched_retrieval.py`.
+Fichiers : `src/pharmeazor/enrich.py`, `src/pharmeazor/retrieval.py`, `src/pharmeazor/embeddings.py`, `tests/test_retrieval_integration.py`, `tests/conftest.py`, `scripts/21_build_heldout.py`, `data/processed/week_3/heldout_questions.json`.

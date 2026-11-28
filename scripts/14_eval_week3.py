@@ -14,6 +14,7 @@ Sorties :
     data/processed/week_2/retrieval_comparison.md (régénéré en mode complet)
 """
 import argparse
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -24,6 +25,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from pharmeazor.config import CORPUS_PATH, PROCESSED  # noqa: E402
 from pharmeazor.evaluation import (  # noqa: E402
     MAX_K,
+    MODES,
     QUERIES,
     render_markdown,
     run_week3_evaluation,
@@ -33,6 +35,30 @@ from pharmeazor.retrieval import Retriever  # noqa: E402
 OUT = PROCESSED / "week_3" / "eval_week3.md"
 COMPARISON = PROCESSED / "week_2" / "retrieval_comparison.md"
 ALL_METHODS = ("bm25", "dense", "hybrid")
+HELDOUT = PROCESSED / "week_3" / "heldout_questions.json"
+TESTSET = PROCESSED / "week_2" / "test_questions.json"
+ENRICH = Path(__file__).resolve().parents[1] / "src" / "pharmeazor" / "enrich.py"
+ENRICHED = ("normalized", "graph", "normalized+graph")
+
+
+def load_heldout():
+    """10 questions tenues à l'écart du réglage de L4 (scripts/21_build_heldout.py)."""
+    data = json.loads(HELDOUT.read_text(encoding="utf-8"))
+    queries = [{**q, "category": q["type"], "type": "positive"} for q in data["questions"]]
+    current = hashlib.sha256(ENRICH.read_bytes()).hexdigest()[:12]
+    return queries, data["frozen_enrich_sha256"], current
+
+
+def tuning_questions():
+    """Les 40 questions sur lesquelles les poids de L4 ont été réglés (semaine 3)."""
+    tuned = {f"Q{i}" for i in range(1, 18)}
+    out = [{"id": q["id"], "type": "positive", "question": q["question"], "gold": q["gold"]}
+           for q in QUERIES if q["id"] in tuned and q.get("gold") and not q.get("variant")]
+    for q in json.loads(TESTSET.read_text(encoding="utf-8")):
+        if q["gold"]:
+            out.append({"id": q["id"], "type": "positive", "question": q["question"],
+                        "gold": q["gold"]})
+    return out
 
 
 def parse_args():
@@ -68,7 +94,7 @@ def fmt(value):
     return f"{value:.3f}"
 
 
-def build_markdown(report, methods, modes, missing):
+def build_markdown(report, methods, modes, missing, heldout=None, gap=None):
     results = report["results"]
     positives = [
         q for q in QUERIES
@@ -82,7 +108,8 @@ def build_markdown(report, methods, modes, missing):
         f"- **{len(QUERIES)} questions** : Q1–Q22 et la variante Q3f ; "
         f"{len(positives)} positives avec passage gold.",
         "- **Modes** : `raw` (recherche semaine 2 inchangée), `normalized` "
-        "(variantes DCI/classes + boost métadonnées), `graph` (expansion L3).",
+        "(variantes DCI/classes + boost métadonnées), `graph` (expansion L3), "
+        "`normalized+graph` (les deux, mode recommandé par L4).",
         f"- **Méthodes** : {', '.join(methods)}.",
         f"- **Profondeur** : top-{report['k']} ; MRR plafonné à {MAX_K}.",
         "- **Gold** : identifiants vérifiés dans `corpus.jsonl` par ce script.",
@@ -91,7 +118,7 @@ def build_markdown(report, methods, modes, missing):
         "questions : les gains sont optimistes. Le but ici est la comparaison "
         "avant/après et la couverture des métriques, pas une estimation non biaisée.\n",
         "## Questions ajoutées pour L5\n",
-        "| ID | Type | Question | Attendu |",
+        "| ID | Type | Question | Entités à reconnaître (analyse L2) |",
         "|---|---|---|---|",
     ]
     for query in new_questions:
@@ -149,8 +176,8 @@ def build_markdown(report, methods, modes, missing):
     for method in methods:
         lines += [
             f"### {method}\n",
-            "| Question | Type | Raw | Normalized | Graph |",
-            "|---|---|---:|---:|---:|",
+            "| Question | Type | " + " | ".join(modes) + " |",
+            "|---|---|" + "---:|" * len(modes),
         ]
         for query in positives:
             cells = []
@@ -166,7 +193,7 @@ def build_markdown(report, methods, modes, missing):
     for method in methods:
         for query in positives:
             raw = results[("raw", method)]["per_query"][query["id"]]["mrr"]
-            for mode in ("normalized", "graph"):
+            for mode in [m for m in ENRICHED if m in modes]:
                 value = results[(mode, method)]["per_query"][query["id"]]["mrr"]
                 if value + 1e-9 < raw:
                     regressions.append((query["id"], method, mode, raw, value))
@@ -177,6 +204,11 @@ def build_markdown(report, methods, modes, missing):
                   for qid, m, mode, raw, value in regressions]
     else:
         lines.append("Aucune régression de MRR par rapport au mode brut.")
+
+    if heldout:
+        lines += heldout_section(heldout, methods, modes)
+    if gap:
+        lines += gap_section(gap, methods)
 
     lines += ["\n## Erreurs d'analyse (cas concrets)\n"]
     errors = []
@@ -212,6 +244,76 @@ def build_markdown(report, methods, modes, missing):
     return "\n".join(lines) + "\n"
 
 
+def heldout_section(heldout, methods, modes):
+    report, frozen, current = heldout["report"], heldout["frozen"], heldout["current"]
+    results, queries = report["results"], report["queries"]
+    lines = ["\n## Jeu tenu à l'écart (10 questions non vues par le réglage)\n",
+             "Les questions H01–H10 (`scripts/21_build_heldout.py`) portent sur des "
+             "médicaments et des paires absents des questions utilisées pour régler L4. "
+             "Elles ont été écrites avant leur première évaluation, et les poids de L4 n'ont "
+             "pas été modifiés depuis. Un gold a été corrigé après la première exécution "
+             "(H06 : l'entrée directe fluoxétine + tramadol, plus grave, manquait) ; la "
+             "correction est notée dans le fichier. Les paires du Thésaurus comptent les "
+             "deux sens.\n"]
+    if frozen == current:
+        lines.append(f"Poids de L4 inchangés depuis la création du jeu "
+                     f"(empreinte de `enrich.py` : `{frozen}`).\n")
+    else:
+        lines.append(f"**Attention : `enrich.py` a changé depuis la création du jeu "
+                     f"({frozen} → {current}). Ces questions ne sont plus tenues à "
+                     f"l'écart.**\n")
+    lines += ["| Méthode | Mode | MRR@100 | Hit@10 |", "|---|---|---:|---:|"]
+    for method in methods:
+        for mode in modes:
+            agg = results[(mode, method)]["aggregate"]
+            lines.append(f"| {method} | {mode} | {fmt(agg['mrr'])} | {fmt(agg['hit@10'])} |")
+    for method in methods:
+        lines += [f"\n### Détail par question — {method} (MRR)\n",
+                  "| Question | Catégorie | Énoncé | " + " | ".join(modes) + " |",
+                  "|---|---|---|" + "---:|" * len(modes)]
+        for q in queries:
+            cells = " | ".join(fmt(results[(m, method)]["per_query"][q["id"]]["mrr"])
+                               for m in modes)
+            lines.append(f"| {q['id']} | {q['category']} | {q['question']} | {cells} |")
+    worse = [(q["id"], method, mode,
+              results[("raw", method)]["per_query"][q["id"]]["mrr"],
+              results[(mode, method)]["per_query"][q["id"]]["mrr"])
+             for method in methods for q in queries for mode in ENRICHED if mode in modes
+             if results[(mode, method)]["per_query"][q["id"]]["mrr"] + 1e-9
+             < results[("raw", method)]["per_query"][q["id"]]["mrr"]]
+    lines.append("\n### Questions qui se dégradent (MRR enrichi < brut)\n")
+    if worse:
+        lines += ["| Question | Méthode | Mode | Brut | Enrichi |", "|---|---|---|---:|---:|"]
+        lines += [f"| {q} | {m} | {mode} | {fmt(a)} | {fmt(b)} |"
+                  for q, m, mode, a, b in worse]
+    else:
+        lines.append("Aucune.")
+    return lines
+
+
+def gap_section(gap, methods):
+    lines = ["\n## Pourquoi deux chiffres (0,820 et 0,571)\n",
+             "Les deux chiffres publiés en semaine 3 ne mesuraient pas la même chose : "
+             "0,820 (section 5) était le mode `normalized+graph` sur les 40 questions de "
+             "réglage de L4 ; 0,571 (section 6) était le mode `normalized` seul sur les "
+             "questions de L5. Le tableau les recalcule ici, dans la même exécution.\n",
+             "| Méthode | Jeu de questions | n | normalized | normalized+graph |",
+             "|---|---|---:|---:|---:|"]
+    for method in methods:
+        for label, rep in gap:
+            res = rep["results"]
+            n = len([q for q in rep["queries"] if q["type"] == "positive"
+                     and not q.get("variant") and q.get("gold")])
+            lines.append(f"| {method} | {label} | {n} | "
+                         f"{fmt(res[('normalized', method)]['aggregate']['mrr'])} | "
+                         f"{fmt(res[('normalized+graph', method)]['aggregate']['mrr'])} |")
+    lines.append("\nLecture : sur un même jeu, l'écart entre les deux colonnes vient du mode ; "
+                 "sur une même colonne, l'écart entre les lignes vient des questions. "
+                 "Seule la ligne « tenu à l'écart » porte sur des questions qui n'ont pas "
+                 "servi au réglage (10 questions : un ordre de grandeur, pas une preuve).")
+    return lines
+
+
 def main():
     args = parse_args()
     methods = tuple(m.strip() for m in args.methods.split(",") if m.strip())
@@ -234,7 +336,18 @@ def main():
                          normalize=True, expand=True)
 
     report = run_week3_evaluation(retriever=retriever, methods=methods, k=args.k)
-    markdown = build_markdown(report, methods, ("raw", "normalized", "graph"), missing)
+
+    held_queries, frozen, current = load_heldout()
+    held = {"report": run_week3_evaluation(retriever=retriever, methods=methods,
+                                           queries=held_queries, k=args.k),
+            "frozen": frozen, "current": current}
+    tuned = run_week3_evaluation(retriever=retriever, methods=methods,
+                                 modes=("normalized", "normalized+graph"),
+                                 queries=tuning_questions(), k=args.k)
+    gap = [("40 questions de réglage L4 (section 5)", tuned),
+           ("questions L5, Q1–Q22 (section 6)", report),
+           ("10 questions tenues à l'écart", held["report"])]
+    markdown = build_markdown(report, methods, MODES, missing, heldout=held, gap=gap)
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(markdown, encoding="utf-8")
     print(markdown)

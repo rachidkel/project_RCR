@@ -195,7 +195,7 @@ QUERIES = [
 
 METHODS = ("bm25", "dense", "hybrid")
 MAX_K = 100
-MODES = ("raw", "normalized", "graph")
+MODES = ("raw", "normalized", "graph", "normalized+graph")
 
 # Métadonnées d'évaluation : entités attendues, intention attendue et
 # abstention attendue. Elles servent aux métriques d'analyse (L5) et restent
@@ -351,6 +351,8 @@ def _ranked_mode(retriever, question, mode, method, k=MAX_K):
         options = {"normalize": True}
     elif mode == "graph":
         options = {"expand": True}
+    elif mode == "normalized+graph":
+        options = {"normalize": True, "expand": True}
     else:
         raise ValueError(f"Mode inconnu : {mode}")
     results = retriever.search(question, k, method=method, **options)

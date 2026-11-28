@@ -61,13 +61,14 @@ Les corrections demandées par l'enseignant à l'issue de la Semaine 2 ont été
 ## 5. Recherche enrichie (Lot L4)
 
 **Auteur** : Mohamed Seghir Ali Dafri (`moh 117`) | **Relecteur** : Oualid Drici (`review_l4_oualid.md`) | **Détails** : [section_5_enriched_retrieval.md](section_5_enriched_retrieval.md)  
-**Livrables** : `src/pharmeazor/retrieval.py`, `src/pharmeazor/enrich.py`, `scripts/20_eval_enriched_retrieval.py`, `tests/test_retrieval_integration.py`
+**Livrables** : `src/pharmeazor/retrieval.py`, `src/pharmeazor/enrich.py`, `tests/test_retrieval_integration.py`, `scripts/21_build_heldout.py`
 
 - **Fonctionnement** : rétrocompatible à 100 % en mode `raw` (`normalize=False, expand=False`). En mode enrichi, fusion RRF de trois variantes (brute, DCI canoniques, classes), injection des fiches registre pertinentes, boost par métadonnées (sections ANPP, paires Thésaurus) et expansion par graphe (`graph:direct`, `graph:class`, `graph:related_class`).
-- **Gains sur les 40 questions L4** (`data/processed/week_3/l4_enriched_retrieval.md`) :
-  - **Hybride brut (S2)** : MRR `0.350`, Hit@10 `0.525`
-  - **Hybride normalisé + graphe (S3)** : **MRR `0.820`**, **Hit@10 `0.925`** (37/40 questions dans le top 10).
-  - **Cas critiques** : Q2 (`0.00` $\rightarrow$ `1.00`), Q3 (`0.06` $\rightarrow$ `1.00`), Q16 (`0.00` $\rightarrow$ `0.50`).
+- **Résultats** (évaluation unique, `scripts/14_eval_week3.py` → `data/processed/week_3/eval_week3.md`) :
+  - **10 questions tenues à l'écart du réglage** (hybride) : MRR `0.230` → `0.848`, Hit@10 `0.50` → `1.00`.
+  - **0,820 et 0,571** : le premier était le mode normalisé + graphe sur les 40 questions de réglage, le second le mode normalisé seul sur les 19 questions de la section 6. Sur ces 19 questions, normalisé + graphe donne `0.679`.
+  - **Cas critiques** (hybride) : Q2 (`0.00` → `1.00`), Q3 (`0.04` → `1.00`), Q16 (`0.00` → `0.50`).
+  - **Dégradation** : H09 (amiloride + potassium) en BM25, due au lexique qui résout l'amiloride vers une association.
 
 ---
 
@@ -113,7 +114,7 @@ Sur le jeu consolidé de **23 questions** (Q1–Q22 + Q3f, 19 positives avec 52 
 | **Anis Fares Hammoudi** (`fares`) | **L1** — Lexique & alias | PR #4 (`4c6a08c`, `d5ff418`) | `lexicon.py`, `lexicon.json`, `test_lexicon.py`, `lexicon_coverage.md` | Terminé |
 | **Mohamed Ali Baghriche** (`moh bgh`) | **L2** — Analyse de requêtes | `eb62404`, `054c9e3`, `434c4dd` | `query.py`, `11_analyze_query.py`, `test_query.py`, `section_3_query_analysis.md` | Terminé |
 | **Rachid Anis Kellil** (`rachid`) | **L3** — Graphe de connaissances | `def0dac` + merges PR #4, #6 | `graph.py`, `17_build_graph.py`, `19_graph_demo.py`, `test_graph.py`, revue L1 | Terminé |
-| **Mohamed Seghir Ali Dafri** (`moh 117`) | **L4** — Recherche enrichie | PR #5 (`eb0c6db`, `9fbf86a`..`a04a562`) | `retrieval.py`, `enrich.py`, `20_eval_enriched_retrieval.py`, `test_retrieval_integration.py`, `section_5` | Terminé |
+| **Mohamed Seghir Ali Dafri** (`moh 117`) | **L4** — Recherche enrichie | PR #5 (`eb0c6db`, `9fbf86a`..`a04a562`) | `retrieval.py`, `enrich.py`, `test_retrieval_integration.py`, `21_build_heldout.py`, `section_5` | Terminé |
 | **Oualid Drici** (`oualid`) | **L5** — Évaluation & benchmark | PR #6 (`daf15b9`, `d96126e`..`11807f5`) | `evaluation.py`, `14_eval_week3.py`, `eval_week3.md`, `test_evaluation.py`, `section_6`, revue L4 | Terminé |
 | **Anis Ferrah** (`anis fer`) | **L6** — Rapport, intégration & CI | **0 commit / 0 PR** | Aucun livrable soumis par le membre ; rapport final, `.gitignore`, CI (`.github/workflows/ci.yml`) finalisés lors de la vérification finale | Non réalisé par le membre (complété en intégration) |
 

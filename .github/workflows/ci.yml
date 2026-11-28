@@ -20,7 +20,12 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pytest networkx rapidfuzz numpy pyyaml
+          pip install pytest networkx rapidfuzz numpy pyyaml python-dotenv bm25s pymupdf pandas
+
+      - name: Prepare test data
+        run: |
+          python scripts/05_clean_thesaurus.py
+          python scripts/08_build_index.py --bm25-only
 
       - name: Run unit and integration tests
         run: |
