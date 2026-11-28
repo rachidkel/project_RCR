@@ -1,0 +1,155 @@
+{
+  "frozen_enrich_sha256": "929badcfdcda",
+  "questions": [
+    {
+      "id": "H01",
+      "type": "direct",
+      "split": "heldout",
+      "question": "Quelles marques de losartan sont enregistrées en Algérie ?",
+      "expected_answer": "Fiches registre du losartan potassique.",
+      "answer_keys": [
+        "LOSARTAN"
+      ],
+      "gold": [
+        "nomenclature:losartan potassique",
+        "nomenclature_dz:losartan potassique",
+        "pharmnet:losartan potassique"
+      ],
+      "note": ""
+    },
+    {
+      "id": "H02",
+      "type": "direct",
+      "split": "heldout",
+      "question": "Quelle est la DCI du médicament COVERSYL ?",
+      "expected_answer": "Périndopril (arginine).",
+      "answer_keys": [
+        "COVERSYL"
+      ],
+      "gold": [
+        "nomenclature:perindopril arginine",
+        "nomenclature_dz:perindopril arginine",
+        "pharmnet:perindopril arginine"
+      ],
+      "note": "Marque -> DCI."
+    },
+    {
+      "id": "H03",
+      "type": "direct",
+      "split": "heldout",
+      "question": "Quelle est la posologie du BIODAZOLE selon son RCP ?",
+      "expected_answer": "Section 4.2 du RCP de BIODAZOLE (métronidazole).",
+      "answer_keys": [],
+      "gold": [
+        "anpp:4b501382-16ef-44c6-a960-20b3fa97faf4:4.2"
+      ],
+      "note": ""
+    },
+    {
+      "id": "H04",
+      "type": "direct",
+      "split": "heldout",
+      "question": "Quelles sont les contre-indications du CEBREX selon son RCP ?",
+      "expected_answer": "Section 4.3 des RCP de CEBREX 100 et 200 mg (célécoxib).",
+      "answer_keys": [],
+      "gold": [
+        "anpp:07c55ca2-8113-4a18-833a-6f4f4cc2e57c:4.3",
+        "anpp:39a88e44-f0da-439e-a277-9ce473f8bf7c:4.3"
+      ],
+      "note": ""
+    },
+    {
+      "id": "H05",
+      "type": "cross",
+      "split": "heldout",
+      "question": "Peut-on associer la doxycycline et des sels de fer ?",
+      "expected_answer": "Cyclines + fer : précaution d'emploi, prendre le fer à distance.",
+      "answer_keys": [
+        "Précaution d'emploi"
+      ],
+      "gold": [
+        "thesaurus:cyclines:150:2",
+        "thesaurus:fer:234:5"
+      ],
+      "note": "Interaction de classe (cyclines)."
+    },
+    {
+      "id": "H06",
+      "type": "cross",
+      "split": "heldout",
+      "question": "Peut-on associer le tramadol et la fluoxétine ?",
+      "expected_answer": "Deux entrées : fluoxétine + tramadol, association déconseillée (baisse d'efficacité du tramadol) ; ISRS + tramadol, à prendre en compte (syndrome sérotoninergique). Le niveau à retenir est le plus grave : association déconseillée.",
+      "answer_keys": [
+        "Association déconseillée",
+        "A prendre en compte"
+      ],
+      "gold": [
+        "thesaurus:fluoxetine:245:10",
+        "thesaurus:inhibiteurs selectifs de la recapture de la serotonine:312:12",
+        "thesaurus:tramadol:580:4",
+        "thesaurus:tramadol:580:8"
+      ],
+      "note": "Gold corrigé après la première exécution : la version initiale ne retenait que l'entrée de classe (à prendre en compte) et omettait l'entrée directe, plus grave (association déconseillée). Poids de L4 non modifiés."
+    },
+    {
+      "id": "H07",
+      "type": "cross",
+      "split": "heldout",
+      "question": "Peut-on associer le diclofénac et le losartan ?",
+      "expected_answer": "AINS + ARA II : précaution d'emploi.",
+      "answer_keys": [
+        "Précaution d'emploi"
+      ],
+      "gold": [
+        "thesaurus:antagonistes des recepteurs de l angiotensine ii:44:1",
+        "thesaurus:anti inflammatoires non steroidiens:56:2"
+      ],
+      "note": "Paire de médicaments nouvelle, mais le passage 56:2 (AINS + ARA II) est aussi un gold de Q3 : ce passage a servi au réglage."
+    },
+    {
+      "id": "H08",
+      "type": "cross",
+      "split": "heldout",
+      "question": "Le méthotrexate peut-il être pris avec du kétoprofène ?",
+      "expected_answer": "AINS + méthotrexate : association déconseillée (selon la dose de méthotrexate).",
+      "answer_keys": [
+        "Association déconseillée"
+      ],
+      "gold": [
+        "thesaurus:anti inflammatoires non steroidiens:56:17",
+        "thesaurus:methotrexate:374:2"
+      ],
+      "note": ""
+    },
+    {
+      "id": "H09",
+      "type": "cross",
+      "split": "heldout",
+      "question": "Peut-on donner des sels de potassium à un patient sous amiloride ?",
+      "expected_answer": "Diurétiques épargneurs de potassium + potassium : association déconseillée.",
+      "answer_keys": [
+        "Association déconseillée"
+      ],
+      "gold": [
+        "thesaurus:diuretiques epargneurs de potassium seuls ou associes:191:6",
+        "thesaurus:potassium:464:2"
+      ],
+      "note": "Amiloride = diurétique épargneur de potassium."
+    },
+    {
+      "id": "H10",
+      "type": "cross",
+      "split": "heldout",
+      "question": "Quelle précaution pour l'association nébivolol et amiodarone ?",
+      "expected_answer": "Bêta-bloquants + amiodarone : précaution d'emploi (surveillance clinique et ECG).",
+      "answer_keys": [
+        "Précaution d'emploi"
+      ],
+      "gold": [
+        "thesaurus:amiodarone:31:2",
+        "thesaurus:beta bloquants sauf esmolol et sotalol y compris collyres:90:0"
+      ],
+      "note": ""
+    }
+  ]
+}
